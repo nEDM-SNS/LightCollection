@@ -1,0 +1,5 @@
+/gps/particle opticalphoton
+/gps/energy 15.5 eV #80nm
+/gps/ang/type beam1d
+/gps/direction 0 -1 0 #directly into the cell plate
+/gps/polarization 0 0 1 # dummy polarization

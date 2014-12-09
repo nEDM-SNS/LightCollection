@@ -1,0 +1,4 @@
+/control/execute threeLG.mac
+/control/execute 80nmSource_iso.mac
+
+/run/beamOn 10000
