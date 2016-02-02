@@ -51,13 +51,13 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     const G4StepPoint *p_in  = aStep->GetPreStepPoint();
     const G4StepPoint *p_out = aStep->GetPostStepPoint();
     //const G4VProcess *p1 = p_in->GetProcessDefinedStep();
-    const G4VProcess *p2 = p_out->GetProcessDefinedStep();
+    //const G4VProcess *p2 = p_out->GetProcessDefinedStep();
     
     
     // Find boundary status
     
     G4OpBoundaryProcessStatus boundaryStatus=Undefined;
-    static G4OpBoundaryProcess* boundary=NULL;
+    static G4ThreadLocal G4OpBoundaryProcess* boundary=NULL;
     
     G4ParticleDefinition* particleType = aStep->GetTrack()->GetDefinition();
     

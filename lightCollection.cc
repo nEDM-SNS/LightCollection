@@ -6,9 +6,9 @@
 
 #include "G4UImanager.hh"
 
-#include "NedmPhysicsList.hh"
+#include "nEDMPhysicsList.hh"
 
-#include "NedmDetectorConstruction.hh"
+#include "nEDMDetectorConstruction.hh"
 
 #include "LightCollectionActionInitialization.hh"
 
@@ -80,24 +80,23 @@ int main(int argc,char** argv)
     // Seed the random number generator manually
     G4Random::setTheSeed(myseed);
     
+    G4Random::showEngineStatus();
+    G4cout << "Seed = " << G4Random::getTheSeed() << G4endl;
+
+    
     // Set mandatory initialization classes
     //
     // Detector construction
-    //runManager-> SetUserInitialization(new LightTestDetectorConstruction());
-    runManager-> SetUserInitialization(new NedmDetectorConstruction());
+    runManager-> SetUserInitialization(new nEDMDetectorConstruction());
     // Physics list
-    runManager-> SetUserInitialization(new NedmPhysicsList());
+    runManager-> SetUserInitialization(new nEDMPhysicsList());
     // User action initialization
     runManager->SetUserInitialization(new LightCollectionActionInitialization());
     
     // Initialize G4 kernel
     //
     runManager->Initialize();
-    
-    //Make sure that the analysis manager has been created so that
-    //we can configure it before we do a run
-    // NedmAnalysisManager* analysis = NedmAnalysisManager::GetInstance();
-    
+        
 #ifdef G4VIS_USE
     // Initialize visualization
     //

@@ -1,18 +1,9 @@
-//
-// light guides + central cell - ASK-17apr09
-//
-// $Id: guidesPhysicsList.cc,v 1.12 2005/05/17 00:19:45 gum Exp $
-// GEANT4 tag $Name: geant4-08-00 $
-//
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #include "G4ios.hh"
 #include <iomanip>
 
 #include "globals.hh"
-#include "NedmPhysicsList.hh"
-#include "NedmPhysicsListMessenger.hh"
+#include "nEDMPhysicsList.hh"
+#include "nEDMPhysicsListMessenger.hh"
 
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
@@ -30,31 +21,29 @@
 #include "G4OpRayleigh.hh"
 #include "G4OpBoundaryProcess.hh"
 #include "G4OpWLS.hh"
-#include "NedmOpTPB.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-NedmPhysicsList::NedmPhysicsList() :  G4VUserPhysicsList()
+nEDMPhysicsList::nEDMPhysicsList() :  G4VUserPhysicsList()
 {
     theCerenkovProcess           = 0;
     theScintillationProcess      = 0;
     theAbsorptionProcess         = 0;
     theRayleighScatteringProcess = 0;
     theBoundaryProcess           = 0;
-    theTPBProcess                = 0;
     theWLSProcess              = 0;
     
-    pMessenger = new NedmPhysicsListMessenger(this);
+    pMessenger = new nEDMPhysicsListMessenger(this);
     SetVerboseLevel(0);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-NedmPhysicsList::~NedmPhysicsList() { delete pMessenger;}
+nEDMPhysicsList::~nEDMPhysicsList() { delete pMessenger;}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::ConstructParticle()
+void nEDMPhysicsList::ConstructParticle()
 {
     // In this method, static member functions should be called
     // for all particles which you want to use.
@@ -69,7 +58,7 @@ void NedmPhysicsList::ConstructParticle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::ConstructBosons()
+void nEDMPhysicsList::ConstructBosons()
 {
     // pseudo-particles
     G4Geantino::GeantinoDefinition();
@@ -84,7 +73,7 @@ void NedmPhysicsList::ConstructBosons()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::ConstructLeptons()
+void nEDMPhysicsList::ConstructLeptons()
 {
     // leptons
     G4Electron::ElectronDefinition();
@@ -99,7 +88,7 @@ void NedmPhysicsList::ConstructLeptons()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-/*void NedmPhysicsList::ConstructMesons()
+/*void nEDMPhysicsList::ConstructMesons()
  {
  //  mesons
  G4PionPlus::PionPlusDefinition();
@@ -109,7 +98,7 @@ void NedmPhysicsList::ConstructLeptons()
  */
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-/*void NedmPhysicsList::ConstructBaryons()
+/*void nEDMPhysicsList::ConstructBaryons()
  {
  //  barions
  G4Proton::ProtonDefinition();
@@ -120,7 +109,7 @@ void NedmPhysicsList::ConstructLeptons()
  */
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::ConstructProcess()
+void nEDMPhysicsList::ConstructProcess()
 {
     AddTransportation();
     ConstructGeneral();
@@ -134,7 +123,7 @@ void NedmPhysicsList::ConstructProcess()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::ConstructGeneral()
+void nEDMPhysicsList::ConstructGeneral()
 {
     // Add Decay Process
     G4Decay* theDecayProcess = new G4Decay();
@@ -171,7 +160,7 @@ void NedmPhysicsList::ConstructGeneral()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 /*
- void NedmPhysicsList::ConstructEM()
+ void nEDMPhysicsList::ConstructEM()
  {
  theParticleIterator->reset();
  while( (*theParticleIterator)() ){
@@ -224,7 +213,7 @@ void NedmPhysicsList::ConstructGeneral()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 #include "G4Threading.hh"
 
-void NedmPhysicsList::ConstructOp()
+void nEDMPhysicsList::ConstructOp()
 {
     theCerenkovProcess           = new G4Cerenkov("Cerenkov");
     theScintillationProcess = new G4Scintillation("Scintillation");
@@ -232,7 +221,6 @@ void NedmPhysicsList::ConstructOp()
     theRayleighScatteringProcess = new G4OpRayleigh();
     theBoundaryProcess  = new G4OpBoundaryProcess();
     theWLSProcess = new G4OpWLS();
-    theTPBProcess = new NedmOpTPB();
     
     //  theCerenkovProcess->DumpPhysicsTable();
     //  theScintillationProcess->DumpPhysicsTable();
@@ -266,7 +254,6 @@ void NedmPhysicsList::ConstructOp()
         }
         if (particleName == "opticalphoton") {
             G4cout << " AddDiscreteProcess to OpticalPhoton " << G4endl;
-            pmanager->AddDiscreteProcess(theTPBProcess);
             pmanager->AddDiscreteProcess(theAbsorptionProcess);
             pmanager->AddDiscreteProcess(theRayleighScatteringProcess);
             pmanager->AddDiscreteProcess(theBoundaryProcess);
@@ -277,26 +264,25 @@ void NedmPhysicsList::ConstructOp()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::SetVerbose(G4int verbose)
+void nEDMPhysicsList::SetVerbose(G4int verbose)
 {
     theCerenkovProcess->SetVerboseLevel(verbose);
     theScintillationProcess->SetVerboseLevel(verbose);
     theAbsorptionProcess->SetVerboseLevel(verbose);
     theRayleighScatteringProcess->SetVerboseLevel(verbose);
     theBoundaryProcess->SetVerboseLevel(verbose);
-    theTPBProcess->SetVerboseLevel(verbose);
     theWLSProcess->SetVerboseLevel(verbose);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
+void nEDMPhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
 {
     theCerenkovProcess->SetMaxNumPhotonsPerStep(MaxNumber);
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void NedmPhysicsList::SetCuts()
+void nEDMPhysicsList::SetCuts()
 {
     //  " G4VUserPhysicsList::SetCutsWithDefault" method sets
     //   the default cut value for all particle types

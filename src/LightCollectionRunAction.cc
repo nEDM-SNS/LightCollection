@@ -39,27 +39,38 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     //inform the runManager to save random number seed
     G4RunManager::GetRunManager()->SetRandomNumberStore(false);
     
-    //LightCollectionAnalysisManager::GetInstance()->BeginOfRun(runID);
-    // get analysis manager
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     
-    analysisManager->OpenFile("StndPlate_0.9");
+    //analysisManager->OpenFile("StndPlate_0.9");
+    analysisManager->OpenFile("Test");
     
+    // index 0
     analysisManager->CreateH1("Detector1", "Number of Photons from LightGuide1", 10, 0, 9);
     analysisManager->CreateH1("Detector2", "Number of Photons from LightGuide2", 10, 0, 9);
     analysisManager->CreateH1("Detector3", "Number of Photons from LightGuide3", 10, 0, 9);
     
+    // index 3
     analysisManager->CreateH1("Energy1", "Energy of Photons from LightGuide1", 100, 0., 20.);
     analysisManager->CreateH1("Energy2", "Energy of Photons from LightGuide2", 100, 0., 20.);
     analysisManager->CreateH1("Energy3", "Energy of Photons from LightGuide3", 100, 0., 20.);
     
+    // index 6
     analysisManager->CreateH1("PenetrationLength", "Sampled penetration length", 300, 0., 120);
 
     analysisManager->CreateH1("PenetrationDepth", "Sampled penetration Depth", 300, 0., 60);
     
     analysisManager->CreateH1("MFPtraveled", "Number of MFPs traveled", 200, 0, 5);
 
+    // index 9
     analysisManager->CreateH1("MFPdeep", "Number of MFPs deep", 200, 0, 3);
+    
+    analysisManager->CreateH1("TPBHit", "Number of EUV Photons that hit TPB surface", 5, 0, 5);
+    analysisManager->CreateH1("BlueProd", "Number of Blue Photons Produced", 5, 0, 5);
+    
+    // index 12
+    analysisManager->CreateH1("BlueProd_Alt", "Alternate measure of Number of Blue Photons Produced", 5, 0, 5);
+    analysisManager->CreateH1("GreenProd", "Number of Green Photons Produced", 5, 0, 5);
+    
 
 }
 

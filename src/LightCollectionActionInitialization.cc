@@ -5,6 +5,7 @@
 #include "LightCollectionRunAction.hh"
 #include "LightCollectionEventAction.hh"
 #include "LightCollectionSteppingAction.hh"
+#include "LightCollectionStackingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -33,6 +34,8 @@ void LightCollectionActionInitialization::Build() const
     SetUserAction(new GPSPrimaryGeneratorAction());
     
     SetUserAction(new LightCollectionEventAction());
+    
+    SetUserAction(new LightCollectionStackingAction());
     
     SetUserAction(new LightCollectionSteppingAction());
 
