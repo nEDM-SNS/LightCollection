@@ -11,6 +11,11 @@
 #include <G4Box.hh>
 #include <G4Tubs.hh>
 #include "G4VisAttributes.hh"
+#include <G4PVPlacement.hh>
+#include <G4OpticalSurface.hh>
+#include <G4LogicalBorderSurface.hh>
+#include <G4LogicalSkinSurface.hh>
+
 
 #include "nEDMComponentConstructor.hh"
 #include "nEDMSimplePhysVolManager.hh"
@@ -26,7 +31,12 @@ public:
     virtual G4LogicalVolume* GetPiece(void);
     
     G4double GetFiberThickness() {return fClad2_rmax*2;};
-        
+    
+    // Set the optical surface on the outside of the fiber
+    void SetOpticalSurface(G4String volname);
+    void SetOpticalSurface(G4VPhysicalVolume* fiberVol, G4VPhysicalVolume* outerVol);
+    
+    G4double GetLength() {return fFiber_z;};
     
 private:
     void Init(void);
@@ -51,6 +61,7 @@ private:
     G4double fClad2_sphi;
     G4double fClad2_ephi;
     
+    G4bool   fReflector;
     G4double fMirrorRmax;
     G4double fMirrorRmin;
     G4double fMirrorThick;

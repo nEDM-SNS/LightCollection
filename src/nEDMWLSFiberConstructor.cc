@@ -1,7 +1,5 @@
 #include "nEDMWLSFiberConstructor.hh"
 
-#include <G4PVPlacement.hh>
-
 nEDMWLSFiberConstructor::~nEDMWLSFiberConstructor(){;}
 
 void nEDMWLSFiberConstructor::Init(void){
@@ -27,14 +25,15 @@ void nEDMWLSFiberConstructor::Init(void){
     
     fSurfaceRoughness = 0.9;
     
+    fReflector = false;
     //fMirrorRmax  = fClad2_rmax;
     fMirrorRmax  = fFiber_rmax;
     fMirrorRmin  = 0.*cm;
-    fMirrorThick = 1./2*mm;
+    fMirrorThick = 1.*mm;
     fMirrorSPhi  = fFiber_sphi;
     fMirrorEPhi  = fFiber_ephi;
     
-    fMirrorPosZ  = -1*(fFiber_z - fMirrorThick);
+    fMirrorPosZ  = -1*(fFiber_z - fMirrorThick)/2;
     fMirrorReflectivity = 1;
     
 
@@ -105,9 +104,108 @@ G4LogicalVolume* nEDMWLSFiberConstructor::GetPiece(){
     G4VisAttributes* FiberVis=new G4VisAttributes(G4Color(0.0,1.0,0.0));
     FiberVis->SetVisibility(true);
     clad2_log->SetVisAttributes(FiberVis);
+    
+    
+    if (fReflector) {
+        // Fiber Reflector
+        G4Tubs* solidMirror = new G4Tubs("Mirror",
+                                         fMirrorRmin,
+                                         fMirrorRmax,
+                                         fMirrorThick,
+                                         fMirrorSPhi,
+                                         fMirrorEPhi);
         
+        
+        G4LogicalVolume* logicMirror = new G4LogicalVolume(solidMirror,G4Material::GetMaterial("PMMA"),"Mirror");
+        
+        
+        // Photon Energies for which mirror properties will be given
+        const G4int kEnergies = 3;
+        G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 16*eV};
+        
+        // Optical Surface for mirror
+        G4OpticalSurface* mirror_surface_ =
+        new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+                             dielectric_dielectric);
+        
+        // Reflectivity of mirror for each photon energy
+        G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0.998};
+        
+        //Table of Surface Properties for Mirror
+        G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+        mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+        mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+        
+        // Place Mirror
+        new G4PVPlacement(0,                                 //no rotation
+                          G4ThreeVector(0.,0.,fMirrorPosZ),   //position
+                          logicMirror,            //its logical volume
+                          "Mirror",               //its name
+                          //Clad2_log,            //its mother  volume
+                          core_log,               //its mother  volume
+                          false,                  //no boolean operation
+                          0,                    //copy number
+                          fCheckOverlaps);
+        
+        // Create Skin Surface to link logical surface and optical surface
+        new G4LogicalSkinSurface("MirrorSurface",logicMirror,mirror_surface_);
+        
+        // Set Visualization Properties of the Mirror
+        G4VisAttributes* MirrorVis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+        MirrorVis->SetVisibility(true);
+        logicMirror->SetVisAttributes(MirrorVis);
+        
+    }
+
     return clad2_log;
     
     
 
 }
+
+
+void nEDMWLSFiberConstructor::SetOpticalSurface(G4String volName){
+
+    if (fSurfaceRoughness < 1.){
+        // Boundary Surface Properties
+        G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
+        fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
+                                                            nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume(volName),
+                                                            nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume(GetName()),
+                                                            fiberOuterRoughOpSurface);
+        
+        
+        fiberOuterRoughOpSurface->SetModel(glisur);
+        fiberOuterRoughOpSurface->SetFinish(ground);
+        fiberOuterRoughOpSurface->SetType(dielectric_dielectric);
+        fiberOuterRoughOpSurface->SetPolish(fSurfaceRoughness);
+   
+    }
+
+}
+
+
+void nEDMWLSFiberConstructor::SetOpticalSurface(G4VPhysicalVolume* fiberVol, G4VPhysicalVolume* outerVol)
+{
+    
+    if (fSurfaceRoughness < 1.){
+        // Boundary Surface Properties
+        G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
+        fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
+                                                            outerVol,
+                                                            fiberVol,
+                                                            fiberOuterRoughOpSurface);
+        
+        
+        fiberOuterRoughOpSurface->SetModel(glisur);
+        fiberOuterRoughOpSurface->SetFinish(ground);
+        fiberOuterRoughOpSurface->SetType(dielectric_dielectric);
+        fiberOuterRoughOpSurface->SetPolish(fSurfaceRoughness);
+
+    }
+}
+
+
+

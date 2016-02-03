@@ -33,9 +33,9 @@ void LightCollectionActionInitialization::Build() const
     
     SetUserAction(new GPSPrimaryGeneratorAction());
     
-    SetUserAction(new LightCollectionEventAction());
+    //SetUserAction(new LightCollectionEventAction());
     
-    SetUserAction(new LightCollectionStackingAction());
+    //SetUserAction(new LightCollectionStackingAction());
     
     SetUserAction(new LightCollectionSteppingAction());
 

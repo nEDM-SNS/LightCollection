@@ -3,6 +3,7 @@
 
 #include "LightCollectionRunAction.hh"
 #include "LightCollectionAnalysis.hh"
+#include "LightCollectionRunActionMessenger.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -10,19 +11,22 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 LightCollectionRunAction::LightCollectionRunAction()
- : G4UserRunAction(),
-   timer(0)
+: G4UserRunAction(),
+timer(0)
 {
     if (IsMaster()) {
         timer = new G4Timer();
     }
+    
+    fMessenger = new LightCollectionRunActionMessenger(this);
+    fileName = "";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 LightCollectionRunAction::~LightCollectionRunAction()
 {
-  delete timer;
+    delete timer;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -41,44 +45,42 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     
-    //analysisManager->OpenFile("StndPlate_0.9");
-    analysisManager->OpenFile("Test");
+    if(fileName==""){fileName = "output/LightCollection";}
+    analysisManager->OpenFile(fileName);
     
     // index 0
-    analysisManager->CreateH1("Detector1", "Number of Photons from LightGuide1", 10, 0, 9);
-    analysisManager->CreateH1("Detector2", "Number of Photons from LightGuide2", 10, 0, 9);
-    analysisManager->CreateH1("Detector3", "Number of Photons from LightGuide3", 10, 0, 9);
+    analysisManager->CreateH1("Photons", "Bins: 1=Primaries, 2=TPB_Inner, 3=TPB_Outer, 4=TPB_All, 5=OtherWLSPhotons, 6=fiber +z end, 7=fiber -z end", 10, 0., 10.);
+    
+    // index 1
+    analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);
+    
+    // index 2
+    analysisManager->CreateH1("wlsTPBSpectrum", "EWavelength of photons produced in TPB", 100, 300., 800.);
     
     // index 3
-    analysisManager->CreateH1("Energy1", "Energy of Photons from LightGuide1", 100, 0., 20.);
-    analysisManager->CreateH1("Energy2", "Energy of Photons from LightGuide2", 100, 0., 20.);
-    analysisManager->CreateH1("Energy3", "Energy of Photons from LightGuide3", 100, 0., 20.);
+    analysisManager->CreateH1("cosThetaPosz", "Cosine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
+    
+    // index 4
+    analysisManager->CreateH1("cosThetaNegz", "Cosine of the exit angle for -z end of fiber", 100, -1.001, 1.001);
+    
+    // index 5
+    analysisManager->CreateH1("PhotonFate", "Bins: 0=Undefined, 1=X-Plate, 2=Y-Plate, 3=Z-Plate, 4=Cell Absorption, 5=TPB Absorption, 8=Trapped, 9=Not Trapped", 10, 0., 10.);
     
     // index 6
-    analysisManager->CreateH1("PenetrationLength", "Sampled penetration length", 300, 0., 120);
-
-    analysisManager->CreateH1("PenetrationDepth", "Sampled penetration Depth", 300, 0., 60);
+    analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
     
-    analysisManager->CreateH1("MFPtraveled", "Number of MFPs traveled", 200, 0, 5);
-
-    // index 9
-    analysisManager->CreateH1("MFPdeep", "Number of MFPs deep", 200, 0, 3);
+    // index 7
+    analysisManager->CreateH1("detEnergy", "Energy of photons detected", 100, 1., 4.);
     
-    analysisManager->CreateH1("TPBHit", "Number of EUV Photons that hit TPB surface", 5, 0, 5);
-    analysisManager->CreateH1("BlueProd", "Number of Blue Photons Produced", 5, 0, 5);
     
-    // index 12
-    analysisManager->CreateH1("BlueProd_Alt", "Alternate measure of Number of Blue Photons Produced", 5, 0, 5);
-    analysisManager->CreateH1("GreenProd", "Number of Green Photons Produced", 5, 0, 5);
     
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void LightCollectionRunAction::EndOfRunAction(const G4Run* aRun)
 {
-
+    
     //LightCollectionAnalysisManager::GetInstance()->EndOfRun();
     
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -91,7 +93,7 @@ void LightCollectionRunAction::EndOfRunAction(const G4Run* aRun)
     // complete cleanup
     //
     delete G4AnalysisManager::Instance();
-
+    
     
     if (IsMaster()){
         timer->Stop();

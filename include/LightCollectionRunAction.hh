@@ -8,21 +8,35 @@
 
 class G4Timer;
 class G4Run;
+class LightCollectionRunActionMessenger;
 
 class LightCollectionRunAction : public G4UserRunAction
 {
-  public:
+public:
     LightCollectionRunAction();
     virtual ~LightCollectionRunAction();
-
-  public:
+    
+public:
     virtual void BeginOfRunAction(const G4Run* aRun);
     virtual void EndOfRunAction(const G4Run* aRun);
-
-  private:
+    
+    void SetFileName(G4String name);
+    
+    
+private:
     G4Timer* timer;
+    G4String fileName;
+    
+    LightCollectionRunActionMessenger*  fMessenger;   // messenger
+    
+    
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+inline void LightCollectionRunAction::SetFileName(G4String name)
+{
+    fileName = name;
+}
 
 #endif /*LightCollectionRunAction_h*/

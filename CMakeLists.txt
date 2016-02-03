@@ -57,6 +57,8 @@ set(lightCollection_SCRIPTS
     icons.mac
     run.png
     vis.mac
+    input_fiber.mac
+    input_plate.mac
   )
 
 foreach(_script ${lightCollection_SCRIPTS})

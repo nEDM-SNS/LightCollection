@@ -5,7 +5,7 @@
 #include "LightCollectionEventInformation.hh"
 
 #include "LightCollectionAnalysis.hh"
-#include "NedmDetectorConstruction.hh"
+#include "nEDMDetectorConstruction.hh"
 #include "LightCollectionEventAction.hh"
 
 #include "G4Step.hh"
@@ -30,8 +30,20 @@
 
 #include "G4TrackStatus.hh"
 
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
 #include <iostream>
 using namespace std;
+
+LightCollectionSteppingAction::LightCollectionSteppingAction(){
+    
+
+    
+    
+}
+
+LightCollectionSteppingAction::~LightCollectionSteppingAction(){;}
 
 
 /*! Called when the simulation steps forward. A lot is happening in this method and it is worth taking a look at. This handles detection of photons as well as bounce and absorption tracking.
@@ -45,7 +57,66 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     aStep->GetTrack()->SetTrackStatus(fStopAndKill);
     return;
 #endif
+    
+    
+    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
+    G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
+    
+    
+    // Ignore steps at world boundary
+    if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
+        
+        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
+        G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
+        
+        G4String thePrePVname  = " ";
+        G4String thePostPVname = " ";
+        
+        if (thePostPV) {
+            thePrePVname  = thePrePV->GetName();
+            thePostPVname = thePostPV->GetName();
+        }
+        
+        //G4cout << "Pre-Step PV: " << thePrePVname << "   Post-Step PV: " << thePostPVname << G4endl;
+        
+        if (thePostPVname == "/nEDM/PhotDet_1") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 6);
+            analysisManager->FillH1(3, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
+        }
+        else if(thePostPVname == "/nEDM/PhotDet_2") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 7);
+            analysisManager->FillH1(4, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+
+        }
+    }
+}
+
+void LightCollectionSteppingAction::OldSteppingActionCode(const G4Step* aStep){
+    
+    
+    // Kill tracks at first step for analyzing input
+#if 0
+    aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+    return;
+#endif
+    
     
     // get point of entry and exit
     const G4StepPoint *p_in  = aStep->GetPreStepPoint();
@@ -122,6 +193,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 break;
         }
     }
-    
 }
+
+
+
 

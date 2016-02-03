@@ -21,6 +21,7 @@ void nEDMCellSideConstructor::Init(){
     fFiber_Reflector = false;
     fFiber_spacing = 0.103*cm;
     fNum_fibers = 98;
+    //fNum_fibers = 0;
     
     fCellSide_log = NULL;
     
@@ -50,7 +51,7 @@ G4LogicalVolume* nEDMCellSideConstructor::GetPiece(void)
     fCellSide_log->SetVisAttributes(cellVis);
     
     ConstructTPBInterface();
-    if (fEmbedded_fibers) {ConstructEmbeddedFibers();}
+    if (fNum_fibers > 0 && fEmbedded_fibers) {ConstructEmbeddedFibers();}
     
     return fCellSide_log;
 }
