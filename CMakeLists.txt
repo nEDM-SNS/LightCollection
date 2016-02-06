@@ -41,16 +41,6 @@ target_link_libraries(lightCollection ${LIBS} )
 # relies on these scripts being in the current working directory.
 #
 set(lightCollection_SCRIPTS
-    ./res/left_lg.txt
-    ./res/center_lg.txt
-    ./res/right_lg.txt
-    nedm_compound.mac
-    singleLG.mac
-    threeLG.mac
-    80nmSource_iso.mac
-    80nmSource_straight.mac
-    385nmSource_iso.mac
-    testRun.mac
     init.mac
     init_vis.mac
     gui.mac
