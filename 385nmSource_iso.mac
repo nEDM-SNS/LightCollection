@@ -1,6 +1,0 @@
-/gps/particle opticalphoton
-/gps/energy 3.22 eV #385nm
-/gps/position -7 0 0 cm
-/gps/ang/type beam1d
-/gps/ang/type iso
-/gps/polarization 0 0 1 # dummy polarization

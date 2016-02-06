@@ -1,5 +1,0 @@
-/nedm/detector/singlePlate 0
-
-/nedm/detector/lgGeometryFiles res/left_lg.txt res/center_lg.txt res/right_lg.txt
-/nedm/detector/fullPMTArea true
-/nedm/detector/update
