@@ -3,7 +3,6 @@
 
 #include "G4UserSteppingAction.hh"
 
-class nEDMDetectorConstruction;
 class G4VPhysicalVolume;
 
 //! User defined actions to be taken for each simulation step.
@@ -17,10 +16,6 @@ class LightCollectionSteppingAction : public G4UserSteppingAction
 
     
   private:
-    
-    G4VPhysicalVolume* detectorArray[1000];
-
-    nEDMDetectorConstruction* detector = {0};
     
     void OldSteppingActionCode(const G4Step* aStep);
 
