@@ -40,7 +40,6 @@ LightCollectionSteppingAction::LightCollectionSteppingAction(){
     
 
     
-    
 }
 
 LightCollectionSteppingAction::~LightCollectionSteppingAction(){;}
@@ -50,6 +49,10 @@ LightCollectionSteppingAction::~LightCollectionSteppingAction(){;}
  */
 void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
+    
+    if(detectorTypes.size()==0){    detectorTypes = nEDMSimplePhysVolManager::GetInstance()->GetDetectorTypes();
+    }
+
     
     
     // Kill tracks at first step for analyzing input
@@ -124,8 +127,9 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 //Analysis code for 3 cell plates
 #if 1
-        
+
         if (thePostPVname.contains( "/nEDM/LHE/CellSide1/PhotDet1")) {
+            
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
@@ -137,6 +141,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
             
         }
+        
         else if(thePostPVname.contains("/nEDM/LHE/CellSide1/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
@@ -152,9 +157,9 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         }
         else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
+            
             analysisManager->FillH1(0, 7);
-
+            
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet2")) {
@@ -178,7 +183,82 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-    
+
+/*
+        //  New Approach
+        
+        for (std::vector<detectorVector*>::iterator it=detectorTypes.begin(); it !=detectorTypes.end(); it++) {
+
+            std::vector<G4VPhysicalVolume*>::iterator jt;
+
+            jt = find((*it)->begin(), (*it)->end(), thePostPV);
+            if (jt !=(*it)->end()){
+                detType = distance(detectorTypes.begin(), it)+1;
+                break;}
+            else {detType=0;}
+        }
+        
+        //if (detType!=0) {G4cout << "Detector Type:  " << detType << G4endl;}
+  
+        
+        if (detType == 0){}
+        else if (detType==1) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 5);
+            analysisManager->FillH1(3, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+            
+        }
+        else if (detType==2) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 6);
+            analysisManager->FillH1(4, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+            
+            
+        }
+        else if (detType==3) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 7);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if (detType==4) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 8);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if (detType==5) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 9);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if (detType==6) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 10);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else {G4cout << "DetType out of range: " << detType << G4endl;}
+*/
+        
+
 #endif
   
         

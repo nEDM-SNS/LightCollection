@@ -10,7 +10,7 @@ nEDMSimplePhysVolManager::nEDMSimplePhysVolManager()
 
 nEDMSimplePhysVolManager::~nEDMSimplePhysVolManager(){;}
 
-void nEDMSimplePhysVolManager::AddPhysicalVolume(G4String name, G4VPhysicalVolume* volume, G4int index)
+void nEDMSimplePhysVolManager::AddPhysicalVolume(G4String name, G4VPhysicalVolume* volume, G4int index, G4int detType)
 {
     char fullNameChar[1024];
     sprintf(fullNameChar,"%s_%d",name.data(),index);
@@ -21,6 +21,54 @@ void nEDMSimplePhysVolManager::AddPhysicalVolume(G4String name, G4VPhysicalVolum
     // Force consistency of internal and external names
     volume->SetName(fullName);
     
+    if (detType==0) {
+        return;
+    }
+    if (detType==1 ) {
+        if (detectorTypes.size()==0) {
+            detVec1 = new detectorVector();
+            detectorTypes.push_back(detVec1);
+        }
+        detVec1->push_back(volume);
+
+    }
+    else if (detType==2 ) {
+        if (detectorTypes.size()==1) {
+            detVec2 = new detectorVector();
+            detectorTypes.push_back(detVec2);
+        }
+       detVec2->push_back(volume);
+
+    }
+    else if (detType==3 ) {
+        if (detectorTypes.size()==2) {
+            detVec3 = new detectorVector();
+            detectorTypes.push_back(detVec3);
+        }
+        detVec3->push_back(volume);
+    }
+    else if (detType==4 ) {
+        if (detectorTypes.size()==3) {
+            detVec4 = new detectorVector();
+            detectorTypes.push_back(detVec4);
+        }
+        detVec4->push_back(volume);
+    }
+    else if (detType==5 ) {
+        if (detectorTypes.size()==4) {
+            detVec5 = new detectorVector();
+            detectorTypes.push_back(detVec5);
+        }
+        detVec5->push_back(volume);
+    }
+    else if (detType==6 ) {
+        if (detectorTypes.size()==5) {
+            detVec6 = new detectorVector();
+            detectorTypes.push_back(detVec6);
+        }
+        detVec6->push_back(volume);
+    }
+
     /*  Propogate correct naming downward?
     for (int i=0; i<volume->GetLogicalVolume()->GetNoDaughters(); i++) {
         volume->GetLogicalVolume()->GetDaughter(i);
@@ -37,6 +85,24 @@ G4VPhysicalVolume* nEDMSimplePhysVolManager::GetPhysicalVolume(G4String name, G4
     
     return NULL;
 }
+
+void nEDMSimplePhysVolManager::PrintDetectorVolumeNames()
+{
+    int i=1;
+    
+    
+    for (std::vector<detectorVector*>::iterator it=detectorTypes.begin(); it !=detectorTypes.end(); it++) {
+        G4cout << "Detectors of type: " << i << "   size: " << (*it)->size() << G4endl;
+        i++;
+        
+        for (detectorVector::iterator det = (*it)->begin(); det !=(*it)->end(); det++) {
+            G4cout << (*det)->GetName() << G4endl;
+        }
+    }
+    
+}
+
+
 
 void nEDMSimplePhysVolManager::PrintAllVolumes()
 {

@@ -39,6 +39,7 @@ private:
     G4UIcmdWithABool* fCheckOverlapCmd;
     G4UIcmdWithADoubleAndUnit* fStepMaxCmd;
     G4UIcmdWithoutParameter* fPrintAllVolumesCmd;
+    G4UIcmdWithoutParameter* fPrintDetectorVolumesCmd;
     G4UIcmdWithoutParameter* fPrintLogicVolumeNamesCmd;
 };
 

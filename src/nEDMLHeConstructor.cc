@@ -56,6 +56,8 @@ void nEDMLHeConstructor::Construct3CellPlates(){
     nEDMSimplePhotDetConstructor& detector2 = Get<nEDMSimplePhotDetConstructor>("PhotDet2");
     detector2.SetCheckOverlaps(fCheckOverlaps);
     G4double detZPos;
+    G4RotationMatrix* det2Rot = new G4RotationMatrix();
+    det2Rot->rotateY(180*deg);
 
 
     
@@ -121,12 +123,12 @@ void nEDMLHeConstructor::Construct3CellPlates(){
             // Place +Z detectors
             physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,detZPos),logicFibDet1,detector1.GetName(),fLogicLHE,false,0,fCheckOverlaps);
             
-            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector1.GetLocalName(),physDetector1[i],i);
+            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector1.GetLocalName(),physDetector1[i],i,1);
             
             // Place -Z detectors
-            physDetector2[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,-detZPos),logicFibDet2,detector2.GetName(),fLogicLHE,false,0,fCheckOverlaps);
+            physDetector2[i] = new G4PVPlacement(det2Rot,G4ThreeVector(FibXPos,FibYPos,-detZPos),logicFibDet2,detector2.GetName(),fLogicLHE,false,0,fCheckOverlaps);
             
-            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector2.GetLocalName(),physDetector2[i],i);
+            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector2.GetLocalName(),physDetector2[i],i,2);
             
 
         }
@@ -176,10 +178,10 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide2.GetName()+"/"+detector1.GetLocalName(),physStdDet2_1,0);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide2.GetName()+"/"+detector1.GetLocalName(),physStdDet2_1,0,3);
 
 
-    G4VPhysicalVolume* physStdDet2_2 = new G4PVPlacement(0,                     // rotation
+    G4VPhysicalVolume* physStdDet2_2 = new G4PVPlacement(det2Rot,                     // rotation
                                                          cell2pos+G4ThreeVector(0.,0.,-1*detZPos),  // position
                                                          logicStdDet2,        // logical volume
                                                          detector2.GetName(),   // name
@@ -187,7 +189,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide2.GetName()+"/"+detector2.GetLocalName(),physStdDet2_2,0);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide2.GetName()+"/"+detector2.GetLocalName(),physStdDet2_2,0,4);
 
     
     //////////////////////////
@@ -211,7 +213,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName(),physCellSide3,0);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName(),physCellSide3,0,5);
     
     
     
@@ -226,7 +228,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
     nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName()+"/"+detector1.GetLocalName(),physStdDet3_1,0);
     
     
-    G4VPhysicalVolume* physStdDet3_2 = new G4PVPlacement(0,                     // rotation
+    G4VPhysicalVolume* physStdDet3_2 = new G4PVPlacement(det2Rot,                     // rotation
                                                          cell3pos+G4ThreeVector(0.,0.,-1*detZPos),  // position
                                                          logicStdDet2,        // logical volume
                                                          detector2.GetName(),   // name
@@ -234,7 +236,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName()+"/"+detector2.GetLocalName(),physStdDet3_2,0);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName()+"/"+detector2.GetLocalName(),physStdDet3_2,0,6);
 
     
     

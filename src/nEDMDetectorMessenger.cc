@@ -24,6 +24,10 @@ fDetectorConstruction(Det)
     
     fPrintLogicVolumeNamesCmd = new G4UIcmdWithoutParameter("/nEDM/det/printLogicVolumeNames",this);
     fPrintLogicVolumeNamesCmd->SetGuidance("Print names of the logic volumes associated to the physical volumes in manager");
+
+    fPrintDetectorVolumesCmd = new G4UIcmdWithoutParameter("/nEDM/det/printDetectorVolumes",this);
+    fPrintDetectorVolumesCmd->SetGuidance("Print current detector volumes in manager");
+    
 }
 
 nEDMDetectorMessenger::~nEDMDetectorMessenger()
@@ -34,6 +38,7 @@ nEDMDetectorMessenger::~nEDMDetectorMessenger()
     delete fStepMaxCmd;
     delete fPrintAllVolumesCmd;
     delete fPrintLogicVolumeNamesCmd;
+    delete fPrintDetectorVolumesCmd;
     
 }
 
@@ -52,5 +57,8 @@ void nEDMDetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     }
     else if (command == fPrintLogicVolumeNamesCmd){
         nEDMSimplePhysVolManager::GetInstance()->PrintLogicVolumeNames();
+    }
+    else if (command == fPrintDetectorVolumesCmd){
+        nEDMSimplePhysVolManager::GetInstance()->PrintDetectorVolumeNames();
     }
 }
