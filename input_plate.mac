@@ -6,23 +6,25 @@
 
 
 /gps/ang/type beam1d
-#/gps/ang/type iso
-/gps/direction 0 -1 0
+/gps/ang/type iso
+#/gps/direction 0 -1 0
 #/gps/direction 1 0 0
 /gps/polarization 0 0 1 # dummy polarization
 
 
 #/gps/position 0 0 0 cm # Center of cell
-#/WLS_Test/run/setFileName output/TPB_PSproperties_center
+#//LightCollection/run/setFileName output/TPB_PSproperties_center
 #/run/beamOn 10000
 
 
 #/gps/position 0 0.625 0 cm # In TPB layer
-#/WLS_Test/run/setFileName output/TPB_PSproperties_inTPB
+#/LightCollection/run/setFileName output/TPB_PSproperties_inTPB
 #/run/beamOn 10000
 
 
 
-/gps/position 0 0.650 0 cm # 
-/WLS_Test/run/setFileName Test
-/run/beamOn 10000
+#/gps/position 0 0.650 0 cm #
+/gps/position 0 5 0 cm #
+/LightCollection/run/setFileName output/Test
+#/run/beamOn 10
+/run/beamOn 100000

@@ -39,6 +39,7 @@ class nEDMMaterials
     G4Material*        fTPB_outer;
     G4Material*        fTPB_inner;
     G4Material*        fSilicone;
+    G4Material*        fSuperfluidHelium;
 
 };
 

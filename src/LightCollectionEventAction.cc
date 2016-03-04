@@ -21,8 +21,7 @@ LightCollectionEventAction::~LightCollectionEventAction(){}
 void LightCollectionEventAction::BeginOfEventAction(const G4Event* anEvent)
 {
     //New event, add the user information object
-    G4EventManager::
-    GetEventManager()->SetUserInformation(new LightCollectionEventInformation());
+    //G4EventManager::GetEventManager()->SetUserInformation(new LightCollectionEventInformation());
     
     G4int eventID = anEvent->GetEventID();
     if ( eventID % 1000 == 0 )  {
@@ -33,6 +32,7 @@ void LightCollectionEventAction::BeginOfEventAction(const G4Event* anEvent)
 
 void LightCollectionEventAction::EndOfEventAction(const G4Event * anEvent)
 {
+/*
     LightCollectionEventInformation* eventInformation = (LightCollectionEventInformation*)anEvent->GetUserInformation();
     
     // get analysis manager
@@ -59,6 +59,8 @@ void LightCollectionEventAction::EndOfEventAction(const G4Event * anEvent)
         analysisManager->FillH1(5, eventInformation->GetEnergy3()/eV);
 
     }
+ 
+ */
 
 
  }

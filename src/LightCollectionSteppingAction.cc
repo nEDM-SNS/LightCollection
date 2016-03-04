@@ -77,8 +77,38 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             thePostPVname = thePostPV->GetName();
         }
         
-        //G4cout << "Pre-Step PV: " << thePrePVname << "   Post-Step PV: " << thePostPVname << G4endl;
+        //G4cout << "Material:  " << thePostPV->GetLogicalVolume()->GetMaterial()->GetName() << G4endl;
         
+        // Check for any optical surface crossings and print the name of the surface
+#if 0
+        G4LogicalSurface* surface = NULL;
+        surface = G4LogicalBorderSurface::GetSurface(thePrePoint->GetPhysicalVolume(),
+                                           thePostPoint->GetPhysicalVolume());
+
+        if (surface) {
+            G4cout << "Surface: " << surface->GetName() << G4endl;
+        }
+#endif
+        
+#if 0
+        //G4cout << "Pre-Step PV: " << thePrePVname << "   Post-Step PV: " << thePostPVname << G4endl;
+        if (thePostPVname != "/nEDM_0" &&
+            thePostPVname != "/nEDM/LHE_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide1_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide2_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide3_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide1/TPBInterface_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide2/TPBInterface_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide3/TPBInterface_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide1/TPBInterface/Outer_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide2/TPBInterface/Outer_0" &&
+            thePostPVname != "/nEDM/LHE/CellSide3/TPBInterface/Outer_0") {
+            G4cout << "Post-Ste PV: " << thePostPVname << G4endl;
+        }
+#endif
+
+// Analysis code for single fiber
+#if 0
         if (thePostPVname == "/nEDM/PhotDet_1") {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
@@ -105,7 +135,71 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
         }
+#endif
+
+
+//Analysis code for 3 cell plates
+#if 1
+
+        if (thePostPVname == "/nEDM/LHE/CellSide1/PhotDet1_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 6);
+            analysisManager->FillH1(3, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+            
+        }
+        else if(thePostPVname == "/nEDM/LHE/CellSide1/PhotDet2_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+            
+            analysisManager->FillH1(0, 7);
+            analysisManager->FillH1(4, cosTheta);
+            analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
+            analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+            
+            
+        }
+        else if(thePostPVname == "/nEDM/LHE/CellSide2/PhotDet1_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+            analysisManager->FillH1(0, 8);
+
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if(thePostPVname == "/nEDM/LHE/CellSide2/PhotDet2_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 9);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if(thePostPVname == "/nEDM/LHE/CellSide3/PhotDet1_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 10);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if(thePostPVname == "/nEDM/LHE/CellSide3/PhotDet2_0") {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            
+            analysisManager->FillH1(0, 11);
+            
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+    
+#endif
+  
+        
     }
+    
 }
 
 void LightCollectionSteppingAction::OldSteppingActionCode(const G4Step* aStep){

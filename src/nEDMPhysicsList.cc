@@ -1,3 +1,12 @@
+//
+// light guides + central cell - ASK-17apr09
+//
+// $Id: guidesPhysicsList.cc,v 1.12 2005/05/17 00:19:45 gum Exp $
+// GEANT4 tag $Name: geant4-08-00 $
+//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 #include "G4ios.hh"
 #include <iomanip>
 
@@ -21,6 +30,7 @@
 #include "G4OpRayleigh.hh"
 #include "G4OpBoundaryProcess.hh"
 #include "G4OpWLS.hh"
+//#include "nEDMOpTPB.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -31,6 +41,7 @@ nEDMPhysicsList::nEDMPhysicsList() :  G4VUserPhysicsList()
     theAbsorptionProcess         = 0;
     theRayleighScatteringProcess = 0;
     theBoundaryProcess           = 0;
+    //theTPBProcess                = 0;
     theWLSProcess              = 0;
     
     pMessenger = new nEDMPhysicsListMessenger(this);
@@ -221,6 +232,7 @@ void nEDMPhysicsList::ConstructOp()
     theRayleighScatteringProcess = new G4OpRayleigh();
     theBoundaryProcess  = new G4OpBoundaryProcess();
     theWLSProcess = new G4OpWLS();
+    //theTPBProcess = new nEDMOpTPB();
     
     //  theCerenkovProcess->DumpPhysicsTable();
     //  theScintillationProcess->DumpPhysicsTable();
@@ -254,6 +266,7 @@ void nEDMPhysicsList::ConstructOp()
         }
         if (particleName == "opticalphoton") {
             G4cout << " AddDiscreteProcess to OpticalPhoton " << G4endl;
+            //pmanager->AddDiscreteProcess(theTPBProcess);
             pmanager->AddDiscreteProcess(theAbsorptionProcess);
             pmanager->AddDiscreteProcess(theRayleighScatteringProcess);
             pmanager->AddDiscreteProcess(theBoundaryProcess);
@@ -271,6 +284,7 @@ void nEDMPhysicsList::SetVerbose(G4int verbose)
     theAbsorptionProcess->SetVerboseLevel(verbose);
     theRayleighScatteringProcess->SetVerboseLevel(verbose);
     theBoundaryProcess->SetVerboseLevel(verbose);
+    //theTPBProcess->SetVerboseLevel(verbose);
     theWLSProcess->SetVerboseLevel(verbose);
 }
 

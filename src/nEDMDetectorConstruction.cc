@@ -94,7 +94,7 @@ G4VPhysicalVolume* nEDMDetectorConstruction::ConstructDetector()
                                                   0,fCheckOverlaps);     // not a copy
 
   nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(name,physHall);  
-  //nEDMSimplePhysVolManager::GetInstance()->PrintVolumes(0);
+  nEDMSimplePhysVolManager::GetInstance()->PrintVolumes(0);
   
   //nEDMAnalysis::GetInstance()->SetGeometry(physHall);
   

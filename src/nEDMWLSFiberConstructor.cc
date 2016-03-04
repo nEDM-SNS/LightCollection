@@ -78,7 +78,6 @@ G4LogicalVolume* nEDMWLSFiberConstructor::GetPiece(){
                       "Cladding1",clad2_log,false,0,fCheckOverlaps);
  
     nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(InnerCladdingName,clad1_phys);
-
     
 
     // Fiber Core
@@ -168,7 +167,9 @@ void nEDMWLSFiberConstructor::SetOpticalSurface(G4String volName){
 
     if (fSurfaceRoughness < 1.){
         // Boundary Surface Properties
+        
         G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        
         G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
         fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
                                                             nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume(volName),
@@ -191,7 +192,9 @@ void nEDMWLSFiberConstructor::SetOpticalSurface(G4VPhysicalVolume* fiberVol, G4V
     
     if (fSurfaceRoughness < 1.){
         // Boundary Surface Properties
+        
         G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        
         G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
         fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
                                                             outerVol,

@@ -14,7 +14,7 @@ void nEDMCellSideConstructor::Init(){
     fLength = 2*20.64*cm;
     
     fTPB_Thickness = 0.001*cm;
-    fTPB_outerFraction = 0.1;
+    fTPB_outerFraction = 0.01;
     
     fTPB_On = true;
     fEmbedded_fibers = true;

@@ -14,8 +14,6 @@
 #include "nEDMConstructor.hh"
 #include "nEDMSimplePhysVolManager.hh"
 
-#include "nEDMLHeConstructor.hh"
-#include "nEDMSimplePhotDetConstructor.hh"
 
 
 class nEDMWorldConstructor : public nEDMConstructor
@@ -51,6 +49,7 @@ private:
     G4LogicalVolume* fLogicHall;
     void ConstructLHE();
     void ConstructSingleFiber();
+    void ConstructCellPlate();
     
   /// The width of the world to be simulated
   double fWidth;

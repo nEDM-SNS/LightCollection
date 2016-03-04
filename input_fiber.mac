@@ -10,3 +10,4 @@
 #/gps/direction 1 0 0
 /gps/polarization 0 0 1 # dummy polarization
 /run/beamOn 100
+#/run/beamOn 10000

@@ -18,11 +18,7 @@
 #include "G4Colour.hh"
 #include <G4ThreeVector.hh>
 
-#include "nEDMDetectorConstruction.hh"
 #include "nEDMComponentConstructor.hh"
-#include "nEDMCellSideConstructor.hh"
-#include "nEDMWLSFiberConstructor.hh"
-
 
 /// Construct the Test Stand of the nEDM detector.
 class nEDMLHeConstructor : public nEDMComponentConstructor

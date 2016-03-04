@@ -57,7 +57,7 @@ G4Material* nEDMMaterials::GetMaterial(const G4String material)
 
 void nEDMMaterials::CreateMaterials()
 {
-    G4double density;
+    G4double density, temperature;
 
     std::vector<G4String> elements;
     
@@ -202,6 +202,21 @@ void nEDMMaterials::CreateMaterials()
     //--------------------------------------------------
     
     fNistMan->FindOrBuildMaterial("G4_Al");
+    
+    //
+    // Liquid Helium
+    //
+    
+    // Superfluid Helium: Density from Tito (07/13/10)
+    elements.push_back("He");   natoms.push_back(1);
+
+    density=0.145*g/cm3;
+    
+    fSuperfluidHelium = fNistMan->ConstructNewMaterial("SuperfluidHelium", elements, natoms, density, true, kStateLiquid, temperature=0.4*kelvin);
+    
+    elements.clear();
+    natoms.clear();
+    
     
     //
     // ------------ Generate & Add Material Properties Table ------------
@@ -490,25 +505,25 @@ void nEDMMaterials::CreateMaterials()
     //--------------------------------------------------
 
     
-     G4double absTPB[] =
-     {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-         1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
-         0.25*mm, 0.019*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm,
-         0.004*mm, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
-         10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 0.018*mm, 0.018*mm, 0.018*mm, 10.*m, 10.*m,
-         10.*m, 10.*m, 10.*m, 10.*m, 10.*m};
-
-         assert(sizeof(absTPB) == sizeof(acrylicPhotonEnergy));
-
-     G4double absWLSTPB[] =
-     {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-         1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-         0.045*mm, 0.027*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
-         0.01*mm, 10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,
-         10.*m, 10.*m, 10.*m, 10.*m, .05*mm, .05*mm, .05*mm, .05*mm, .05*mm, .05*mm,
-         .05*mm, .05*mm, .05*mm, .05*mm, .05*mm};
-
-         assert(sizeof(absWLSTPB) == sizeof(acrylicPhotonEnergy));
+    G4double absTPB[] =
+    {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
+        0.25*mm, 10.*m, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm,
+        0.004*mm, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
+        10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 0.018*mm, 0.018*mm, 0.018*mm, 10.*m, 10.*m,
+        10.*m, 10.*m, 10.*m, 10.*m, 10.*m};
+    
+    assert(sizeof(absTPB) == sizeof(acrylicPhotonEnergy));
+    
+    G4double absWLSTPB[] =
+    {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        0.045*mm, 0.049*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+        0.01*mm, 10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,
+        10.*m, 10.*m, 10.*m, 10.*m, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm,
+        .049*mm, .049*mm, .049*mm, .049*mm, .049*mm};
+    
+    assert(sizeof(absWLSTPB) == sizeof(acrylicPhotonEnergy));
     
     G4double emissionTPB[] =
     {0.05, 0.06, 0.13, 0.19, 0.28, 0.37, 0.53, 0.64, 1.00, 1.40,
