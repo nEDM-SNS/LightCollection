@@ -35,6 +35,7 @@ private:
     void Init(void);
 
     void Construct3CellPlates();
+    void ConstructSquareTubeReflector();
     
     G4double fLHERadius;
     G4double fLHELength;

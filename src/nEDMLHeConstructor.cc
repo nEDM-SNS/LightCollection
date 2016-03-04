@@ -5,6 +5,9 @@
 #include "nEDMWLSFiberConstructor.hh"
 #include "nEDMSimplePhotDetConstructor.hh"
 
+#include "G4SubtractionSolid.hh"
+
+
 nEDMLHeConstructor::~nEDMLHeConstructor(){;}
 
 void nEDMLHeConstructor::Init(){
@@ -39,6 +42,7 @@ G4LogicalVolume* nEDMLHeConstructor::GetPiece(void)
         fLogicLHE->SetVisAttributes(LHeAtt);
         
         Construct3CellPlates();
+        ConstructSquareTubeReflector();
         
         return fLogicLHE;
     }
@@ -234,3 +238,52 @@ void nEDMLHeConstructor::Construct3CellPlates(){
     
 
 }
+
+
+void nEDMLHeConstructor::ConstructSquareTubeReflector()
+{
+    // Reflector Wrapping
+    G4Box* OuterReflector = new G4Box("OuterReflector",8.*cm,8.*cm,2*20.64*cm);
+    G4Box* InnerReflector = new G4Box("InnerReflector",7.*cm,7.*cm,2*20.64*cm);
+    G4SubtractionSolid* SolidReflector = new G4SubtractionSolid("Reflector",OuterReflector,InnerReflector);
+    
+    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
+    
+    
+    // Photon Energies for which mirror properties will be given
+    const G4int kEnergies = 3;
+    G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 16*eV};
+    
+    // Optical Surface for mirror
+    G4OpticalSurface* mirror_surface_ =
+    new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+                         dielectric_dielectric);
+    
+    // Reflectivity of mirror for each photon energy
+    G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0.998};
+    
+    //Table of Surface Properties for Mirror
+    G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+    mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+    mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+    
+    new G4LogicalSkinSurface("Reflector_surface", Reflector_Log, mirror_surface_);
+    
+    
+    G4VisAttributes* ReflectVis=new G4VisAttributes(G4Color(1.0,1.0,1.0));
+    ReflectVis->SetVisibility(true);
+    ReflectVis->SetForceWireframe(true);
+    Reflector_Log->SetVisAttributes(ReflectVis);
+    
+    new G4PVPlacement(0,                            //no rotation
+                      G4ThreeVector(0.,5.*cm,0.),              //at (0,0,0)
+                      Reflector_Log,                     //its logical volume
+                      "Reflector",            //its name
+                      fLogicLHE,                //its mother  volume
+                      false,                        //no boolean operation
+                      0,                        //copy number
+                      fCheckOverlaps);                    // Check Overlaps
+    
+}
+
+
