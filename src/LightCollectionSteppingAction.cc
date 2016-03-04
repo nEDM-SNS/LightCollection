@@ -129,7 +129,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
-            analysisManager->FillH1(0, 6);
+            analysisManager->FillH1(0, 5);
             analysisManager->FillH1(3, cosTheta);
             analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
             analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
@@ -141,7 +141,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
-            analysisManager->FillH1(0, 7);
+            analysisManager->FillH1(0, 6);
             analysisManager->FillH1(4, cosTheta);
             analysisManager->FillH1(6, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
             analysisManager->FillH1(7, thePrePoint->GetKineticEnergy()/eV);
@@ -153,28 +153,28 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-            analysisManager->FillH1(0, 8);
+            analysisManager->FillH1(0, 7);
 
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
-            analysisManager->FillH1(0, 9);
+            analysisManager->FillH1(0, 8);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
-            analysisManager->FillH1(0, 10);
+            analysisManager->FillH1(0, 9);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
-            analysisManager->FillH1(0, 11);
+            analysisManager->FillH1(0, 10);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
