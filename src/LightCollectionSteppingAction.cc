@@ -127,8 +127,11 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 //Analysis code for 3 cell plates
 #if 1
-
-        if (thePostPVname.contains( "/nEDM/LHE/CellSide1/PhotDet1")) {
+        if (thePostPVname.contains("BackFace")){
+            //G4cout << "Killed in BackFace" << G4endl;
+            aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+        }
+        else if (thePostPVname.contains( "/nEDM/LHE/CellSide1/PhotDet1_")) {
             
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
@@ -142,7 +145,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             
         }
         
-        else if(thePostPVname.contains("/nEDM/LHE/CellSide1/PhotDet2")) {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide1/PhotDet2_")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
@@ -155,28 +158,28 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             
             
         }
-        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet1")) {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet1_")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 7);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet2")) {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet2_")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 8);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet1")) {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet1_")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 9);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet2")) {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet2_")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 10);
