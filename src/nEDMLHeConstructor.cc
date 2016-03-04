@@ -121,12 +121,12 @@ void nEDMLHeConstructor::Construct3CellPlates(){
             // Place +Z detectors
             physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,detZPos),logicFibDet1,detector1.GetName(),fLogicLHE,false,0,fCheckOverlaps);
             
-            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector1.GetLocalName(),physDetector1[i],0);
+            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector1.GetLocalName(),physDetector1[i],i);
             
             // Place -Z detectors
             physDetector2[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,-detZPos),logicFibDet2,detector2.GetName(),fLogicLHE,false,0,fCheckOverlaps);
             
-            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector2.GetLocalName(),physDetector2[i],0);
+            nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+detector2.GetLocalName(),physDetector2[i],i);
             
 
         }

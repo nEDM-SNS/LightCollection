@@ -46,7 +46,7 @@ LightCollectionSteppingAction::LightCollectionSteppingAction(){
 LightCollectionSteppingAction::~LightCollectionSteppingAction(){;}
 
 
-/*! Called when the simulation steps forward. A lot is happening in this method and it is worth taking a look at. This handles detection of photons as well as bounce and absorption tracking.
+/*! Called when the simulation steps forward. A lot is happening in this method and it is worth taking a look at. This handles detection of photons.
  */
 void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
@@ -124,8 +124,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 //Analysis code for 3 cell plates
 #if 1
-
-        if (thePostPVname == "/nEDM/LHE/CellSide1/PhotDet1_0") {
+        
+        if (thePostPVname.contains( "/nEDM/LHE/CellSide1/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
@@ -137,7 +137,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
             
         }
-        else if(thePostPVname == "/nEDM/LHE/CellSide1/PhotDet2_0") {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide1/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             G4double cosTheta = thePrePoint->GetMomentumDirection().z();
             
@@ -150,28 +150,28 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             
             
         }
-        else if(thePostPVname == "/nEDM/LHE/CellSide2/PhotDet1_0") {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
             analysisManager->FillH1(0, 8);
 
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname == "/nEDM/LHE/CellSide2/PhotDet2_0") {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide2/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 9);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname == "/nEDM/LHE/CellSide3/PhotDet1_0") {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 10);
             
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
-        else if(thePostPVname == "/nEDM/LHE/CellSide3/PhotDet2_0") {
+        else if(thePostPVname.contains("/nEDM/LHE/CellSide3/PhotDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             
             analysisManager->FillH1(0, 11);
