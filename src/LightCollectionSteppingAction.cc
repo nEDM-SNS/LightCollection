@@ -90,22 +90,6 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         }
 #endif
         
-#if 0
-        //G4cout << "Pre-Step PV: " << thePrePVname << "   Post-Step PV: " << thePostPVname << G4endl;
-        if (thePostPVname != "/nEDM_0" &&
-            thePostPVname != "/nEDM/LHE_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide1_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide2_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide3_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide1/TPBInterface_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide2/TPBInterface_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide3/TPBInterface_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide1/TPBInterface/Outer_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide2/TPBInterface/Outer_0" &&
-            thePostPVname != "/nEDM/LHE/CellSide3/TPBInterface/Outer_0") {
-            G4cout << "Post-Ste PV: " << thePostPVname << G4endl;
-        }
-#endif
 
 // Analysis code for single fiber
 #if 0

@@ -112,8 +112,10 @@ void nEDMLHeConstructor::Construct3CellPlates(){
             
             physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,0.),logicFiber,fiber.GetName(),fLogicLHE,false,0,fCheckOverlaps);
             
-            fiber.SetOpticalSurface(physFiber[i], nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume(GetName()));
-            
+            //fiber.SetOpticalSurface(physFiber[i], nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume(GetName()));
+            // Rough Surface between cladding layers
+            fiber.SetOpticalSurface(nEDMSimplePhysVolManager::GetInstance()->GetPhysicalVolume("/nEDM/LHE/WLSFiber/InnerCladding"), physFiber[i]);
+
             nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide1.GetName()+"/"+fiber.GetLocalName(),physFiber[i],i);
             
             // Place +Z detectors
