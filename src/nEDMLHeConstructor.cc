@@ -27,7 +27,7 @@ void nEDMLHeConstructor::Init(){
 }
 
 G4LogicalVolume* nEDMLHeConstructor::GetPiece(void)
-    {
+{
         G4cout << "//################################################//" << G4endl;
         G4cout << "//################ LHE Volume ####################//" << G4endl;
         G4cout << "//################################################//" << G4endl;
@@ -213,7 +213,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName(),physCellSide3,0,5);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName(),physCellSide3,0);
     
     
     
@@ -225,7 +225,7 @@ void nEDMLHeConstructor::Construct3CellPlates(){
                                                          false,                 // no boolean operations
                                                          0,fCheckOverlaps);                    // not a copy
     
-    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName()+"/"+detector1.GetLocalName(),physStdDet3_1,0);
+    nEDMSimplePhysVolManager::GetInstance()->AddPhysicalVolume(cellSide3.GetName()+"/"+detector1.GetLocalName(),physStdDet3_1,0,5);
     
     
     G4VPhysicalVolume* physStdDet3_2 = new G4PVPlacement(det2Rot,                     // rotation

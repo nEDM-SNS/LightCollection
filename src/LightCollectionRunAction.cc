@@ -72,6 +72,9 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     // index 7
     analysisManager->CreateH1("detEnergy", "Energy of photons detected", 100, 1., 4.);
     
+    // index 8
+    analysisManager->CreateH1("detIndex", "Detector Index", 100, 0, 100);
+    
     
     
 }
