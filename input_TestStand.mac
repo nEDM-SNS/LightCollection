@@ -1,0 +1,31 @@
+/gps/particle opticalphoton
+#/gps/energy 2.01 eV #Low energy photon
+#/gps/energy 2.95 eV #blue photon
+#/gps/energy 12 eV
+/gps/energy 15.5 eV # 80 nm
+#/gps/energy 4.96 eV #250 nm
+
+
+/gps/ang/type beam1d
+/gps/ang/type iso
+#/gps/direction 0 -1 0
+#/gps/direction 1 0 0
+/gps/polarization 0 0 1 # dummy polarization
+
+
+#/gps/position 0 0 0 cm # Center of cell
+#//LightCollection/run/setFileName output/TPB_PSproperties_center
+#/run/beamOn 10000
+
+
+#/gps/position 0 0.625 0 cm # In TPB layer
+#/LightCollection/run/setFileName output/TPB_PSproperties_inTPB
+#/run/beamOn 10000
+
+
+
+#/gps/position 0 0.650 0 cm #
+/gps/position 0 5 0 cm #
+/LightCollection/run/setFileName output/Test
+#/run/beamOn 1000
+/run/beamOn 100000
