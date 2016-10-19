@@ -5,7 +5,6 @@
 #include "LightCollectionEventInformation.hh"
 
 #include "LightCollectionAnalysis.hh"
-#include "nEDMDetectorConstruction.hh"
 #include "LightCollectionEventAction.hh"
 
 #include "G4Step.hh"
@@ -59,9 +58,6 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     return;
 #endif
 
-    
-    if(detectorTypes.size()==0){    detectorTypes = nEDMSimplePhysVolManager::GetInstance()->GetDetectorTypes();
-    }
     
 //    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
     G4StepPoint* thePostPoint = aStep->GetPostStepPoint();

@@ -42,10 +42,6 @@
 
 #include "G4SDManager.hh"
 
-#include "nEDMSensitiveDetector.hh"
-
-#include "nEDMSimplePhotDetConstructor.hh"
-
 nEDMSimpleDetectorConstruction::nEDMSimpleDetectorConstruction()
 {
     fStepLimit = NULL;
