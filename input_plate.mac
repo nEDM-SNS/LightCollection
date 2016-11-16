@@ -1,8 +1,5 @@
 /gps/particle opticalphoton
 #/gps/energy 2.01 eV #Low energy photon
-#/gps/energy 2.95 eV #blue photon
-#/gps/energy 12 eV
-/gps/energy 4.96 eV #250 nm
 
 
 /gps/ang/type beam1d
@@ -26,5 +23,23 @@
 #/gps/position 0 0.650 0 cm #
 /gps/position 0 5 0 cm #
 /LightCollection/run/setFileName output/Test
+/run/beamOn 1
 #/run/beamOn 1000
-/run/beamOn 100000
+#/run/beamOn 10000
+
+
+#/gps/energy 2.95 eV #blue photon 420nm
+#/LightCollection/run/setFileName output/Embedded_SquareRefl/OF_99_420nm
+#/run/beamOn 10000
+
+
+#/gps/energy 4.96 eV #250 nm
+#/LightCollection/run/setFileName output/Exterior_SquareRefl/OF_99_250nm
+#/run/beamOn 10000
+
+
+#/gps/energy 15.5 eV # 80 nm
+#/LightCollection/run/setFileName output/Exterior_SquareRefl/OF_99_80nm
+#/run/beamOn 10000
+
+#Embedded_NoRefl       Embedded_SquareRefl     Exterior_NoRefl   Exterior_SquareRefl

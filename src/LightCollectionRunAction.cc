@@ -49,7 +49,7 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->OpenFile(fileName);
     
     // index 0
-    analysisManager->CreateH1("Photons", "Bins: UnderFlow=Primaries, 0=TPB_All, 1=TPB_Inner, 2=TPB_Outer,  3=OtherWLSPhotons, 5=fiber +z end, 6=fiber -z end, 7=plate2 +z end, 8=plate2 -z end, 9=plate3 +z end, 10=plate3 -z end", 11, 0., 11.);
+    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 0=C1_Inner(fib), 1=C1_Outer(fib), 2=C2_Inner, 3=C2_Outer, 4=C3_Inner, 5=C3_Outer, 6=OtherWLSPhot, 7=fibdet +z, 8=fibdet -z, 9=C2det +z, 10=C2det -z,  11=C3 +z, 12=C3 -z", 13, 0., 13.);
     
     // index 1
     analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);

@@ -49,9 +49,11 @@ private:
     
     G4bool fEmbeddedFibers;
     G4bool fFiberReflector;
+    G4bool fSqureTubeReflector;
     G4int fNumberOfFibers;
     G4double fFiberSpacing;
-    
+    G4double fTPB_outerFraction;
+
     
 };
 

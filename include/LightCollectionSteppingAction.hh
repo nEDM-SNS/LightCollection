@@ -23,7 +23,7 @@ class LightCollectionSteppingAction : public G4UserSteppingAction
     
 //    void OldSteppingActionCode(const G4Step* aStep);
     
-    std::vector<detectorVector*> detectorTypes;
+//    std::vector<detectorVector*> detectorTypes;
 
 //    G4int detType;
 

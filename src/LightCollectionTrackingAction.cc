@@ -16,10 +16,10 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
     LightCollectionTrackInformation* trackInfo = new LightCollectionTrackInformation();
     
     fpTrackingManager->SetUserTrackInformation(trackInfo);
-
+    
     
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
+    
     if (aTrack->GetParentID()==0) {
         // particle is a primary, store in underflow
         analysisManager->FillH1(0, -1);
@@ -30,24 +30,45 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
         
         
         if (aTrack->GetCreatorProcess()->GetProcessName() == "OpWLS") {
- 
             
-            if (aTrack->GetOriginTouchable()->GetVolume()->GetName().contains("TPBInterface")) {
-                analysisManager->FillH1(0, 1);
-                analysisManager->FillH1(0, 0);
+            G4String originVolumeName = aTrack->GetOriginTouchable()->GetVolume()->GetName();
+            
+            if (originVolumeName.contains("TPBInterface")) {
+                if (originVolumeName.contains("CellSide1")) {
+                    analysisManager->FillH1(0, 0);
+                }
+                else if (originVolumeName.contains("CellSide2")) {
+                    analysisManager->FillH1(0, 2);
+                }
+                else if (originVolumeName.contains("CellSide3")) {
+                    analysisManager->FillH1(0, 4);
+                }
+                else {
+                    G4cout << "Something Unexpected Happend" << G4endl;
+                }
                 analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
-            else if (aTrack->GetOriginTouchable()->GetVolume()->GetName().contains("TPBInterface_outer"))
+            else if (originVolumeName.contains("TPB_outer"))
             {
-                analysisManager->FillH1(0, 2);
-                analysisManager->FillH1(0, 0);
+                if (originVolumeName.contains("CellSide1")) {
+                    analysisManager->FillH1(0, 1);
+                }
+                else if (originVolumeName.contains("CellSide2")) {
+                    analysisManager->FillH1(0, 3);
+                }
+                else if (originVolumeName.contains("CellSide3")) {
+                    analysisManager->FillH1(0, 5);
+                }
+                else {
+                    G4cout << "Something Unexpected Happend" << G4endl;
+                }
                 analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else
             {
-                analysisManager->FillH1(0, 3);
+                analysisManager->FillH1(0, 6);
                 analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-            
+                
             }
             
         }
@@ -61,7 +82,7 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
     else {
         G4cout << "!!!!! Negative Parent ID? !!!!" << G4endl;
     }
-
+    
     
 }
 
@@ -69,13 +90,13 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 void LightCollectionTrackingAction::PostUserTrackingAction(const G4Track * aTrack)
 {
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
+    
     LightCollectionTrackInformation* trackInfo = (LightCollectionTrackInformation*)aTrack->GetUserInformation();
     
     G4int status = trackInfo->GetStatus();
     
     analysisManager->FillH1(5, status);
-
+    
     if (status == 3 || status ==4 || status == 5) {
         analysisManager->FillH1(5, 9);
     }

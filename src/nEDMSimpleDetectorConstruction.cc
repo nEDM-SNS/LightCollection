@@ -49,9 +49,11 @@ nEDMSimpleDetectorConstruction::nEDMSimpleDetectorConstruction()
     fCheckOverlaps = false;
     fEmbeddedFibers = true;
     fFiberReflector = false;
+    fSqureTubeReflector = true;
     fNumberOfFibers = 98;
     fFiberSpacing = 0.103*cm;
-    
+    fTPB_outerFraction = 0.99;
+
 }
 
 nEDMSimpleDetectorConstruction::~nEDMSimpleDetectorConstruction()
@@ -101,13 +103,22 @@ G4VPhysicalVolume* nEDMSimpleDetectorConstruction::Construct()
 void nEDMSimpleDetectorConstruction::ConstructTestStand()
 {
     
+    // Cell Parameters
+    G4double cellWidth= 2*5.08*cm;
+    G4double cellThickness = 2*0.635*cm;
+    G4double cellLength= 2*20.64*cm;
+    
+    G4double TPB_Thickness = 0.001*cm;
+    G4double TPB_outerThickness = fTPB_outerFraction*TPB_Thickness;
+
+    
     // Liquid Helium Volume
     
     G4String LHeName = "LHE";
     G4double fLHELength = 1.9*m;
     G4double fLHERadius = 1.*m;
     
-    G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),fMaterials->GetMaterial("G4_AIR"),LHeName);
+    G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),fMaterials->GetMaterial("SuperfluidHelium"),LHeName);
     
     G4VPhysicalVolume* fPhysLHe = new G4PVPlacement(0,                          // rotation
                                                     G4ThreeVector(0,0,0),  // position
@@ -125,86 +136,64 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
     fLogicLHE->SetVisAttributes(LHeAtt);
     
     
-    // Cell Side Solid, Logical, and TPB interface
-    
-    G4double cellWidth= 2*5.08*cm;
-    G4double cellThickness = 2*0.635*cm;
-    G4double cellLength= 2*20.64*cm;
-    
-    G4double TPB_Thickness = 0.001*cm;
-    G4double TPB_outerFraction = 0.01;
-
-    
-    G4Box* cellSide_solid = new G4Box("CellSide",
-                                      cellWidth/2.,
-                                      cellThickness/2.,
-                                      cellLength/2.);
-    
-    G4String sideName = "CellSide";
-
-    G4LogicalVolume* logicCellSide = new G4LogicalVolume(cellSide_solid,fMaterials->GetMaterial("PMMA"),sideName);
-
-    G4String TPBInterfaceName = "TPBInterface";
-    
-    // Create TPB Interface Layer
-    G4Box* TPBInterface_solid = new G4Box(TPBInterfaceName,
-                                          cellWidth/2.,
-                                          TPB_Thickness/2.,
-                                          cellLength/2.);
-    
-    G4LogicalVolume* TPBInterface_log = new G4LogicalVolume(TPBInterface_solid,fMaterials->GetMaterial("TPB_inner"),TPBInterfaceName);
-    
-    G4ThreeVector TPBInterface_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
-    
-    new G4PVPlacement(0,TPBInterface_pos,
-                                                             TPBInterface_log,
-                                                             "TPBInterface",
-                                                             logicCellSide,false,0,fCheckOverlaps);
-    
-    G4VisAttributes* tpbVis=new G4VisAttributes(G4Color(1.0,0.0,1.0));
-    tpbVis->SetVisibility(true);
-    TPBInterface_log->SetVisAttributes(tpbVis);
-    
-    // Create outer TPB layer with low index of refraction
-    
-    G4double TPB_outerThickness = TPB_outerFraction*TPB_Thickness;
-    G4String TPBInterfaceOuterName = "TPBInterface/Outer";
-    
-    G4Box* TPBInterface_outer_solid = new G4Box(TPBInterfaceOuterName,
-                                                cellWidth/2,
-                                                TPB_outerThickness/2,
-                                                cellLength/2);
-    
-    
-    G4LogicalVolume* TPBInterface_outer_log = new G4LogicalVolume(TPBInterface_outer_solid,fMaterials->GetMaterial("TPB_outer"),TPBInterfaceOuterName);
-    
-    G4ThreeVector TPBInterface_outer_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
-    
-    new G4PVPlacement(0,TPBInterface_outer_pos,
-                                                                  TPBInterface_outer_log,
-                                                                  TPBInterfaceOuterName,
-                                                                  TPBInterface_log,false,0,fCheckOverlaps);
-    
-    G4VisAttributes* tpbOuterVis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
-    tpbOuterVis->SetVisibility(true);
-    TPBInterface_outer_log->SetVisAttributes(tpbOuterVis);
-
-    
     //////////////////////////
     // Cell Side 1
     //////////////////////////
     G4String side1Name = "CellSide1";
     
-    // Side 1 must have its own logical volume for embedded fibers
+    // Cell Side Solid, Logical, and TPB interface
     
-    G4LogicalVolume* logicCellSide1 = new G4LogicalVolume(cellSide_solid,fMaterials->GetMaterial("PMMA"),side1Name);
+    G4Box* cellSide1_solid = new G4Box(side1Name,
+                                      cellWidth/2.,
+                                      cellThickness/2.,
+                                      cellLength/2.);
     
-    // Create TPB Interface Layer for side 1
+    G4LogicalVolume* logicCellSide1 = new G4LogicalVolume(cellSide1_solid,fMaterials->GetMaterial("PMMA"),side1Name);
     
-    new G4PVPlacement(0,TPBInterface_pos,
-                      TPBInterface_log,
-                      "TPBInterface1",
+    G4String TPBInterface1Name = side1Name + "/TPBInterface";
+    
+    // Create TPB Interface Layer
+    G4Box* TPBInterface1_solid = new G4Box(TPBInterface1Name,
+                                          cellWidth/2.,
+                                          TPB_Thickness/2.,
+                                          cellLength/2.);
+    
+    G4LogicalVolume* TPBInterface1_log = new G4LogicalVolume(TPBInterface1_solid,fMaterials->GetMaterial("TPB_inner"),TPBInterface1Name);
+    
+    G4ThreeVector TPBInterface1_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface1_pos,
+                      TPBInterface1_log,
+                      TPBInterface1Name,
                       logicCellSide1,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpb1Vis=new G4VisAttributes(G4Color(1.0,0.0,1.0));
+    tpb1Vis->SetVisibility(true);
+    TPBInterface1_log->SetVisAttributes(tpb1Vis);
+    
+    // Create outer TPB layer with low index of refraction
+    
+    G4String TPBInterfaceOuter1Name = side1Name + "/TPB_outer";
+    
+    G4Box* TPBInterface_outer1_solid = new G4Box(TPBInterfaceOuter1Name,
+                                                cellWidth/2,
+                                                TPB_outerThickness/2,
+                                                cellLength/2);
+    
+    
+    G4LogicalVolume* TPBInterface_outer1_log = new G4LogicalVolume(TPBInterface_outer1_solid,fMaterials->GetMaterial("TPB_outer"),TPBInterfaceOuter1Name);
+    
+    G4ThreeVector TPBInterface_outer1_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface_outer1_pos,
+                      TPBInterface_outer1_log,
+                      TPBInterfaceOuter1Name,
+                      TPBInterface1_log,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpbOuter1Vis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
+    tpbOuter1Vis->SetVisibility(true);
+    TPBInterface_outer1_log->SetVisAttributes(tpbOuter1Vis);
+
 
     // Place CellSide1
     G4VPhysicalVolume* physCellSide1 = new G4PVPlacement(0,                     // rotation
@@ -358,7 +347,7 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
         G4VPhysicalVolume* physDetector2[1000] = {0};
         
         G4double FibXPos, FibYPos;
-        G4double FibThickness = fiberRmax;
+        G4double FibThickness = 2.*fiberRmax;
         
         
         // Fiber Detectors
@@ -387,13 +376,13 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
         G4Box* fibDetBackFaceSolid = new G4Box(fibDetBackFaceName,
                                                fibDetWidth/2.,
                                                fibDetWidth/2.,
-                                               fibDetThickness*.99/2);
+                                               fibDetThickness/4);
         
         G4LogicalVolume* fibDetBackFaceLog = new G4LogicalVolume(fibDetBackFaceSolid,fMaterials->GetMaterial("PMMA"),fibDetBackFaceName);
         
-        G4ThreeVector fibDetBackFacePos = G4ThreeVector(0.,0.,.05*fibDetThickness);
+        G4ThreeVector fibDetBackFacePos = G4ThreeVector(0.,0.,fibDetThickness/4);
         
-        new G4PVPlacement(0,fibDetBackFacePos,fibDetBackFaceLog,fibDetBackFaceName,                                                            fibDetLog,false,0,fCheckOverlaps);
+        new G4PVPlacement(0,fibDetBackFacePos,fibDetBackFaceLog,fibDetBackFaceName,fibDetLog,false,0,fCheckOverlaps);
         
         G4VisAttributes* fibDetBackFaceVis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
         fibDetBackFaceVis->SetVisibility(true);
@@ -414,7 +403,7 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
         }
         else{
             fiberParentLog = fLogicLHE;
-            FibYPos = -1*(cellThickness/2+FibThickness/2+.005);
+            FibYPos = -1*(cellThickness/2+FibThickness/2+.005*cm);
         }
 
         // Loop over number of Fibers
@@ -484,7 +473,7 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
     
     G4VisAttributes* stdDetVis=new G4VisAttributes(G4Color(1.0,0.0,0.0));
     stdDetVis->SetVisibility(true);
-    stdDetVis->SetForceWireframe(true);
+    stdDetVis->SetForceWireframe(false);
     stdDetLog->SetVisAttributes(stdDetVis);
     
     // Back Face on Fiber Detectors to block stray photons
@@ -493,13 +482,13 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
     G4Box* stdDetBackFaceSolid = new G4Box(stdDetBackFaceName,
                                            cellThickness/2.,
                                            cellWidth/2.,
-                                           stdDetThickness*.99/2);
+                                           stdDetThickness/4);
     
     G4LogicalVolume* stdDetBackFaceLog = new G4LogicalVolume(stdDetBackFaceSolid,fMaterials->GetMaterial("PMMA"),stdDetBackFaceName);
     
-    G4ThreeVector stdDetBackFacePos = G4ThreeVector(0.,0.,.05*stdDetThickness);
+    G4ThreeVector stdDetBackFacePos = G4ThreeVector(0.,0.,stdDetThickness/4);
     
-    new G4PVPlacement(0,stdDetBackFacePos,stdDetBackFaceLog,stdDetBackFaceName,                                                            stdDetLog,false,0,fCheckOverlaps);
+    new G4PVPlacement(0,stdDetBackFacePos,stdDetBackFaceLog,stdDetBackFaceName,stdDetLog,false,0,fCheckOverlaps);
     
     G4VisAttributes* stdDetBackFaceVis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
     stdDetBackFaceVis->SetVisibility(true);
@@ -511,14 +500,68 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
     //////////////////////////
     
     G4String side2Name = "CellSide2";
+ 
+    // Cell Side Solid, Logical, and TPB interface
     
+    G4Box* cellSide2_solid = new G4Box(side2Name,
+                                       cellWidth/2.,
+                                       cellThickness/2.,
+                                       cellLength/2.);
+    
+    G4LogicalVolume* logicCellSide2 = new G4LogicalVolume(cellSide2_solid,fMaterials->GetMaterial("PMMA"),side2Name);
+    
+    G4String TPBInterface2Name = side2Name + "/TPBInterface";
+    
+    // Create TPB Interface Layer
+    G4Box* TPBInterface2_solid = new G4Box(TPBInterface2Name,
+                                           cellWidth/2.,
+                                           TPB_Thickness/2.,
+                                           cellLength/2.);
+    
+    G4LogicalVolume* TPBInterface2_log = new G4LogicalVolume(TPBInterface2_solid,fMaterials->GetMaterial("TPB_inner"),TPBInterface2Name);
+    
+    G4ThreeVector TPBInterface2_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface2_pos,
+                      TPBInterface2_log,
+                      TPBInterface2Name,
+                      logicCellSide2,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpb2Vis=new G4VisAttributes(G4Color(1.0,0.0,1.0));
+    tpb2Vis->SetVisibility(true);
+    TPBInterface2_log->SetVisAttributes(tpb2Vis);
+    
+    // Create outer TPB layer with low index of refraction
+    
+    G4String TPBInterfaceOuter2Name = side2Name + "/TPB_outer";
+    
+    G4Box* TPBInterface_outer2_solid = new G4Box(TPBInterfaceOuter2Name,
+                                                 cellWidth/2,
+                                                 TPB_outerThickness/2,
+                                                 cellLength/2);
+    
+    
+    G4LogicalVolume* TPBInterface_outer2_log = new G4LogicalVolume(TPBInterface_outer2_solid,fMaterials->GetMaterial("TPB_outer"),TPBInterfaceOuter2Name);
+    
+    G4ThreeVector TPBInterface_outer2_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface_outer2_pos,
+                      TPBInterface_outer2_log,
+                      TPBInterfaceOuter2Name,
+                      TPBInterface2_log,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpbOuter2Vis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
+    tpbOuter2Vis->SetVisibility(true);
+    TPBInterface_outer2_log->SetVisAttributes(tpbOuter2Vis);
+    
+    // Place Cell 2
     G4ThreeVector cell2pos = G4ThreeVector(cellWidth*0.6,cellWidth*0.6,0);
     G4RotationMatrix* cell2rotm = new G4RotationMatrix();
     cell2rotm->rotateZ(-90.*deg);
     
     new G4PVPlacement(cell2rotm,                     // rotation
                                                          cell2pos,  // position
-                                                         logicCellSide,        // logical volume
+                                                         logicCellSide2,        // logical volume
                                                          side2Name,   // name
                                                          fLogicLHE,             // mother volume
                                                          false,                 // no boolean operations
@@ -554,13 +597,67 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
     
     G4String side3Name = "CellSide3";
     
+    // Cell Side Solid, Logical, and TPB interface
+    
+    G4Box* cellSide3_solid = new G4Box(side3Name,
+                                       cellWidth/2.,
+                                       cellThickness/2.,
+                                       cellLength/2.);
+    
+    G4LogicalVolume* logicCellSide3 = new G4LogicalVolume(cellSide3_solid,fMaterials->GetMaterial("PMMA"),side3Name);
+    
+    G4String TPBInterface3Name = side3Name + "/TPBInterface";
+    
+    // Create TPB Interface Layer
+    G4Box* TPBInterface3_solid = new G4Box(TPBInterface3Name,
+                                           cellWidth/2.,
+                                           TPB_Thickness/2.,
+                                           cellLength/2.);
+    
+    G4LogicalVolume* TPBInterface3_log = new G4LogicalVolume(TPBInterface3_solid,fMaterials->GetMaterial("TPB_inner"),TPBInterface3Name);
+    
+    G4ThreeVector TPBInterface3_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface3_pos,
+                      TPBInterface3_log,
+                      TPBInterface3Name,
+                      logicCellSide3,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpb3Vis=new G4VisAttributes(G4Color(1.0,0.0,1.0));
+    tpb3Vis->SetVisibility(true);
+    TPBInterface3_log->SetVisAttributes(tpb3Vis);
+    
+    // Create outer TPB layer with low index of refraction
+    
+    G4String TPBInterfaceOuter3Name = side3Name + "/TPB_outer";
+    
+    G4Box* TPBInterface_outer3_solid = new G4Box(TPBInterfaceOuter3Name,
+                                                 cellWidth/2,
+                                                 TPB_outerThickness/2,
+                                                 cellLength/2);
+    
+    
+    G4LogicalVolume* TPBInterface_outer3_log = new G4LogicalVolume(TPBInterface_outer3_solid,fMaterials->GetMaterial("TPB_outer"),TPBInterfaceOuter3Name);
+    
+    G4ThreeVector TPBInterface_outer3_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface_outer3_pos,
+                      TPBInterface_outer3_log,
+                      TPBInterfaceOuter3Name,
+                      TPBInterface3_log,false,0,fCheckOverlaps);
+    
+    G4VisAttributes* tpbOuter3Vis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
+    tpbOuter3Vis->SetVisibility(true);
+    TPBInterface_outer3_log->SetVisAttributes(tpbOuter3Vis);
+
+    // Place Cell 3
     G4ThreeVector cell3pos = G4ThreeVector(-1*cellWidth*0.6,cellWidth*0.6,0);
     G4RotationMatrix* cell3rotm = new G4RotationMatrix();
     cell3rotm->rotateZ(90.*deg);
     
     new G4PVPlacement(cell3rotm,                     // rotation
                       cell3pos,  // position
-                      logicCellSide,        // logical volume
+                      logicCellSide3,        // logical volume
                       side3Name,   // name
                       fLogicLHE,             // mother volume
                       false,                 // no boolean operations
@@ -586,53 +683,56 @@ void nEDMSimpleDetectorConstruction::ConstructTestStand()
                      fLogicLHE,             // mother volume
                      false,                 // no boolean operations
                      0,fCheckOverlaps);                    // not a copy
+
+    //////////////////////////
+    // Square Tube Reflector
+    //////////////////////////
     
-    
-    
-    // Square Tube Reflector Around Volume
-    
-    // Reflector Wrapping
-    G4Box* OuterReflector = new G4Box("OuterReflector",8.*cm,8.*cm,2*20.64*cm);
-    G4Box* InnerReflector = new G4Box("InnerReflector",7.*cm,7.*cm,2*20.64*cm);
-    G4SubtractionSolid* SolidReflector = new G4SubtractionSolid("Reflector",OuterReflector,InnerReflector);
-    
-    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
-    
-    
-    // Photon Energies for which mirror properties will be given
-    const G4int kEnergies = 3;
-    G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 16*eV};
-    
-    // Optical Surface for mirror
-    G4OpticalSurface* mirror_surface_ =
-    new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
-                         dielectric_dielectric);
-    
-    // Reflectivity of mirror for each photon energy
-    G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0.998};
-    
-    //Table of Surface Properties for Mirror
-    G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
-    mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
-    mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
-    
-    new G4LogicalSkinSurface("Reflector_surface", Reflector_Log, mirror_surface_);
-    
-    
-    G4VisAttributes* ReflectVis=new G4VisAttributes(G4Color(1.0,1.0,1.0));
-    ReflectVis->SetVisibility(true);
-    ReflectVis->SetForceWireframe(true);
-    Reflector_Log->SetVisAttributes(ReflectVis);
-    
-    new G4PVPlacement(0,                            //no rotation
-                      G4ThreeVector(0.,5.*cm,0.),              //at (0,0,0)
-                      Reflector_Log,                     //its logical volume
-                      "SquareTubeReflector",            //its name
-                      fLogicLHE,                //its mother  volume
-                      false,                        //no boolean operation
-                      0,                        //copy number
-                      fCheckOverlaps);                    // Check Overlaps
-    
+    if (fSqureTubeReflector) {
+        // Square Tube Reflector Around Volume
+        
+        // Reflector Wrapping
+        G4Box* OuterReflector = new G4Box("OuterReflector",8.*cm,8.*cm,2*20.64*cm);
+        G4Box* InnerReflector = new G4Box("InnerReflector",7.*cm,7.*cm,2*20.64*cm);
+        G4SubtractionSolid* SolidReflector = new G4SubtractionSolid("Reflector",OuterReflector,InnerReflector);
+        
+        G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
+        
+        
+        // Photon Energies for which mirror properties will be given
+        const G4int kEnergies = 3;
+        G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 16*eV};
+        
+        // Optical Surface for mirror
+        G4OpticalSurface* mirror_surface_ =
+        new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+                             dielectric_dielectric);
+        
+        // Reflectivity of mirror for each photon energy
+        G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0.998};
+        
+        //Table of Surface Properties for Mirror
+        G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+        mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+        mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+        
+        new G4LogicalSkinSurface("Reflector_surface", Reflector_Log, mirror_surface_);
+        
+        
+        G4VisAttributes* ReflectVis=new G4VisAttributes(G4Color(1.0,1.0,1.0));
+        ReflectVis->SetVisibility(true);
+        ReflectVis->SetForceWireframe(true);
+        Reflector_Log->SetVisAttributes(ReflectVis);
+        
+        new G4PVPlacement(0,                            //no rotation
+                          G4ThreeVector(0.,5.*cm,0.),              //at (0,0,0)
+                          Reflector_Log,                     //its logical volume
+                          "SquareTubeReflector",            //its name
+                          fLogicLHE,                //its mother  volume
+                          false,                        //no boolean operation
+                          0,                        //copy number
+                          fCheckOverlaps);                    // Check Overlaps
+    }
     
 }
 

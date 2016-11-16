@@ -132,7 +132,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if (thePostPVname.contains( "fibDet1_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                analysisManager->FillH1(0, 5);
+                analysisManager->FillH1(0, 7);
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
                 if (thePostPVname== "fibDet1_1"){
@@ -435,7 +435,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if(thePostPVname.contains("fibDet2_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                analysisManager->FillH1(0, 6);
+                analysisManager->FillH1(0, 8);
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
                 if (thePostPVname== "fibDet2_1"){
@@ -741,22 +741,22 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         
         else if(thePostPVname.contains("CellSide2/StdDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-            analysisManager->FillH1(0, 7);
+            analysisManager->FillH1(0, 9);
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("CellSide2/StdDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-            analysisManager->FillH1(0, 8);
+            analysisManager->FillH1(0, 10);
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("CellSide3/StdDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-            analysisManager->FillH1(0, 9);
+            analysisManager->FillH1(0, 11);
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         else if(thePostPVname.contains("CellSide3/StdDet2")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-            analysisManager->FillH1(0, 10);
+            analysisManager->FillH1(0, 12);
             aStep->GetTrack()->SetTrackStatus(fStopAndKill);
         }
         

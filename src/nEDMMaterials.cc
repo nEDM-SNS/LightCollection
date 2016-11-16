@@ -296,6 +296,14 @@ void nEDMMaterials::CreateMaterials()
     fAir->SetMaterialPropertiesTable(mpt);
     
     //--------------------------------------------------
+    // SuperFluid Helium
+    //--------------------------------------------------
+
+    // Set the SHe optical properties the same as air
+    
+    fSuperfluidHelium->SetMaterialPropertiesTable(mpt);
+    
+    //--------------------------------------------------
     //  Regular PMMA properties - used everywhere but fiber
     //--------------------------------------------------
     
