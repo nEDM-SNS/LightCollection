@@ -55,7 +55,7 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);
     
     // index 2
-    analysisManager->CreateH1("wlsTPBSpectrum", "EWavelength of photons produced in TPB", 100, 300., 800.);
+    analysisManager->CreateH1("wlsTPBSpectrum", "Wavelength of photons produced in TPB", 100, 300., 800.);
     
     // index 3
     analysisManager->CreateH1("cosThetaPosz", "Cosine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
@@ -75,6 +75,8 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     // index 8
     analysisManager->CreateH1("detIndex", "Detector Index", 100, 0, 100);
     
+    //index 9
+    analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
     
     
 }

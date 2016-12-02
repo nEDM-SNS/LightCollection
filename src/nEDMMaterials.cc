@@ -534,7 +534,7 @@ void nEDMMaterials::CreateMaterials()
         0.045*mm, 0.049*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
         0.01*mm, 10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,
         10.*m, 10.*m, 10.*m, 10.*m, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm,
-        .049*mm, .049*mm, .049*mm, .049*mm, .049*mm};
+        .049*mm, .049*mm, .049*mm, 10.*nm, 10.*nm};
     
     assert(sizeof(absWLSTPB) == sizeof(acrylicPhotonEnergy));
     
@@ -554,8 +554,11 @@ void nEDMMaterials::CreateMaterials()
     mptTPB_inner->AddProperty("ABSLENGTH", acrylicPhotonEnergy, absTPB, nEntriesAcr);
     mptTPB_inner->AddProperty("WLSABSLENGTH", acrylicPhotonEnergy, absWLSTPB, nEntriesAcr);
     mptTPB_inner->AddProperty("WLSCOMPONENT", acrylicPhotonEnergy, emissionTPB, nEntriesAcr);
+    mptTPB_inner->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
+
     mptTPB_inner->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
     fTPB_inner->SetMaterialPropertiesTable(mptTPB_inner);
+    
     
     
     G4MaterialPropertiesTable* mptTPB_outer = new G4MaterialPropertiesTable();
@@ -563,6 +566,7 @@ void nEDMMaterials::CreateMaterials()
     mptTPB_outer->AddProperty("ABSLENGTH", acrylicPhotonEnergy, absTPB, nEntriesAcr);
     mptTPB_outer->AddProperty("WLSABSLENGTH", acrylicPhotonEnergy, absWLSTPB, nEntriesAcr);
     mptTPB_outer->AddProperty("WLSCOMPONENT", acrylicPhotonEnergy, emissionTPB, nEntriesAcr);
+    mptTPB_outer->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
     mptTPB_outer->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
     fTPB_outer->SetMaterialPropertiesTable(mptTPB_outer);
 

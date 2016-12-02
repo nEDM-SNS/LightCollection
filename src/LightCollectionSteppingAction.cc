@@ -76,7 +76,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 //            thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
-  
+        
         //G4cout << "Material:  " << thePostPV->GetLogicalVolume()->GetMaterial()->GetName() << G4endl;
         
         // Check for any optical surface crossings and print the name of the surface
@@ -124,6 +124,11 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 //Analysis code for 3 cell plates
 #if 1
+        if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
+        }
+        
         if (thePostPVname.contains("fibDet")){
         
             if (thePostPVname.contains("BackFace")){
