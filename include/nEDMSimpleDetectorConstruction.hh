@@ -25,7 +25,8 @@ public:
     
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
-    void ConstructTestStand();
+    void ConstructSinglePlate();
+    void ConstructSquareTubeReflector();
     
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
@@ -52,8 +53,10 @@ private:
     G4bool fSqureTubeReflector;
     G4int fNumberOfFibers;
     G4double fFiberSpacing;
-    G4double fTPB_outerFraction;
-
+    G4double fTPB_outerThickness;
+    G4double fTPB_Thickness;
+    G4double fFiberOuterSurfaceRoughness;
+    
     
 };
 
