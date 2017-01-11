@@ -27,6 +27,7 @@ public:
     virtual G4VPhysicalVolume* Construct();
     void ConstructSinglePlate();
     void ConstructSquareTubeReflector();
+    void ConstructFullTentReflector();
     
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
@@ -51,13 +52,15 @@ private:
     G4bool fEmbeddedFibers;
     G4bool fFiberReflector;
     G4bool fSqureTubeReflector;
+    G4bool fFullTentReflector;
     G4int fNumberOfFibers;
     G4double fFiberSpacing;
     G4double fTPB_outerThickness;
     G4double fTPB_Thickness;
     G4double fFiberOuterSurfaceRoughness;
-    
-    
+    G4double fCellWidth;
+    G4double fCellThickness;
+    G4double fCellLength;
 };
 
 #endif
