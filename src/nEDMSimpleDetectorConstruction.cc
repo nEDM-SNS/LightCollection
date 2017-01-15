@@ -47,22 +47,28 @@
 
 nEDMSimpleDetectorConstruction::nEDMSimpleDetectorConstruction()
 {
+    // G4 Specific Flags
     fStepLimit = NULL;
-    
     fCheckOverlaps = false;
+    
+    // nEDM Geometry Flags
     fEmbeddedFibers = true;
     fFiberReflector = false;
     fSqureTubeReflector = false;
     fFullTentReflector = true;
     
+    // Cell Size
     fCellWidth= 2*5.08*cm;
     fCellThickness = 2*0.635*cm;
     fCellLength= 2*20.64*cm;
 
+    // Fiber Params
     fNumberOfFibers = 98;
     //fNumberOfFibers = 0;
     fFiberSpacing = 0.103*cm;
     fFiberOuterSurfaceRoughness = 0.9;
+    
+    // TPB Params
     fTPB_Thickness = .1*mm;
     fTPB_outerThickness = 5*nm;
     
