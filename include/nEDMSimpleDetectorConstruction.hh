@@ -25,18 +25,19 @@ public:
     
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
-    void ConstructSinglePlate();
-    void ConstructSquareTubeReflector();
+    void ConstructSquarePMMA();
+    void ConstructCirclePMMA();
+    void ConstructFibers();
+    void ConstructCylindricalReflector();
+    void ConstructEndFiberReflector();
+    void ConstructPhotonDet();
+    void ConstructSiliconWafers();
+    void ConstructClearFibers();
     
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
     
 protected:
-    
-    /// This really constructs the detector, but doesn't define materials before it is constructed.
-    /// This is called by Construct()
-    G4VPhysicalVolume* ConstructDetector();
-    
     
 private:
     
@@ -50,10 +51,20 @@ private:
     
     G4bool fEmbeddedFibers;
     G4bool fFiberReflector;
-    G4bool fSqureTubeReflector;
+    G4bool fOuterReflector;
+    G4bool fTPB_On;
+    
     G4int fNumberOfFibers;
+    
+    G4double fCellHalfZ;
+    G4double fCellHalfThickness;
+    G4double fCircleInner_rad;
+    G4double fCircleOuter_rad;
+    
     G4double fFiberSpacing;
-    G4double fTPB_outerThickness;
+    G4double fFiberThickness;
+    G4double fFiberLength;
+    
     G4double fTPB_Thickness;
     G4double fFiberOuterSurfaceRoughness;
     
