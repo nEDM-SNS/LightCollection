@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////
-// nEDMSimpleDetectorConstruction.hh                        //
+// LightCollectionDetectorConstruction.hh                        //
 // Coarse nEDM Geometry header file                   //
 ////////////////////////////////////////////////////////
 
-#ifndef nEDMSimpleDetectorConstruction_h
-#define nEDMSimpleDetectorConstruction_h 1
+#ifndef LightCollectionDetectorConstruction_h
+#define LightCollectionDetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 
@@ -16,12 +16,12 @@ class G4UserLimits;
 
 class nEDMMaterials;
 
-class nEDMSimpleDetectorConstruction : public G4VUserDetectorConstruction
+class LightCollectionDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
     
-    nEDMSimpleDetectorConstruction();
-    virtual ~nEDMSimpleDetectorConstruction();
+    LightCollectionDetectorConstruction();
+    virtual ~LightCollectionDetectorConstruction();
     
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();

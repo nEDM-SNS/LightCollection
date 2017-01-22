@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////
-// nEDMSimpleDetectorConstruction.cc                        //
+// LightCollectionDetectorConstruction.cc                        //
 // Coarse nEDM Geometry                               //
 ////////////////////////////////////////////////////////
 
-#include "nEDMSimpleDetectorConstruction.hh"
+#include "LightCollectionDetectorConstruction.hh"
 
 #include "G4Material.hh"
 #include "nEDMMaterials.hh"
@@ -42,18 +42,18 @@
 
 #include "G4SDManager.hh"
 
-nEDMSimpleDetectorConstruction::nEDMSimpleDetectorConstruction()
+LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
 {
     fStepLimit = NULL;
 
 }
 
-nEDMSimpleDetectorConstruction::~nEDMSimpleDetectorConstruction()
+LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
 {
     delete fStepLimit;
 }
 
-G4VPhysicalVolume* nEDMSimpleDetectorConstruction::Construct()
+G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
 {
     
     fMaterials = nEDMMaterials::GetInstance();
@@ -94,12 +94,12 @@ G4VPhysicalVolume* nEDMSimpleDetectorConstruction::Construct()
     
 }
 
-void nEDMSimpleDetectorConstruction::SetMaxStep(G4double maxStep)
+void LightCollectionDetectorConstruction::SetMaxStep(G4double maxStep)
 {
     if ((fStepLimit)&&(maxStep>0.)) fStepLimit->SetMaxAllowedStep(maxStep);
 }
 
-void nEDMSimpleDetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
+void LightCollectionDetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
 {
     fCheckOverlaps = checkOverlaps;
 }
