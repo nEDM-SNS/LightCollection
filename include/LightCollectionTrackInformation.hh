@@ -10,11 +10,11 @@ public:
     LightCollectionTrackInformation();
     virtual ~LightCollectionTrackInformation();
     
-    void SetStatus(G4int newStatus) {fStatus = newStatus;}
-    G4int GetStatus() {return fStatus;}
+    void SetStatus(G4int newStatus) {m_Status = newStatus;}
+    G4int GetStatus() {return m_Status;}
 
 private:
-    G4int fStatus;
+    G4int m_Status;
     
 };
 

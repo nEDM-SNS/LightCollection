@@ -27,19 +27,19 @@ class nEDMMaterials
 
     static nEDMMaterials* fInstance;
 
-    G4NistManager*     fNistMan;
+    G4NistManager*     m_NistMan;
 
-    G4Material*        fAir;
+    G4Material*        m_Air;
 
-    G4Material*        fPMMA;
-    G4Material*        fWLSPMMA;
-    G4Material*        fPethylene;
-    G4Material*        fFPethylene;
-    G4Material*        fPolystyrene;
-    G4Material*        fTPB_outer;
-    G4Material*        fTPB_inner;
-    G4Material*        fSilicone;
-    G4Material*        fSuperfluidHelium;
+    G4Material*        m_PMMA;
+    G4Material*        m_WLSPMMA;
+    G4Material*        m_Pethylene;
+    G4Material*        m_FPethylene;
+    G4Material*        m_Polystyrene;
+    G4Material*        m_TPB_outer;
+    G4Material*        m_TPB_inner;
+    G4Material*        m_Silicone;
+    G4Material*        m_SuperfluidHelium;
 
 };
 
