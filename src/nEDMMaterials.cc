@@ -8,9 +8,9 @@ nEDMMaterials* nEDMMaterials::fInstance = 0;
 
 nEDMMaterials::nEDMMaterials()
 {
-    fNistMan = G4NistManager::Instance();
+    m_NistMan = G4NistManager::Instance();
     
-    fNistMan->SetVerbose(2);
+    m_NistMan->SetVerbose(2);
     
     CreateMaterials();
 }
@@ -19,14 +19,14 @@ nEDMMaterials::nEDMMaterials()
 
 nEDMMaterials::~nEDMMaterials()
 {
-    delete    fPMMA;
-    delete    fWLSPMMA;
-    delete    fPethylene;
-    delete    fFPethylene;
-    delete    fPolystyrene;
-    delete    fTPB_outer;
-    delete    fTPB_inner;
-    delete    fSilicone;
+    delete    m_PMMA;
+    delete    m_WLSPMMA;
+    delete    m_Pethylene;
+    delete    m_FPethylene;
+    delete    m_Polystyrene;
+    delete    m_TPB_outer;
+    delete    m_TPB_inner;
+    delete    m_Silicone;
 
 }
 
@@ -45,7 +45,7 @@ nEDMMaterials* nEDMMaterials::GetInstance()
 
 G4Material* nEDMMaterials::GetMaterial(const G4String material)
 {
-    G4Material* mat =  fNistMan->FindOrBuildMaterial(material);
+    G4Material* mat =  m_NistMan->FindOrBuildMaterial(material);
     
     if (!mat) mat = G4Material::GetMaterial(material);
     if (!mat) {G4cout << material << "Not Found, Please Retry"<< G4endl;}
@@ -71,13 +71,13 @@ void nEDMMaterials::CreateMaterials()
     // Vacuum
     //--------------------------------------------------
     
-    fNistMan->FindOrBuildMaterial("G4_Galactic");
+    m_NistMan->FindOrBuildMaterial("G4_Galactic");
     
     //--------------------------------------------------
     // Air
     //--------------------------------------------------
     
-    fAir = fNistMan->FindOrBuildMaterial("G4_AIR");
+    m_Air = m_NistMan->FindOrBuildMaterial("G4_AIR");
     
     //--------------------------------------------------
     // PMMA
@@ -89,7 +89,7 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.190*g/cm3;
     
-    fPMMA = fNistMan->
+    m_PMMA = m_NistMan->
     ConstructNewMaterial("PMMA", elements, natoms, density);
     
     elements.clear();
@@ -99,7 +99,7 @@ void nEDMMaterials::CreateMaterials()
     // WLSfiber PMMA - PMMA w/ different MPT
     //--------------------------------------------------
     
-    fWLSPMMA = new   G4Material("WLSPMMA",density,fPMMA);
+    m_WLSPMMA = new   G4Material("WLSPMMA",density,m_PMMA);
     
     //--------------------------------------------------
     // Cladding (polyethylene)
@@ -110,7 +110,7 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.200*g/cm3;
     
-    fPethylene = fNistMan->
+    m_Pethylene = m_NistMan->
     ConstructNewMaterial("Pethylene", elements, natoms, density);
     
     elements.clear();
@@ -125,7 +125,7 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.400*g/cm3;
     
-    fFPethylene = fNistMan->
+    m_FPethylene = m_NistMan->
     ConstructNewMaterial("FPethylene", elements, natoms, density);
     
     elements.clear();
@@ -140,7 +140,7 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.050*g/cm3;
     
-    fPolystyrene = fNistMan->
+    m_Polystyrene = m_NistMan->
     ConstructNewMaterial("Polystyrene", elements, natoms, density);
     
     elements.clear();
@@ -156,13 +156,13 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.079*g/cm3;
     
-    fTPB_outer = fNistMan->
+    m_TPB_outer = m_NistMan->
     ConstructNewMaterial("TPB_outer", elements, natoms, density);
     
     elements.clear();
     natoms.clear();
 
-    fTPB_inner = new G4Material("TPB_inner",density,fTPB_outer);
+    m_TPB_inner = new G4Material("TPB_inner",density,m_TPB_outer);
     
     
     
@@ -191,7 +191,7 @@ void nEDMMaterials::CreateMaterials()
     
     density = 1.060*g/cm3;
     
-    fSilicone = fNistMan->
+    m_Silicone = m_NistMan->
     ConstructNewMaterial("Silicone", elements, natoms, density);
     
     elements.clear();
@@ -201,7 +201,7 @@ void nEDMMaterials::CreateMaterials()
     // Aluminium
     //--------------------------------------------------
     
-    fNistMan->FindOrBuildMaterial("G4_Al");
+    m_NistMan->FindOrBuildMaterial("G4_Al");
     
     //
     // Liquid Helium
@@ -212,7 +212,7 @@ void nEDMMaterials::CreateMaterials()
 
     density=0.145*g/cm3;
     
-    fSuperfluidHelium = fNistMan->ConstructNewMaterial("SuperfluidHelium", elements, natoms, density, true, kStateLiquid, temperature=0.4*kelvin);
+    m_SuperfluidHelium = m_NistMan->ConstructNewMaterial("SuperfluidHelium", elements, natoms, density, true, kStateLiquid, temperature=0.4*kelvin);
     
     elements.clear();
     natoms.clear();
@@ -293,7 +293,7 @@ void nEDMMaterials::CreateMaterials()
     G4MaterialPropertiesTable* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("RINDEX", photonEnergy, refractiveIndex, nEntries);
     
-    fAir->SetMaterialPropertiesTable(mpt);
+    m_Air->SetMaterialPropertiesTable(mpt);
     
     //--------------------------------------------------
     // SuperFluid Helium
@@ -301,7 +301,7 @@ void nEDMMaterials::CreateMaterials()
 
     // Set the SHe optical properties the same as air
     
-    fSuperfluidHelium->SetMaterialPropertiesTable(mpt);
+    m_SuperfluidHelium->SetMaterialPropertiesTable(mpt);
     
     //--------------------------------------------------
     //  Regular PMMA properties - used everywhere but fiber
@@ -333,7 +333,7 @@ void nEDMMaterials::CreateMaterials()
     AddProperty("RINDEX",acrylicPhotonEnergy,refractiveIndexPMMA,nEntriesAcr);
     mptPMMA->AddProperty("ABSLENGTH",acrylicPhotonEnergy,absPMMA,nEntriesAcr);
 
-    fPMMA->SetMaterialPropertiesTable(mptPMMA);
+    m_PMMA->SetMaterialPropertiesTable(mptPMMA);
 
     //--------------------------------------------------
     //  PMMA for WLSfibers properties
@@ -393,7 +393,7 @@ void nEDMMaterials::CreateMaterials()
     mptWLSfiber->AddConstProperty("WLSTIMECONSTANT", 0.5*ns);
     
 
-    fWLSPMMA->SetMaterialPropertiesTable(mptWLSfiber);
+    m_WLSPMMA->SetMaterialPropertiesTable(mptWLSfiber);
     
     //--------------------------------------------------
     //  Polyethylene
@@ -422,7 +422,7 @@ void nEDMMaterials::CreateMaterials()
     mptClad1->AddProperty("RINDEX",photonEnergy,refractiveIndexClad1,nEntries);
     mptClad1->AddProperty("ABSLENGTH",photonEnergy,absClad,nEntries);
     
-    fPethylene->SetMaterialPropertiesTable(mptClad1);
+    m_Pethylene->SetMaterialPropertiesTable(mptClad1);
     
     //--------------------------------------------------
     // Fluorinated Polyethylene
@@ -442,7 +442,7 @@ void nEDMMaterials::CreateMaterials()
     mptClad2->AddProperty("RINDEX",photonEnergy,refractiveIndexClad2,nEntries);
     mptClad2->AddProperty("ABSLENGTH",photonEnergy,absClad,nEntries);
     
-    fFPethylene->SetMaterialPropertiesTable(mptClad2);
+    m_FPethylene->SetMaterialPropertiesTable(mptClad2);
     
     //--------------------------------------------------
     // Silicone
@@ -463,7 +463,7 @@ void nEDMMaterials::CreateMaterials()
     AddProperty("RINDEX",photonEnergy,refractiveIndexSilicone,nEntries);
     mptSilicone->AddProperty("ABSLENGTH",photonEnergy,absClad,nEntries);
     
-    fSilicone->SetMaterialPropertiesTable(mptSilicone);
+    m_Silicone->SetMaterialPropertiesTable(mptSilicone);
     
     //--------------------------------------------------
     //  Polystyrene
@@ -506,11 +506,11 @@ void nEDMMaterials::CreateMaterials()
     mptPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
     mptPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
     
-    fPolystyrene->SetMaterialPropertiesTable(mptPolystyrene);
+    m_Polystyrene->SetMaterialPropertiesTable(mptPolystyrene);
     
     // Set the Birks Constant for the Polystyrene scintillator
     
-    fPolystyrene->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+    m_Polystyrene->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
     
     //--------------------------------------------------
     // Tetraphenyl butadiene (TPB) (inner and outer)
@@ -557,7 +557,7 @@ void nEDMMaterials::CreateMaterials()
     mptTPB_inner->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
 
     mptTPB_inner->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
-    fTPB_inner->SetMaterialPropertiesTable(mptTPB_inner);
+    m_TPB_inner->SetMaterialPropertiesTable(mptTPB_inner);
     
     
     
@@ -568,7 +568,7 @@ void nEDMMaterials::CreateMaterials()
     mptTPB_outer->AddProperty("WLSCOMPONENT", acrylicPhotonEnergy, emissionTPB, nEntriesAcr);
     mptTPB_outer->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
     mptTPB_outer->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
-    fTPB_outer->SetMaterialPropertiesTable(mptTPB_outer);
+    m_TPB_outer->SetMaterialPropertiesTable(mptTPB_outer);
 
 /* Not used anymore
     //--------------------------------------------------

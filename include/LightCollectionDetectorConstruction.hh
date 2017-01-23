@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////
-// nEDMSimpleDetectorConstruction.hh                        //
+// LightCollectionDetectorConstruction.hh                        //
 // Coarse nEDM Geometry header file                   //
 ////////////////////////////////////////////////////////
 
-#ifndef nEDMSimpleDetectorConstruction_h
-#define nEDMSimpleDetectorConstruction_h 1
+#ifndef LightCollectionDetectorConstruction_h
+#define LightCollectionDetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 
@@ -16,12 +16,12 @@ class G4UserLimits;
 
 class nEDMMaterials;
 
-class nEDMSimpleDetectorConstruction : public G4VUserDetectorConstruction
+class LightCollectionDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
     
-    nEDMSimpleDetectorConstruction();
-    virtual ~nEDMSimpleDetectorConstruction();
+    LightCollectionDetectorConstruction();
+    virtual ~LightCollectionDetectorConstruction();
     
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
@@ -41,26 +41,26 @@ protected:
     
 private:
     
-    nEDMMaterials* fMaterials;
-    G4VPhysicalVolume* fPhysHall;
-    G4LogicalVolume* fLogicHall;
+    nEDMMaterials* m_Materials;
+    G4VPhysicalVolume* m_PhysHall;
+    G4LogicalVolume* m_LogicHall;
     
-    G4UserLimits* fStepLimit;
+    G4UserLimits* m_StepLimit;
     
-    G4bool  fCheckOverlaps;
+    G4bool  m_CheckOverlaps;
     
-    G4bool fEmbeddedFibers;
-    G4bool fFiberReflector;
-    G4bool fSqureTubeReflector;
-    G4bool fFullTentReflector;
-    G4int fNumberOfFibers;
-    G4double fFiberSpacing;
-    G4double fTPB_outerThickness;
-    G4double fTPB_Thickness;
-    G4double fFiberOuterSurfaceRoughness;
-    G4double fCellWidth;
-    G4double fCellThickness;
-    G4double fCellLength;
+    G4bool m_EmbeddedFibers;
+    G4bool m_FiberReflector;
+    G4bool m_SqureTubeReflector;
+    G4bool m_FullTentReflector;
+    G4int m_NumberOfFibers;
+    G4double m_FiberSpacing;
+    G4double m_TPB_outerThickness;
+    G4double m_TPB_Thickness;
+    G4double m_FiberOuterSurfaceRoughness;
+    G4double m_CellWidth;
+    G4double m_CellThickness;
+    G4double m_CellLength;
 };
 
 #endif

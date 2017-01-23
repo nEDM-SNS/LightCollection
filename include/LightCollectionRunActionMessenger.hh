@@ -17,9 +17,9 @@ class LightCollectionRunActionMessenger: public G4UImessenger
     virtual void SetNewValue(G4UIcommand*, G4String);
     
   private:
-    LightCollectionRunAction* 	 fRunAction;
-    G4UIdirectory*           fDirectory;
-    G4UIcmdWithAString*      fSetFileNameCmd;
+    LightCollectionRunAction* 	 m_RunAction;
+    G4UIdirectory*           m_Directory;
+    G4UIcmdWithAString*      m_SetFileNameCmd;
 
 };
 

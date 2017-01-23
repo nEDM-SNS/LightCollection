@@ -3,7 +3,7 @@
 
 LightCollectionTrackInformation::LightCollectionTrackInformation()
 {
-    fStatus = 0;
+    m_Status = 0;
 }
 
 LightCollectionTrackInformation::~LightCollectionTrackInformation(){}
