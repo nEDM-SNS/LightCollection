@@ -72,7 +72,7 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     G4double world_z = 15.0*m;
     
     G4String worldName = "World";
-    G4Box* solidHall = new G4Box(worldName, world_x, world_y, world_z);
+    G4Box* solidHall = new G4Box(worldName, world_x/2., world_y/2., world_z/2.);
     
     m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4_Galactic"), worldName);
     
