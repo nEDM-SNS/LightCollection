@@ -8,7 +8,6 @@
 
 #include "nEDMPhysicsList.hh"
 
-//#include "nEDMDetectorConstruction.hh"
 #include "LightCollectionDetectorConstruction.hh"
 
 #include "LightCollectionActionInitialization.hh"
