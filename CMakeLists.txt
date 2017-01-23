@@ -26,7 +26,7 @@ include(${Geant4_USE_FILE})
 #
 include_directories(${PROJECT_SOURCE_DIR}/include 
                     ${Geant4_INCLUDE_DIR})
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/*.mac)
+file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/*.mac ${PROJECT_SOURCE_DIR}/*.in)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 #----------------------------------------------------------------------------
@@ -47,10 +47,8 @@ set(lightCollection_SCRIPTS
     icons.mac
     run.png
     vis.mac
-#    input_fiber.mac
-#    input_plate.mac
-#    input_TestStand.mac
-  )
+    singleFiber_input.mac
+)
 
 foreach(_script ${lightCollection_SCRIPTS})
   configure_file(
