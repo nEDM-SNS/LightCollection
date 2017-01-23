@@ -44,19 +44,19 @@
 
 LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
 {
-    fStepLimit = NULL;
+    m_StepLimit = NULL;
 
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
 {
-    delete fStepLimit;
+    delete m_StepLimit;
 }
 
 G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
 {
     
-    fMaterials = nEDMMaterials::GetInstance();
+    m_Materials = nEDMMaterials::GetInstance();
     
     // World volume
     G4double world_x = 15.0*m;
@@ -66,22 +66,22 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     G4String worldName = "World";
     G4Box* solidHall = new G4Box(worldName, world_x, world_y, world_z);
     
-    fLogicHall = new G4LogicalVolume(solidHall, fMaterials->GetMaterial("G4_Galactic"), worldName);
+    m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4_Galactic"), worldName);
     
     
-    fPhysHall = new G4PVPlacement(0,                     // rotation
+    m_PhysHall = new G4PVPlacement(0,                     // rotation
                                   G4ThreeVector(0,0,0),
-                                  fLogicHall,             // logical volume
+                                  m_LogicHall,             // logical volume
                                   worldName,                  // name
                                   0,                     // mother volume
                                   false,                 // no boolean operations
-                                  0,fCheckOverlaps);     // not a copy
+                                  0,m_CheckOverlaps);     // not a copy
     
     //
     G4VisAttributes* HallAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
     HallAtt->SetVisibility(true);
     HallAtt->SetForceWireframe(true);
-    fLogicHall->SetVisAttributes(HallAtt);
+    m_LogicHall->SetVisAttributes(HallAtt);
     
     
     // ************** Choose Volume to Construct Here *****************
@@ -90,16 +90,16 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     G4cout << "git checkout -b <name of new geometry branch>" << G4endl;
 
     // Always return the physical World
-    return fPhysHall;
+    return m_PhysHall;
     
 }
 
 void LightCollectionDetectorConstruction::SetMaxStep(G4double maxStep)
 {
-    if ((fStepLimit)&&(maxStep>0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+    if ((m_StepLimit)&&(maxStep>0.)) m_StepLimit->SetMaxAllowedStep(maxStep);
 }
 
 void LightCollectionDetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
 {
-    fCheckOverlaps = checkOverlaps;
+    m_CheckOverlaps = checkOverlaps;
 }

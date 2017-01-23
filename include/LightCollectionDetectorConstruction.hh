@@ -25,7 +25,6 @@ public:
     
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
-    void ConstructTestStand();
     
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
@@ -39,13 +38,13 @@ protected:
     
 private:
     
-    nEDMMaterials* fMaterials;
-    G4VPhysicalVolume* fPhysHall;
-    G4LogicalVolume* fLogicHall;
+    nEDMMaterials* m_Materials;
+    G4VPhysicalVolume* m_PhysHall;
+    G4LogicalVolume* m_LogicHall;
     
-    G4UserLimits* fStepLimit;
+    G4UserLimits* m_StepLimit;
     
-    G4bool  fCheckOverlaps;
+    G4bool  m_CheckOverlaps;
     
     
 };
