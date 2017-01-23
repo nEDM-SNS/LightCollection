@@ -92,8 +92,13 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     G4String worldName = "World";
     G4Box* solidHall = new G4Box(worldName, world_x/2., world_y/2., world_z/2.);
     
-    m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("SuperfluidHelium"), worldName);
+    // Why is World material SuperfluidHelium for room temperature tests?
+    // I think I remember a bug with no ouput when you use air.
+    // Someone should test this.
     
+    m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("SuperfluidHelium"), worldName);
+
+    //m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4Air"), worldName);
     
     m_PhysHall = new G4PVPlacement(0,                     // rotation
                                   G4ThreeVector(0,0,0),
