@@ -8,8 +8,7 @@
 
 #include "nEDMPhysicsList.hh"
 
-//#include "nEDMDetectorConstruction.hh"
-#include "nEDMSimpleDetectorConstruction.hh"
+#include "LightCollectionDetectorConstruction.hh"
 
 #include "LightCollectionActionInitialization.hh"
 
@@ -88,7 +87,7 @@ int main(int argc,char** argv)
     // Set mandatory initialization classes
     //
     // Detector construction
-    runManager-> SetUserInitialization(new nEDMSimpleDetectorConstruction());
+    runManager-> SetUserInitialization(new LightCollectionDetectorConstruction());
     // Physics list
     runManager-> SetUserInitialization(new nEDMPhysicsList());
     // User action initialization

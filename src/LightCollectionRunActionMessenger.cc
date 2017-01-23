@@ -6,31 +6,31 @@
 
 LightCollectionRunActionMessenger::LightCollectionRunActionMessenger(LightCollectionRunAction* runAction)
  : G4UImessenger(),
-   fRunAction(runAction),
-   fDirectory(0),
-   fSetFileNameCmd(0)
+   m_RunAction(runAction),
+   m_Directory(0),
+   m_SetFileNameCmd(0)
 {
-  fDirectory = new G4UIdirectory("/LightCollection/run/");
-  fDirectory->SetGuidance("run control");
+  m_Directory = new G4UIdirectory("/LightCollection/run/");
+  m_Directory->SetGuidance("run control");
    
-  fSetFileNameCmd 
+  m_SetFileNameCmd
     = new G4UIcmdWithAString("/LightCollection/run/setFileName",this);
-  fSetFileNameCmd->SetGuidance("Set the analysis file name (default: LightCollection");
-  fSetFileNameCmd->SetParameterName("fileName",false);
-  fSetFileNameCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  m_SetFileNameCmd->SetGuidance("Set the analysis file name (default: LightCollection");
+  m_SetFileNameCmd->SetParameterName("fileName",false);
+  m_SetFileNameCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
 }
 
 LightCollectionRunActionMessenger::~LightCollectionRunActionMessenger()
 {
-  delete fSetFileNameCmd;
-  delete fDirectory;   
+  delete m_SetFileNameCmd;
+  delete m_Directory;   
 }
 
 void LightCollectionRunActionMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
-  if ( command == fSetFileNameCmd ) {
-    fRunAction->SetFileName(newValue);
+  if ( command == m_SetFileNameCmd ) {
+    m_RunAction->SetFileName(newValue);
   }
 
 }
