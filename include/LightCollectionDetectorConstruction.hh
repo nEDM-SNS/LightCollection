@@ -26,6 +26,8 @@ public:
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
     
+    void ConstructSingleFiber();
+    
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
     
@@ -40,6 +42,9 @@ private:
     G4UserLimits* m_StepLimit;
     
     G4bool  m_CheckOverlaps;
+    
+    G4bool m_FiberReflector;
+    G4double m_FiberOuterSurfaceRoughness;
     
     
 };
