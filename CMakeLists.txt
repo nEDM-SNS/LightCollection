@@ -47,7 +47,7 @@ set(lightCollection_SCRIPTS
     icons.mac
     run.png
     vis.mac
-    singlePlate.in
+    singlePlate_input.mac
   )
 
 foreach(_script ${lightCollection_SCRIPTS})
