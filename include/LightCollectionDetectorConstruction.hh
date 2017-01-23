@@ -34,11 +34,6 @@ public:
     
 protected:
     
-    /// This really constructs the detector, but doesn't define materials before it is constructed.
-    /// This is called by Construct()
-    G4VPhysicalVolume* ConstructDetector();
-    
-    
 private:
     
     nEDMMaterials* m_Materials;
