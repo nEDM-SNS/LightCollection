@@ -15,6 +15,7 @@ class G4LogicalVolume;
 class G4UserLimits;
 
 class nEDMMaterials;
+class LightCollectionDetectorMessenger;
 
 class LightCollectionDetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -29,15 +30,24 @@ public:
     void ConstructSingleFiber();
     
     void SetMaxStep (G4double );
-    void SetCheckOverlaps(G4bool );
+    void SetCheckOverlaps(G4bool checkOverlaps);
+    void SetFiberHalfLength(G4double halfLength);
     
 protected:
     
 private:
     
+    LightCollectionDetectorMessenger* theMessenger;
+    
     nEDMMaterials* m_Materials;
     G4VPhysicalVolume* m_PhysHall;
     G4LogicalVolume* m_LogicHall;
+    
+    G4VPhysicalVolume* m_PhysFiber;
+    G4VPhysicalVolume* m_PhysClad1;
+    G4VPhysicalVolume* m_PhysCore;
+    G4VPhysicalVolume* m_PhysDet1;
+    G4VPhysicalVolume* m_PhysDet2;
     
     G4UserLimits* m_StepLimit;
     
@@ -45,6 +55,8 @@ private:
     
     G4bool m_FiberReflector;
     G4double m_FiberOuterSurfaceRoughness;
+    G4double m_FiberHalfLength;
+    G4double m_FibDetThickness;
     
     
 };

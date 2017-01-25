@@ -1,7 +1,7 @@
 /gps/particle opticalphoton
 /gps/polarization 0 0 1 # dummy polarization
 
-/gps/energy 2.01 eV #Low energy photon
+/gps/energy 2.00 eV #Low energy photon
 #/gps/energy 2.95 eV #blue photon
 #/gps/energy 3.4 eV
 #/gps/energy 4.96 eV #250 nm
@@ -20,5 +20,41 @@
 #/gps/direction 0 -1 0
 #/gps/direction 1 0 0
 
-/LightCollection/run/setFileName output/singleFiberTest
-/run/beamOn 10000
+#/LightCollection/run/setFileName output/singleFiberTest
+#/run/beamOn 10000
+
+#/LightCollection/det/fiberHalfLength 1 cm
+#/LightCollection/run/setFileName output/fiberAtten_1cm
+#/run/beamOn 1000
+
+#/LightCollection/det/fiberHalfLength 5 cm
+#/LightCollection/run/setFileName output/fiberAtten_5cm
+#/run/beamOn 1000
+
+#/LightCollection/det/fiberHalfLength 10 cm
+#/LightCollection/run/setFileName output/fiberAtten_10cm
+#/run/beamOn 1000
+
+#/LightCollection/det/fiberHalfLength 50 cm
+#/LightCollection/run/setFileName output/fiberAtten_50cm
+#/run/beamOn 1000
+
+#/LightCollection/det/fiberHalfLength 100 cm
+#/LightCollection/run/setFileName output/fiberAtten_100cm
+#/run/beamOn 1000
+
+#/LightCollection/det/fiberHalfLength 200 cm
+#/LightCollection/run/setFileName output/fiberAtten_200cm
+#/run/beamOn 1000
+
+/LightCollection/det/fiberHalfLength 500 cm
+/LightCollection/run/setFileName output/fiberAtten_500cm
+/run/beamOn 1000
+
+/LightCollection/det/fiberHalfLength 700 cm
+/LightCollection/run/setFileName output/fiberAtten_700cm
+/run/beamOn 1000
+
+/LightCollection/det/fiberHalfLength 1000 cm
+/LightCollection/run/setFileName output/fiberAtten_1000cm
+/run/beamOn 1000
