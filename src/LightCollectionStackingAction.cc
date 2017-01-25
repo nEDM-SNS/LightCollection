@@ -22,39 +22,12 @@ LightCollectionStackingAction::~LightCollectionStackingAction() {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ClassificationOfNewTrack
-LightCollectionStackingAction::ClassifyNewTrack(const G4Track * aTrack){
+LightCollectionStackingAction::ClassifyNewTrack(const G4Track *){
     
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    //G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     
     //LightCollectionEventInformation* eventInformation=(LightCollectionEventInformation*)G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetUserInformation();
     
-    //Count what process generated the optical photons
-    if(aTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition()){
-        // particle is optical photon
-        if(aTrack->GetParentID()>0){
-            // particle is secondary
-            if(aTrack->GetCreatorProcess()->GetProcessName()=="Scintillation")
-            {
-                //eventInformation->IncPhotonCount_Scint();
-            }
-            
-            else if(aTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov")
-            {
-                //eventInformation->IncPhotonCount_Ceren();
-            }
-            else if(aTrack->GetCreatorProcess()->GetProcessName()=="OpTPB")
-            {
-                analysisManager->FillH1(12, 1);
-            }
-            else if(aTrack->GetCreatorProcess()->GetProcessName()=="OpWLS")
-            {
-                analysisManager->FillH1(13, 1);
-            }
-
-        }
-    }
-    else{
-    }
     return fUrgent;
 }
 
