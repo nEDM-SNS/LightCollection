@@ -49,9 +49,9 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
 {
     m_StepLimit = NULL;
     
-    m_CheckOverlaps = false;
+    m_CheckOverlaps = true;
     m_EmbeddedFibers = true;
-    m_OuterReflector = false;
+    m_OuterReflector = true;
     m_FiberReflector = false;
     
     m_CellHalfZ = 4.445*cm;
@@ -65,10 +65,11 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     //m_NumberOfFibers = 0;
     m_FiberSpacing = 0.103*cm;
     m_FiberOuterSurfaceRoughness = 0.9;
-    
+    m_FiberHalfLength = 76.2*cm;
+
     m_TPB_On = true;
     m_TPB_Thickness = .1*mm;
-    m_FiberLength = 76.2*cm;
+
     
 }
 
@@ -114,13 +115,11 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     // Fibers //
     if (m_NumberOfFibers>0) ConstructFibers();
     
-    //if (m_OuterReflector) ConstructCylindricalReflector();
-    //if (m_FiberReflector) ConstructEndFiberReflector();
-    
+    if (m_OuterReflector) ConstructCylindricalReflector();
     
     //ConstructPhotonDet();
     //ConstructSiliconWafers();
-    //ConstructClearFibers();
+    ConstructClearFibers();
 
     
     
@@ -304,13 +303,11 @@ void LightCollectionDetectorConstruction::ConstructFibers()
     G4double Clad1_rmin = 0.*cm;
     G4double Clad1_rmax = fiberRmax - 0.003*cm;
     
-    G4double Clad1_z    = m_FiberLength;
     G4double Clad1_sphi = fiberSphi;
     G4double Clad1_ephi = fiberEphi;
     
     G4double Fiber_rmin = 0.00*cm;
     G4double Fiber_rmax = Clad1_rmax - 0.003*cm;
-    G4double Fiber_z    = m_FiberLength;
     G4double Fiber_sphi = Clad1_sphi;
     G4double Fiber_ephi = Clad1_ephi;
     
@@ -320,14 +317,14 @@ void LightCollectionDetectorConstruction::ConstructFibers()
     G4double MirrorSPhi  = Fiber_sphi;
     G4double MirrorEPhi  = Fiber_ephi;
     
-    G4double MirrorPosZ  = -1*(Fiber_z - MirrorThick)/2;
+    G4double MirrorPosZ  = -1*(m_FiberHalfLength - MirrorThick/2);
     
     // Cladding (outer layer)
     //
     G4String OuterCladdingName = "WLSFiberOuterCladding";
     
     G4Tubs* fiberTube =
-    new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,m_FiberLength/2,fiberSphi,
+    new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,m_FiberHalfLength,fiberSphi,
                fiberEphi);
     
     G4LogicalVolume* fiberLog =
@@ -346,7 +343,7 @@ void LightCollectionDetectorConstruction::ConstructFibers()
     G4String InnerCladdingName = "WLSFiberInnerCladding";
     
     G4Tubs* clad1_tube =
-    new G4Tubs(InnerCladdingName,Clad1_rmin,Clad1_rmax,Clad1_z/2,Clad1_sphi,
+    new G4Tubs(InnerCladdingName,Clad1_rmin,Clad1_rmax,m_FiberHalfLength,Clad1_sphi,
                Clad1_ephi);
     
     G4LogicalVolume* clad1_log =
@@ -365,7 +362,7 @@ void LightCollectionDetectorConstruction::ConstructFibers()
     G4String CoreName = "WLSFiberCore";
     
     G4Tubs* core_tube =
-    new G4Tubs(CoreName,Fiber_rmin,Fiber_rmax,Fiber_z/2,Fiber_sphi,Fiber_ephi);
+    new G4Tubs(CoreName,Fiber_rmin,Fiber_rmax,m_FiberHalfLength,Fiber_sphi,Fiber_ephi);
     
     G4LogicalVolume* core_log =
     new G4LogicalVolume(core_tube,m_Materials->GetMaterial("WLSPMMA"),
@@ -542,6 +539,114 @@ void LightCollectionDetectorConstruction::ConstructFibers()
         
     }
     
+    
+}
+
+void LightCollectionDetectorConstruction::ConstructCylindricalReflector()
+{
+    G4double refl_rad = 3.5925*cm + 0.35*mm;
+    G4double refl_length = m_CellHalfZ + 6.985*cm;
+    
+    // Reflector Geometry
+    G4Tubs* CylindricalReflector = new G4Tubs("CylindricalReflector", refl_rad,refl_rad + 0.1*mm, refl_length, 0.*deg, 360.*deg );
+    
+    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(CylindricalReflector, G4Material::GetMaterial("PMMA"), "Reflector");
+    
+    
+    // Photon Energies for which mirror properties will be given
+    const G4int kEnergies = 3;
+    G4double the_photon_energies_[kEnergies] = {2.*eV, 4.*eV, 16*eV};
+    
+    // Optical Surface for mirror
+    G4OpticalSurface* mirror_surface_ =
+    new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+                         dielectric_dielectric);
+    
+    // Reflectivity of mirror for each photon energy
+    G4double mirror_REFL[kEnergies] = {0.96, 0.96, 0.96};
+    
+    //Table of Surface Properties for Mirror
+    G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+    mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+    mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+    
+    new G4LogicalSkinSurface("Reflector_surface", Reflector_Log, mirror_surface_);
+    
+    
+    G4VisAttributes* ReflectVis=new G4VisAttributes(G4Color(1.0,0.2,1.0));
+    ReflectVis->SetVisibility(true);
+    //ReflectVis->SetForceWireframe(true);
+    Reflector_Log->SetVisAttributes(ReflectVis);
+    
+    G4ThreeVector refl_pos = G4ThreeVector(0., 0.,-6.985*cm);
+    
+    new G4PVPlacement(0,                            //no rotation
+                      refl_pos,              //at (0,0,0)
+                      Reflector_Log,                     //its logical volume
+                      "Reflector",            //its name
+                      m_LogicHall,                //its mother  volume
+                      false,                        //no boolean operation
+                      0,                        //copy number
+                      m_CheckOverlaps);                    // Check Overlaps
+    
+
+}
+
+void LightCollectionDetectorConstruction::ConstructClearFibers(){
+    
+    G4double half_z = 15.24*cm; // 6 inches
+    G4Tubs* clearFiberClad_solid = new G4Tubs("clearFiberClad",
+                                              0,
+                                              0.75*mm,
+                                              half_z,
+                                              0,
+                                              360.*deg);
+    
+    G4Tubs* clearFiberCore_solid = new G4Tubs("ClearFiberCore",
+                                              0,
+                                              0.72*mm,
+                                              half_z,
+                                              0,
+                                              360.*deg);
+    
+    G4LogicalVolume* clearFiberCore_log = new G4LogicalVolume(clearFiberCore_solid, G4Material::GetMaterial("ClearCore"), "ClearFiberCore");
+    
+    G4LogicalVolume* clearFiberClad_log = new G4LogicalVolume(clearFiberClad_solid, G4Material::GetMaterial("ClearClad"), "ClearFiberCladding");
+    
+    new G4PVPlacement(0,
+                      G4ThreeVector(0.,0.,0.),
+                      clearFiberCore_log,
+                      "ClearFiberCore",
+                      clearFiberClad_log,
+                      false,
+                      0,
+                      m_CheckOverlaps);
+    
+    G4int nFibers = m_NumberOfFibers;
+    G4double R_pos = m_CircleOuter_rad + (m_FiberThickness)/2;
+    
+    for(G4int i=0;i<nFibers;i++)
+    {
+        G4double Phi_pos = (i*CLHEP::twopi)/nFibers;
+        G4double X_pos = R_pos*cos(Phi_pos);
+        G4double Y_pos = R_pos*sin(Phi_pos);
+        G4ThreeVector fiber_pos = G4ThreeVector(X_pos, Y_pos, -1*(half_z + 152.5*cm - m_CellHalfZ));
+        
+        new G4PVPlacement(0,
+                          fiber_pos,
+                          clearFiberClad_log,
+                          "ClearFiberCladding",
+                          m_LogicHall,
+                          false,
+                          0,
+                          m_CheckOverlaps);
+    };
+    
+    
+    G4VisAttributes* clearCladVis = new G4VisAttributes(G4Color(1.0,1.0,1.0));
+    clearCladVis->SetVisibility(true);
+    clearFiberClad_log->SetVisAttributes(clearCladVis);
+    clearFiberCore_log->SetVisAttributes(clearCladVis);
     
 }
 

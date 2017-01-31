@@ -63,7 +63,7 @@ private:
     
     G4double m_FiberSpacing;
     G4double m_FiberThickness;
-    G4double m_FiberLength;
+    G4double m_FiberHalfLength;
     
     G4double m_TPB_Thickness;
     G4double m_FiberOuterSurfaceRoughness;
