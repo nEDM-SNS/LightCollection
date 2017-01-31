@@ -20,6 +20,12 @@ timer(0)
     
     fMessenger = new LightCollectionRunActionMessenger(this);
     fileName = "";
+    
+    // Create analysis manager
+    auto analysisManager = G4AnalysisManager::Instance();
+    analysisManager->SetVerboseLevel(1);
+    analysisManager->SetFirstHistoId(0);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -27,6 +33,8 @@ timer(0)
 LightCollectionRunAction::~LightCollectionRunAction()
 {
     delete timer;
+    delete G4AnalysisManager::Instance();
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
