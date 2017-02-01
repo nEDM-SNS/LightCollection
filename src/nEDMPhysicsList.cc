@@ -144,6 +144,7 @@ void nEDMPhysicsList::ConstructProcess()
 
 void nEDMPhysicsList::ConstructGeneral()
 {
+    auto theParticleIterator = GetParticleIterator();
     // Add Decay Process
     G4Decay* theDecayProcess = new G4Decay();
     theParticleIterator->reset();
@@ -258,6 +259,7 @@ void nEDMPhysicsList::ConstructOp()
     //G4OpticalSurfaceModel themodel = unified;
     //theBoundaryProcess->SetModel(themodel);
     
+    auto theParticleIterator = GetParticleIterator();
     theParticleIterator->reset();
     while( (*theParticleIterator)() ){
         G4ParticleDefinition* particle = theParticleIterator->value();
