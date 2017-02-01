@@ -20,6 +20,12 @@ timer(0)
     
     fMessenger = new LightCollectionRunActionMessenger(this);
     fileName = "";
+    
+    // Create analysis manager
+    auto analysisManager = G4AnalysisManager::Instance();
+    analysisManager->SetVerboseLevel(1);
+    analysisManager->SetFirstHistoId(0);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -27,6 +33,8 @@ timer(0)
 LightCollectionRunAction::~LightCollectionRunAction()
 {
     delete timer;
+    delete G4AnalysisManager::Instance();
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -49,39 +57,32 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->OpenFile(fileName);
     
     // index 0
-    analysisManager->CreateH1("Photons", "Bins: UnderFlow=Primaries, 0=TPB_All, 1=TPB_Inner, 2=TPB_Outer,  3=OtherWLSPhotons, 5=fiber +z end, 6=fiber -z end, 7=plate2 +z end, 8=plate2 -z end, 9=plate3 +z end, 10=plate3 -z end", 11, 0., 11.);
+    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 1=fibdet +z, 2=fibdet -z", 10, 0., 10.);
     
     // index 1
     analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);
     
     // index 2
-    analysisManager->CreateH1("wlsTPBSpectrum", "EWavelength of photons produced in TPB", 100, 300., 800.);
-    
-    // index 3
     analysisManager->CreateH1("cosThetaPosz", "Cosine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
     
-    // index 4
+    // index 3
     analysisManager->CreateH1("cosThetaNegz", "Cosine of the exit angle for -z end of fiber", 100, -1.001, 1.001);
     
-    // index 5
-    analysisManager->CreateH1("PhotonFate", "Bins: 0=Undefined, 1=X-Plate, 2=Y-Plate, 3=Z-Plate, 4=Cell Absorption, 5=TPB Absorption, 8=Trapped, 9=Not Trapped", 10, 0., 10.);
-    
-    // index 6
+    // index 4
     analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
     
-    // index 7
+    // index 5
     analysisManager->CreateH1("detEnergy", "Energy of photons detected", 100, 1., 4.);
     
-    // index 8
-    analysisManager->CreateH1("detIndex", "Detector Index", 100, 0, 100);
-    
+    //index 6
+    analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
     
     
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void LightCollectionRunAction::EndOfRunAction(const G4Run* aRun)
+void LightCollectionRunAction::EndOfRunAction(const G4Run*)
 {
     
     //LightCollectionAnalysisManager::GetInstance()->EndOfRun();

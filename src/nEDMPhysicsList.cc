@@ -41,8 +41,7 @@ nEDMPhysicsList::nEDMPhysicsList() :  G4VUserPhysicsList()
     theAbsorptionProcess         = 0;
     theRayleighScatteringProcess = 0;
     theBoundaryProcess           = 0;
-    //theTPBProcess                = 0;
-    theWLSProcess              = 0;
+    theWLSProcess                = 0;
     
     pMessenger = new nEDMPhysicsListMessenger(this);
     SetVerboseLevel(0);
@@ -63,8 +62,8 @@ void nEDMPhysicsList::ConstructParticle()
     
     ConstructBosons();
     ConstructLeptons();
-    //ConstructMesons();
-    //ConstructBaryons();
+    ConstructMesons();
+    ConstructBaryons();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -99,25 +98,34 @@ void nEDMPhysicsList::ConstructLeptons()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-/*void nEDMPhysicsList::ConstructMesons()
- {
- //  mesons
- G4PionPlus::PionPlusDefinition();
- G4PionMinus::PionMinusDefinition();
- G4PionZero::PionZeroDefinition();
- }
- */
+void nEDMPhysicsList::ConstructMesons()
+{
+    //  mesons
+    G4PionPlus::PionPlusDefinition();
+    G4PionMinus::PionMinusDefinition();
+    G4PionZero::PionZeroDefinition();
+    G4Eta::EtaDefinition();
+    G4EtaPrime::EtaPrimeDefinition();
+    G4KaonPlus::KaonPlusDefinition();
+    G4KaonMinus::KaonMinusDefinition();
+    G4KaonZero::KaonZeroDefinition();
+    G4AntiKaonZero::AntiKaonZeroDefinition();
+    G4KaonZeroLong::KaonZeroLongDefinition();
+    G4KaonZeroShort::KaonZeroShortDefinition();
+    
+}
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-/*void nEDMPhysicsList::ConstructBaryons()
- {
- //  barions
- G4Proton::ProtonDefinition();
- G4AntiProton::AntiProtonDefinition();
- G4Neutron::NeutronDefinition();
- G4AntiNeutron::AntiNeutronDefinition();
- }
- */
+void nEDMPhysicsList::ConstructBaryons()
+{
+    //  barions
+    G4Proton::ProtonDefinition();
+    G4AntiProton::AntiProtonDefinition();
+    G4Neutron::NeutronDefinition();
+    G4AntiNeutron::AntiNeutronDefinition();
+}
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nEDMPhysicsList::ConstructProcess()
@@ -136,6 +144,7 @@ void nEDMPhysicsList::ConstructProcess()
 
 void nEDMPhysicsList::ConstructGeneral()
 {
+    auto theParticleIterator = GetParticleIterator();
     // Add Decay Process
     G4Decay* theDecayProcess = new G4Decay();
     theParticleIterator->reset();
@@ -250,6 +259,7 @@ void nEDMPhysicsList::ConstructOp()
     //G4OpticalSurfaceModel themodel = unified;
     //theBoundaryProcess->SetModel(themodel);
     
+    auto theParticleIterator = GetParticleIterator();
     theParticleIterator->reset();
     while( (*theParticleIterator)() ){
         G4ParticleDefinition* particle = theParticleIterator->value();
@@ -300,10 +310,10 @@ void nEDMPhysicsList::SetCuts()
 {
     //  " G4VUserPhysicsList::SetCutsWithDefault" method sets
     //   the default cut value for all particle types
-    // 
+    //
     SetCutsWithDefault();
     
-    if (verboseLevel>0) DumpCutValuesTable();   
+    if (verboseLevel>0) DumpCutValuesTable();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
