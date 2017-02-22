@@ -28,6 +28,7 @@ public:
     void ConstructSquarePMMA();
     void ConstructCirclePMMA();
     void ConstructFibers();
+    void ConstructFibersNew();
     void ConstructCylindricalReflector();
     void ConstructEndFiberReflector();
     void ConstructPhotonDet();
@@ -61,7 +62,6 @@ private:
     G4double m_CircleInner_rad;
     G4double m_CircleOuter_rad;
     
-    G4double m_FiberSpacing;
     G4double m_FiberThickness;
     G4double m_FiberHalfLength;
     
