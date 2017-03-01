@@ -13,6 +13,7 @@
 class G4VPhysicalVolume;
 class G4LogicalVolume;
 class G4UserLimits;
+class G4OpticalSurface;
 
 class nEDMMaterials;
 class LightCollectionDetectorMessenger;
@@ -32,6 +33,7 @@ public:
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool checkOverlaps);
     void SetFiberHalfLength(G4double halfLength);
+    void SetFiberSurfaceRoughness(G4double roughness);
     
 protected:
     
@@ -58,6 +60,7 @@ private:
     G4double m_FiberHalfLength;
     G4double m_FibDetThickness;
     
+    G4OpticalSurface* m_FiberOpSurface;
     
 };
 
