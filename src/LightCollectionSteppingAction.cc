@@ -80,13 +80,16 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         //G4cout << "Material:  " << thePostPV->GetLogicalVolume()->GetMaterial()->GetName() << G4endl;
         
         // Check for any optical surface crossings and print the name of the surface
+        // Report on logical surfaces
 #if 0
         G4LogicalSurface* surface = NULL;
         surface = G4LogicalBorderSurface::GetSurface(thePrePoint->GetPhysicalVolume(),
-                                           thePostPoint->GetPhysicalVolume());
-
+                                                     thePostPoint->GetPhysicalVolume());
         if (surface) {
-            G4cout << "Surface: " << surface->GetName() << G4endl;
+            G4OpticalSurface* optSurf = (G4OpticalSurface*)surface->GetSurfaceProperty();
+//            optSurf->DumpInfo();
+            G4cout << "Surface: " << surface->GetName() << "  Polish:  "
+                << optSurf->GetPolish() << G4endl;
         }
 #endif
         
