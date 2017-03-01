@@ -7,6 +7,8 @@
 
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4LogicalBorderSurface.hh"
+#include "G4OpticalSurface.hh"
 
 #include <iostream>
 using namespace std;
@@ -79,6 +81,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 analysisManager->FillH1(5, thePrePoint->GetKineticEnergy()/eV);
                 
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+                
+                
             }
         }
     }

@@ -58,8 +58,9 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_FiberReflector = false;
 
     // Fiber Params
-    m_FiberOuterSurfaceRoughness = 0.9;
+    m_FiberOuterSurfaceRoughness = 0.99;
     m_FiberHalfLength = 20.64*cm;
+//    m_FiberHalfLength = 5.*cm;
     m_FibDetThickness = .1*mm;
 
 
@@ -90,7 +91,7 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     
     m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("SuperfluidHelium"), worldName);
 
-    //m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4Air"), worldName);
+    //m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4_Air"), worldName);
     
     m_PhysHall = new G4PVPlacement(0,                     // rotation
                                   G4ThreeVector(0,0,0),
@@ -315,24 +316,29 @@ void LightCollectionDetectorConstruction::ConstructSingleFiber()
     if (m_FiberOuterSurfaceRoughness < 1.){
         // Boundary Surface Properties
         
-        G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        m_FiberOpSurface = new G4OpticalSurface("fiberOuterRoughOpSurface");
         
-        G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
+        
         
         G4VPhysicalVolume* outerVol;
         outerVol = m_PhysHall;
         
-        fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
+        G4LogicalBorderSurface* fiberOuterRoughSurface1 = new G4LogicalBorderSurface("fiberOuterRoughSurface1",
                                                             outerVol,
                                                             m_PhysFiber,
-                                                            fiberOuterRoughOpSurface);
+                                                            m_FiberOpSurface);
+
+        new G4LogicalBorderSurface("fiberOuterRoughSurface2",
+                                                    m_PhysFiber,
+                                                    outerVol,
+                                                    m_FiberOpSurface);
         
-        fiberOuterRoughOpSurface->SetModel(glisur);
-        fiberOuterRoughOpSurface->SetFinish(ground);
-        fiberOuterRoughOpSurface->SetType(dielectric_dielectric);
-        fiberOuterRoughOpSurface->SetPolish(m_FiberOuterSurfaceRoughness);
+        m_FiberOpSurface->SetModel(glisur);
+        m_FiberOpSurface->SetFinish(ground);
+        m_FiberOpSurface->SetType(dielectric_dielectric);
+        m_FiberOpSurface->SetPolish(m_FiberOuterSurfaceRoughness);
         
-        
+        fiberOuterRoughSurface1->GetSurfaceProperty()->DumpTableInfo();
     }
     
 }
@@ -360,4 +366,13 @@ void LightCollectionDetectorConstruction::SetFiberHalfLength(G4double halfLength
     m_PhysDet2->SetTranslation(G4ThreeVector(0.,0.,-fibDetZPos));
 
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
+}
+
+void LightCollectionDetectorConstruction::SetFiberSurfaceRoughness(G4double roughness)
+{
+    m_FiberOpSurface->SetPolish(roughness);
+    
+    
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
+    
 }
