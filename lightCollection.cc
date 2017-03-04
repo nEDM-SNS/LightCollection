@@ -6,7 +6,8 @@
 
 #include "G4UImanager.hh"
 
-#include "nEDMPhysicsList.hh"
+//#include "nEDMPhysicsList.hh"
+#include "nEDMModularPhysicsList.hh"
 
 #include "LightCollectionDetectorConstruction.hh"
 
@@ -89,7 +90,7 @@ int main(int argc,char** argv)
     // Detector construction
     runManager-> SetUserInitialization(new LightCollectionDetectorConstruction());
     // Physics list
-    runManager-> SetUserInitialization(new nEDMPhysicsList());
+    runManager-> SetUserInitialization(new nEDMModularPhysicsList());
     // User action initialization
     runManager->SetUserInitialization(new LightCollectionActionInitialization());
     
