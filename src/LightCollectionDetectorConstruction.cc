@@ -52,10 +52,10 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CheckOverlaps = false;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = true;
+    m_EmbeddedFibers = false;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
-    m_FullTentReflector = true;
+    m_FullTentReflector = false;
     
     // Cell Size
     m_CellWidth= 2*5.08*cm;
@@ -420,9 +420,12 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         if (m_FiberOuterSurfaceRoughness < 1.){
             // Boundary Surface Properties
             
-            G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+            G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
             
-            G4LogicalBorderSurface* fiberOuterRoughSurface = NULL;
+            fiberOpticalSurface->SetModel(glisur);
+            fiberOpticalSurface->SetFinish(ground);
+            fiberOpticalSurface->SetType(dielectric_dielectric);
+            fiberOpticalSurface->SetPolish(m_FiberOuterSurfaceRoughness);
             
             G4VPhysicalVolume* outerVol;
             if (m_EmbeddedFibers) {outerVol = physCellSide1;}
@@ -430,16 +433,16 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
             
             for(G4int i=0;i<m_NumberOfFibers;i++){
                 
-                fiberOuterRoughSurface = new G4LogicalBorderSurface("fiberOuterRoughSurface",
-                                                                    outerVol,
-                                                                    physFiber[i],
-                                                                    fiberOuterRoughOpSurface);
+                new G4LogicalBorderSurface("fiberOuterRoughSurface1",
+                                            outerVol,
+                                            physFiber[i],
+                                            fiberOpticalSurface);
                 
+                new G4LogicalBorderSurface("fiberOuterRoughSurface2",
+                                           physFiber[i],
+                                           outerVol,
+                                           fiberOpticalSurface);
                 
-                fiberOuterRoughOpSurface->SetModel(glisur);
-                fiberOuterRoughOpSurface->SetFinish(ground);
-                fiberOuterRoughOpSurface->SetType(dielectric_dielectric);
-                fiberOuterRoughOpSurface->SetPolish(m_FiberOuterSurfaceRoughness);
                 
             }
             

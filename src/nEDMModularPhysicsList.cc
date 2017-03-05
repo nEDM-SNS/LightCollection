@@ -11,7 +11,7 @@
 
 nEDMModularPhysicsList::nEDMModularPhysicsList()
 : G4VModularPhysicsList(){
-    SetVerboseLevel(1);
+    SetVerboseLevel(0);
     
     // Default physics
     RegisterPhysics(new G4DecayPhysics());
