@@ -13,9 +13,9 @@
 
 void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-    LightCollectionTrackInformation* trackInfo = new LightCollectionTrackInformation();
+    //    LightCollectionTrackInformation* trackInfo = new LightCollectionTrackInformation();
     
-    fpTrackingManager->SetUserTrackInformation(trackInfo);
+    //    fpTrackingManager->SetUserTrackInformation(trackInfo);
     
     
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -46,7 +46,7 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 else {
                     G4cout << "Something Unexpected Happend" << G4endl;
                 }
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else if (originVolumeName.contains("TPB_outer"))
             {
@@ -62,13 +62,15 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 else {
                     G4cout << "Something Unexpected Happend" << G4endl;
                 }
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+            }
+            else if (originVolumeName.contains("Fiber")){
+                analysisManager->FillH1(0, 6);
+                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else
             {
-                analysisManager->FillH1(0, 6);
-                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-                
+                G4cout << "Something Unexpected Happend" << G4endl;
             }
             
         }
@@ -87,21 +89,6 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 }
 
 
-void LightCollectionTrackingAction::PostUserTrackingAction(const G4Track * aTrack)
+void LightCollectionTrackingAction::PostUserTrackingAction(const G4Track* )
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    
-    LightCollectionTrackInformation* trackInfo = (LightCollectionTrackInformation*)aTrack->GetUserInformation();
-    
-    G4int status = trackInfo->GetStatus();
-    
-    analysisManager->FillH1(5, status);
-    
-    if (status == 3 || status ==4 || status == 5) {
-        analysisManager->FillH1(5, 9);
-    }
-    else if (status == 1 || status ==2)
-    {
-        analysisManager->FillH1(5, 8);
-    }
 }
