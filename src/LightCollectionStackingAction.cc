@@ -42,13 +42,9 @@ LightCollectionStackingAction::ClassifyNewTrack(const G4Track * aTrack){
             {
                 //eventInformation->IncPhotonCount_Ceren();
             }
-            else if(aTrack->GetCreatorProcess()->GetProcessName()=="OpTPB")
-            {
-                analysisManager->FillH1(12, 1);
-            }
             else if(aTrack->GetCreatorProcess()->GetProcessName()=="OpWLS")
             {
-                analysisManager->FillH1(13, 1);
+                //analysisManager->FillH1(1, 1);
             }
 
         }

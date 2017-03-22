@@ -57,26 +57,20 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->OpenFile(fileName);
     
     // index 0
-    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 1=fibdet +z, 2=fibdet -z", 10, 0., 10.);
+    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 0=C1_InnerTPB, 1=OuterTPB, 6=FiberWLSPhot, 7=fibdet +z, 8=fibdet -z", 13, 0., 13.);
     
     // index 1
-    analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);
+    analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced by WLS Process", 100, 300., 800.);
     
     // index 2
-    analysisManager->CreateH1("cosThetaPosz", "Cosine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
-    
-    // index 3
-    analysisManager->CreateH1("cosThetaNegz", "Cosine of the exit angle for -z end of fiber", 100, -1.001, 1.001);
-    
-    // index 4
     analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
     
-    // index 5
-    analysisManager->CreateH1("detEnergy", "Energy of photons detected", 100, 1., 4.);
+    // index 3
+    analysisManager->CreateH1("detIndex", "Detector Index", 100, 0, 100);
     
-    //index 6
+    //index 4
     analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
-    
+  
     
 }
 
