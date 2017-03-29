@@ -91,8 +91,20 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 //Analysis code for single cell plate
         if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
-            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-            analysisManager->FillH1(5, aStep->GetNumberOfSecondariesInCurrentStep());
+            if(thePostPVname.contains("Fiber"))
+            {
+                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                analysisManager->FillH1(5, aStep->GetNumberOfSecondariesInCurrentStep());
+            }
+            else if (thePostPVname.contains("CellSide"))
+            {
+                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                analysisManager->FillH1(6, aStep->GetNumberOfSecondariesInCurrentStep());
+            }
+            else{
+                G4cout << "Something Unexpected Happened" << G4endl;
+            }
+
         }
         
         if (thePostPVname.contains("fibDet")){

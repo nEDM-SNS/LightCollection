@@ -34,8 +34,6 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
             G4String originVolumeName = aTrack->GetOriginTouchable()->GetVolume()->GetName();
             
             if (originVolumeName.contains("TPBInterface")) {
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-                
                 if (originVolumeName.contains("CellSide1")) {
                     analysisManager->FillH1(0, 0);
                 }
@@ -48,12 +46,10 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 else {
                     G4cout << "Something Unexpected Happend" << G4endl;
                 }
-                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else if (originVolumeName.contains("TPB_outer"))
             {
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-                
                 if (originVolumeName.contains("CellSide1")) {
                     analysisManager->FillH1(0, 1);
                 }
@@ -66,7 +62,7 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 else {
                     G4cout << "Something Unexpected Happend" << G4endl;
                 }
-                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else if (originVolumeName.contains("Fiber")){
                 analysisManager->FillH1(0, 6);
