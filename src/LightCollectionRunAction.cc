@@ -75,8 +75,10 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("fibDetIndex", "Fiber Detector Index", 100, 0, 100);
     
     //index 6
-    analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
-    
+    analysisManager->CreateH1("numFibSecondaries", "Number of Secondaries in WLS Fiber", 10, 0, 9);
+
+    //index 7
+    analysisManager->CreateH1("numTPBSecondaries", "Number of Secondaries in WLS TPB", 10, 0, 9);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
