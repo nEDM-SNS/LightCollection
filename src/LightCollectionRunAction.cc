@@ -63,12 +63,15 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced by WLS Process", 100, 300., 800.);
     
     // index 2
-    analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
+    analysisManager->CreateH1("wlsTPBSpectrum", "Wavelength of photons produced by WLS Process", 100, 300., 800.);
     
     // index 3
+    analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
+    
+    // index 4
     analysisManager->CreateH1("detIndex", "Detector Index", 100, 0, 100);
     
-    //index 4
+    //index 5
     analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
   
     
