@@ -47,8 +47,8 @@ private:
     G4bool m_SqureTubeReflector;
     G4int m_NumberOfFibers;
     G4double m_FiberSpacing;
-    G4double m_TPB_outerFraction;
-
+    G4double m_TPB_outerThickness;
+    G4double m_TPB_Thickness;
     
 };
 

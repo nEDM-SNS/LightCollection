@@ -52,8 +52,10 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_SqureTubeReflector = true;
     m_NumberOfFibers = 98;
     m_FiberSpacing = 0.103*cm;
-    m_TPB_outerFraction = 0.99;
 
+    // TPB Params
+    m_TPB_Thickness = .1*mm;
+    m_TPB_outerThickness = 5*nm;
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
@@ -107,9 +109,6 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     G4double cellWidth= 2*5.08*cm;
     G4double cellThickness = 2*0.635*cm;
     G4double cellLength= 2*20.64*cm;
-    
-    G4double TPB_Thickness = 0.001*cm;
-    G4double TPB_outerThickness = m_TPB_outerFraction*TPB_Thickness;
 
     
     // Liquid Helium Volume
@@ -155,12 +154,12 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Create TPB Interface Layer
     G4Box* TPBInterface1_solid = new G4Box(TPBInterface1Name,
                                           cellWidth/2.,
-                                          TPB_Thickness/2.,
+                                          m_TPB_Thickness/2.,
                                           cellLength/2.);
     
     G4LogicalVolume* TPBInterface1_log = new G4LogicalVolume(TPBInterface1_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface1Name);
     
-    G4ThreeVector TPBInterface1_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    G4ThreeVector TPBInterface1_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface1_pos,
                       TPBInterface1_log,
@@ -177,13 +176,13 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     G4Box* TPBInterface_outer1_solid = new G4Box(TPBInterfaceOuter1Name,
                                                 cellWidth/2,
-                                                TPB_outerThickness/2,
+                                                m_TPB_outerThickness/2,
                                                 cellLength/2);
     
     
     G4LogicalVolume* TPBInterface_outer1_log = new G4LogicalVolume(TPBInterface_outer1_solid,m_Materials->GetMaterial("TPB_outer"),TPBInterfaceOuter1Name);
     
-    G4ThreeVector TPBInterface_outer1_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    G4ThreeVector TPBInterface_outer1_pos = G4ThreeVector(0.,(m_TPB_Thickness-m_TPB_outerThickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface_outer1_pos,
                       TPBInterface_outer1_log,
@@ -515,12 +514,12 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Create TPB Interface Layer
     G4Box* TPBInterface2_solid = new G4Box(TPBInterface2Name,
                                            cellWidth/2.,
-                                           TPB_Thickness/2.,
+                                           m_TPB_Thickness/2.,
                                            cellLength/2.);
     
     G4LogicalVolume* TPBInterface2_log = new G4LogicalVolume(TPBInterface2_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface2Name);
     
-    G4ThreeVector TPBInterface2_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    G4ThreeVector TPBInterface2_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface2_pos,
                       TPBInterface2_log,
@@ -537,13 +536,13 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     G4Box* TPBInterface_outer2_solid = new G4Box(TPBInterfaceOuter2Name,
                                                  cellWidth/2,
-                                                 TPB_outerThickness/2,
+                                                 m_TPB_outerThickness/2,
                                                  cellLength/2);
     
     
     G4LogicalVolume* TPBInterface_outer2_log = new G4LogicalVolume(TPBInterface_outer2_solid,m_Materials->GetMaterial("TPB_outer"),TPBInterfaceOuter2Name);
     
-    G4ThreeVector TPBInterface_outer2_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    G4ThreeVector TPBInterface_outer2_pos = G4ThreeVector(0.,(m_TPB_Thickness-m_TPB_outerThickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface_outer2_pos,
                       TPBInterface_outer2_log,
@@ -611,12 +610,12 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Create TPB Interface Layer
     G4Box* TPBInterface3_solid = new G4Box(TPBInterface3Name,
                                            cellWidth/2.,
-                                           TPB_Thickness/2.,
+                                           m_TPB_Thickness/2.,
                                            cellLength/2.);
     
     G4LogicalVolume* TPBInterface3_log = new G4LogicalVolume(TPBInterface3_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface3Name);
     
-    G4ThreeVector TPBInterface3_pos = G4ThreeVector(0.,(cellThickness-TPB_Thickness)/2.,0.);
+    G4ThreeVector TPBInterface3_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface3_pos,
                       TPBInterface3_log,
@@ -633,13 +632,13 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     G4Box* TPBInterface_outer3_solid = new G4Box(TPBInterfaceOuter3Name,
                                                  cellWidth/2,
-                                                 TPB_outerThickness/2,
+                                                 m_TPB_outerThickness/2,
                                                  cellLength/2);
     
     
     G4LogicalVolume* TPBInterface_outer3_log = new G4LogicalVolume(TPBInterface_outer3_solid,m_Materials->GetMaterial("TPB_outer"),TPBInterfaceOuter3Name);
     
-    G4ThreeVector TPBInterface_outer3_pos = G4ThreeVector(0.,(TPB_Thickness-TPB_outerThickness)/2.,0.);
+    G4ThreeVector TPBInterface_outer3_pos = G4ThreeVector(0.,(m_TPB_Thickness-m_TPB_outerThickness)/2.,0.);
     
     new G4PVPlacement(0,TPBInterface_outer3_pos,
                       TPBInterface_outer3_log,
