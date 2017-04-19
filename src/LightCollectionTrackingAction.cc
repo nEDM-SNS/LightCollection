@@ -24,6 +24,7 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
         analysisManager->FillH1(0, -1);
     }
     else if(aTrack->GetParentID()>0){
+        G4cout << "ParentID = " << aTrack->GetParentID();
         // particle is secondary
         if (aTrack->GetCreatorProcess()->GetProcessName() == "OpWLS") {
             analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);

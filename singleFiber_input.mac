@@ -22,7 +22,8 @@
 #/gps/direction 1 0 0
 
 /LightCollection/run/setFileName output/singleFiberTest
-/run/beamOn 1000
+/LightCollection/det/fiberHalfLength 100 cm
+/run/beamOn 100000
 
 #/LightCollection/det/fiberHalfLength 1 cm
 #/LightCollection/run/setFileName output/fiberAtten_1cm

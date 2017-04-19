@@ -62,10 +62,10 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if (thePostPVname.contains( "fibDet1")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+                G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
                 
                 analysisManager->FillH1(0, 1);
-                analysisManager->FillH1(2, cosTheta);
+                analysisManager->FillH1(2, sinTheta);
                 analysisManager->FillH1(4, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
                 analysisManager->FillH1(5, thePrePoint->GetKineticEnergy()/eV);
                 
@@ -73,10 +73,10 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if(thePostPVname.contains("fibDet2")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                G4double cosTheta = thePrePoint->GetMomentumDirection().z();
+                G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
                 
                 analysisManager->FillH1(0, 2);
-                analysisManager->FillH1(3, cosTheta);
+                analysisManager->FillH1(3, sinTheta);
                 analysisManager->FillH1(4, h_Planck*c_light/thePrePoint->GetKineticEnergy()/nm);
                 analysisManager->FillH1(5, thePrePoint->GetKineticEnergy()/eV);
                 

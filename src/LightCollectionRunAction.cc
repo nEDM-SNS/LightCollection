@@ -63,10 +63,10 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in fibers", 100, 300., 800.);
     
     // index 2
-    analysisManager->CreateH1("cosThetaPosz", "Cosine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
+    analysisManager->CreateH1("sinThetaPosz", "Sine of the exit angle for +z end of fiber", 100, -1.001, 1.001);
     
     // index 3
-    analysisManager->CreateH1("cosThetaNegz", "Cosine of the exit angle for -z end of fiber", 100, -1.001, 1.001);
+    analysisManager->CreateH1("sinThetaNegz", "Sine of the exit angle for -z end of fiber", 100, -1.001, 1.001);
     
     // index 4
     analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
