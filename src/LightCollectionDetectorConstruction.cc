@@ -109,12 +109,14 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     G4double cellWidth= 2*5.08*cm;
     G4double cellThickness = 2*0.635*cm;
     G4double cellLength= 2*20.64*cm;
+    G4double lightGuideLength = 2.0*m;
 
     
     // Liquid Helium Volume
     
     G4String LHeName = "LHE";
-    G4double fLHELength = 1.9*m;
+//    G4double fLHELength = 1.9*m;
+    G4double fLHELength = 10.*m;
     G4double fLHERadius = 1.*m;
     
     G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),m_Materials->GetMaterial("SuperfluidHelium"),LHeName);
@@ -505,7 +507,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     G4Box* cellSide2_solid = new G4Box(side2Name,
                                        cellWidth/2.,
                                        cellThickness/2.,
-                                       cellLength/2.);
+                                       (cellLength+lightGuideLength)/2.);
     
     G4LogicalVolume* logicCellSide2 = new G4LogicalVolume(cellSide2_solid,m_Materials->GetMaterial("PMMA"),side2Name);
     
@@ -519,7 +521,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     G4LogicalVolume* TPBInterface2_log = new G4LogicalVolume(TPBInterface2_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface2Name);
     
-    G4ThreeVector TPBInterface2_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,0.);
+    G4ThreeVector TPBInterface2_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,-1.*lightGuideLength/2.);
     
     new G4PVPlacement(0,TPBInterface2_pos,
                       TPBInterface2_log,
@@ -554,7 +556,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     TPBInterface_outer2_log->SetVisAttributes(tpbOuter2Vis);
     
     // Place Cell 2
-    G4ThreeVector cell2pos = G4ThreeVector(cellWidth*0.6,cellWidth*0.6,0);
+    G4ThreeVector cell2pos = G4ThreeVector(cellWidth*0.6,cellWidth*0.6,lightGuideLength/2.);
     G4RotationMatrix* cell2rotm = new G4RotationMatrix();
     cell2rotm->rotateZ(-90.*deg);
     
@@ -570,7 +572,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Detecor Placement
     
     new G4PVPlacement(0,                     // rotation
-                      cell2pos+G4ThreeVector(0.,0.,stdDetZPos),  // position
+                      cell2pos+G4ThreeVector(0.,0.,stdDetZPos+lightGuideLength/2.),  // position
                       stdDetLog,        // logical volume
                       side2Name+"/"+stdDetName+"1",   // name
                       fLogicLHE,             // mother volume
@@ -581,7 +583,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     det2Rot->rotateY(180*deg);
     
     new G4PVPlacement(det2Rot,                     // rotation
-                      cell2pos+G4ThreeVector(0.,0.,-1*stdDetZPos),  // position
+                      cell2pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
                       stdDetLog,        // logical volume
                       side2Name+"/"+stdDetName+"2",   // name
                       fLogicLHE,             // mother volume
@@ -601,7 +603,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     G4Box* cellSide3_solid = new G4Box(side3Name,
                                        cellWidth/2.,
                                        cellThickness/2.,
-                                       cellLength/2.);
+                                       (cellLength+lightGuideLength)/2.);
     
     G4LogicalVolume* logicCellSide3 = new G4LogicalVolume(cellSide3_solid,m_Materials->GetMaterial("PMMA"),side3Name);
     
@@ -615,7 +617,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     G4LogicalVolume* TPBInterface3_log = new G4LogicalVolume(TPBInterface3_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface3Name);
     
-    G4ThreeVector TPBInterface3_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,0.);
+    G4ThreeVector TPBInterface3_pos = G4ThreeVector(0.,(cellThickness-m_TPB_Thickness)/2.,-1.*lightGuideLength/2.);
     
     new G4PVPlacement(0,TPBInterface3_pos,
                       TPBInterface3_log,
@@ -650,7 +652,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     TPBInterface_outer3_log->SetVisAttributes(tpbOuter3Vis);
 
     // Place Cell 3
-    G4ThreeVector cell3pos = G4ThreeVector(-1*cellWidth*0.6,cellWidth*0.6,0);
+    G4ThreeVector cell3pos = G4ThreeVector(-1*cellWidth*0.6,cellWidth*0.6,lightGuideLength/2.);
     G4RotationMatrix* cell3rotm = new G4RotationMatrix();
     cell3rotm->rotateZ(90.*deg);
     
@@ -666,7 +668,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Detector placement
     
     new G4PVPlacement(0,                     // rotation
-                      cell3pos+G4ThreeVector(0.,0.,stdDetZPos),  // position
+                      cell3pos+G4ThreeVector(0.,0.,stdDetZPos+lightGuideLength/2.),  // position
                       stdDetLog,        // logical volume
                       side3Name+"/"+stdDetName+"1",   // name
                       fLogicLHE,             // mother volume
@@ -676,7 +678,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     
    new G4PVPlacement(det2Rot,                     // rotation
-                     cell3pos+G4ThreeVector(0.,0.,-1*stdDetZPos),  // position
+                     cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
                      stdDetLog,        // logical volume
                      side3Name+"/"+stdDetName+"2",   // name
                      fLogicLHE,             // mother volume
