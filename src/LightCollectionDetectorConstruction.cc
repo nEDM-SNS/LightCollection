@@ -52,10 +52,10 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CheckOverlaps = false;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = false;
+    m_EmbeddedFibers = true;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
-    m_FullTentReflector = false;
+    m_FullTentReflector = true;
     
     // Cell Size
     m_CellWidth= 2*5.08*cm;
@@ -66,11 +66,14 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_NumberOfFibers = 98;
     //m_NumberOfFibers = 0;
     m_FiberSpacing = 0.103*cm;
-    m_FiberOuterSurfaceRoughness = 0.9;
+    m_FiberOuterSurfaceRoughness = 0.01;
     
     // TPB Params
     m_TPB_Thickness = .1*mm;
-    m_TPB_outerThickness = 5*nm;
+    m_TPB_outerThickness = 0.099*mm;
+    
+    // Outer Reflector reflectivity (in the visible, 0 for UV)
+    m_mirrorReflectivity = 0.96;
     
 }
 
@@ -545,7 +548,7 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
                          dielectric_dielectric);
     
     // Reflectivity of mirror for each photon energy
-    G4double mirror_REFL[kEnergies] = {0.96, 0.96, 0., 0.};
+    G4double mirror_REFL[kEnergies] = {m_mirrorReflectivity, m_mirrorReflectivity, 0., 0.};
     
     //Table of Surface Properties for Mirror
     G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();

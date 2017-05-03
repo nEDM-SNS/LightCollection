@@ -23,8 +23,8 @@
 
 
 
-#/gps/position 0 0.650 0 cm #
-/gps/position 0 5 0 cm #
+/gps/position 0 0.650 0 cm #
+#/gps/position 0 5 0 cm #
 
 /LightCollection/run/setFileName output/Test.root
 /run/beamOn 1

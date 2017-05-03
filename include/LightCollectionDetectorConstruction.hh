@@ -56,6 +56,7 @@ private:
     G4double m_CellWidth;
     G4double m_CellThickness;
     G4double m_CellLength;
+    G4double m_mirrorReflectivity;
 };
 
 #endif
