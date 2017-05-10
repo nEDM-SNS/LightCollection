@@ -56,21 +56,21 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 #endif
 
     
-//    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
+    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
     G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
     
     
     // Ignore steps at world boundary
     if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
     
-//        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
+        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
         
-//        G4String thePrePVname  = " ";
+        G4String thePrePVname  = " ";
         G4String thePostPVname = " ";
         
         if (thePostPV) {
-//            thePrePVname  = thePrePV->GetName();
+            thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
         
@@ -86,6 +86,9 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4cout << "Surface: " << surface->GetName() << G4endl;
         }
 #endif
+        
+        
+
         
 
 
@@ -724,7 +727,28 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             
        }
+     
         
+        
+        
+        // Kill Green Photons that exit fiber (not trapped)
+#if 1
+        G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
+        
+        if (originVolName.contains("WLSFiber")) {
+            
+            if (thePrePVname.contains("WLSFiber") &&
+                (!thePostPVname.contains("WLSFiber") && !thePostPVname.contains("fibDet")))
+            {
+                aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+                
+            }
+
+        }
+        
+        
+        
+#endif
     }
 
 }

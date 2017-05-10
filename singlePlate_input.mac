@@ -1,13 +1,13 @@
 /gps/particle opticalphoton
 #/gps/energy 2.01 eV #Red photon
 #/gps/energy 2.95 eV #blue photon
-#/gps/energy 4.96 eV #250 nm
+/gps/energy 4.96 eV #250 nm
 #/gps/energy 12 eV
-/gps/energy 15.5 eV # 80 nm
+#/gps/energy 15.5 eV # 80 nm
 
 /gps/ang/type beam1d
-/gps/ang/type iso
-#/gps/direction 0 -1 0
+#/gps/ang/type iso
+/gps/direction 0 -1 0
 #/gps/direction 1 0 0
 /gps/polarization 0 0 1 # dummy polarization
 
@@ -27,7 +27,9 @@
 #/gps/position 0 5 0 cm #
 
 /LightCollection/run/setFileName output/Test.root
-/run/beamOn 1
+#/run/beamOn 1
+/run/beamOn 10000
+#/run/beamOn 1000000
 
 #/LightCollection/run/setFileName output/singlePlateTest.root
 #/run/beamOn 1000000

@@ -52,7 +52,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CheckOverlaps = false;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = true;
+    m_EmbeddedFibers = false;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
     m_FullTentReflector = true;
@@ -73,7 +73,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_outerThickness = 0.099*mm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
-    m_mirrorReflectivity = 0.96;
+    m_mirrorReflectivity = 1.00;
     
 }
 
@@ -349,6 +349,12 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         G4String fibDetName = "fibDet";
         G4double fibDetWidth = 0.100*cm;
         G4double fibDetThickness = .1*mm;
+
+//        G4Tubs* fibDetSolid = new G4Tubs(fibDetName,
+//                                         0, fibDetWidth/2.,
+//                                         fibDetThickness/2.,
+//                                         0*deg, 360*deg);
+        
         G4Box* fibDetSolid = new G4Box(fibDetName,
                                        fibDetWidth/2.,
                                        fibDetWidth/2.,
@@ -365,6 +371,11 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         
         // Back Face on Fiber Detectors to block stray photons
         G4String fibDetBackFaceName = fibDetName + "/BackFace";
+        
+//        G4Tubs* fibDetBackFaceSolid = new G4Tubs(fibDetName,
+//                                         0, fibDetWidth/2.,
+//                                         fibDetThickness/4.,
+//                                         0*deg, 360*deg);
         
         G4Box* fibDetBackFaceSolid = new G4Box(fibDetBackFaceName,
                                                fibDetWidth/2.,
@@ -453,67 +464,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         
     }
     
-    //////////////////////////
-    // Std Light Guide Detector Logicals
-    //////////////////////////
-    
-    G4String stdDetName = "StdDet";
-    
-    G4double stdDetThickness = .1*mm;
-    G4double stdDetZPos = m_CellLength/2.+stdDetThickness/2.;
-    
-    G4Box* stdDet_Solid = new G4Box(stdDetName,
-                                    m_CellWidth/2.,
-                                    m_CellThickness/2.,
-                                    stdDetThickness/2.);
-    
-    G4LogicalVolume* stdDetLog = new G4LogicalVolume(stdDet_Solid,m_Materials->GetMaterial("PMMA"),stdDetName);
-    
-    G4VisAttributes* stdDetVis=new G4VisAttributes(G4Color(1.0,0.0,0.0));
-    stdDetVis->SetVisibility(true);
-    stdDetVis->SetForceWireframe(false);
-    stdDetLog->SetVisAttributes(stdDetVis);
-    
-    // Back Face on Fiber Detectors to block stray photons
-    G4String stdDetBackFaceName = stdDetName + "/BackFace";
-    
-    G4Box* stdDetBackFaceSolid = new G4Box(stdDetBackFaceName,
-                                           m_CellWidth/2.,
-                                           m_CellThickness/2.,
-                                           stdDetThickness/4);
-    
-    G4LogicalVolume* stdDetBackFaceLog = new G4LogicalVolume(stdDetBackFaceSolid,m_Materials->GetMaterial("PMMA"),stdDetBackFaceName);
-    
-    G4ThreeVector stdDetBackFacePos = G4ThreeVector(0.,0.,stdDetThickness/4);
-    
-    new G4PVPlacement(0,stdDetBackFacePos,stdDetBackFaceLog,stdDetBackFaceName,stdDetLog,false,0,m_CheckOverlaps);
-    
-    G4VisAttributes* stdDetBackFaceVis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
-    stdDetBackFaceVis->SetVisibility(true);
-    stdDetBackFaceLog->SetVisAttributes(stdDetBackFaceVis);
 
-    
-    
-    // Detecor Placement
-    
-    new G4PVPlacement(0,                     // rotation
-                      G4ThreeVector(0.,0.,stdDetZPos),  // position
-                      stdDetLog,        // logical volume
-                      stdDetName+"1",   // name
-                      m_LogicHall,             // mother volume
-                      false,                 // no boolean operations
-                      0,m_CheckOverlaps);                    // not a copy
-    
-    G4RotationMatrix* det2Rot = new G4RotationMatrix();
-    det2Rot->rotateY(180*deg);
-    
-    new G4PVPlacement(det2Rot,                     // rotation
-                      G4ThreeVector(0.,0.,-1*stdDetZPos),  // position
-                      stdDetLog,        // logical volume
-                      stdDetName+"2",   // name
-                      m_LogicHall,             // mother volume
-                      false,                 // no boolean operations
-                      0,m_CheckOverlaps);                    // not a copy
     
 }
 
@@ -539,8 +490,8 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     
     
     // Photon Energies for which mirror properties will be given
-    const G4int kEnergies = 4;
-    G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 5.*eV, 16*eV};
+    const G4int kEnergies = 5;
+    G4double the_photon_energies_[kEnergies] = {2.034*eV, 3.7*eV, 4.136*eV, 5.*eV, 16*eV};
     
     // Optical Surface for mirror
     G4OpticalSurface* mirror_surface_ =
@@ -548,7 +499,7 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
                          dielectric_dielectric);
     
     // Reflectivity of mirror for each photon energy
-    G4double mirror_REFL[kEnergies] = {m_mirrorReflectivity, m_mirrorReflectivity, 0., 0.};
+    G4double mirror_REFL[kEnergies] = {0., m_mirrorReflectivity, m_mirrorReflectivity, 0., 0.};
     
     //Table of Surface Properties for Mirror
     G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
