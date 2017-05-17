@@ -360,10 +360,10 @@ void nEDMMaterials::CreateMaterials()
 
     G4double absWLSfiber[] =
         {1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,
-        1.0*km,1.0*km,1.0*m,1.0*km,1.0*km,100.0*m,20.0*m,10.0*m,5.40*m,2.63*m,
-        1.05*m,2.24*mm,1.02*mm,0.63*mm,0.59*mm,0.705*mm,0.786*mm,0.59*mm,0.34*mm,0.705*mm,
+        1.0*km,1.0*km,1.0*km,1.0*km,1.0*km,100.0*m,20.0*m,10.0*m,5.40*m,2.63*m,
+        1.05*m,2.24*mm,1.02*mm,0.63*mm,0.59*mm,0.705*mm,0.786*mm,0.59*mm,0.65*mm,0.705*mm,
         0.745*mm, 0.92*mm, 1.13*mm, 1.2*mm, 1.40*mm, 1.83*mm, 1.85*mm, 2.77*mm, 2.99*mm, 3.53*mm,
-        4.3*mm, 8.3*mm, 9.1*mm, 11.49*mm, 12.69*mm,20.61*mm, 1.*mm, 25.9*mm, 28.8*mm, 34.7*mm};
+        4.3*mm, 8.3*mm, 9.1*mm, 11.49*mm, 12.69*mm,20.61*mm, 23.*mm, 25.9*mm, 28.8*mm, 34.7*mm};
 
 
     assert(sizeof(absWLSfiber) == sizeof(photonEnergy));
@@ -515,21 +515,21 @@ void nEDMMaterials::CreateMaterials()
     
     G4double absTPB[] =
     {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
-        0.25*mm, 10.*m, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm,
-        0.004*mm, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
-        10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 0.018*mm, 0.018*mm, 0.018*mm, 10.*m, 10.*m,
-        10.*m, 10.*m, 10.*m, 10.*m, 10.*m};
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+        1.*km, 1.*km, 1.*km, 1.*km, 1.*km};
     
     assert(sizeof(absTPB) == sizeof(acrylicPhotonEnergy));
     
     G4double absWLSTPB[] =
     {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
         1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-        0.045*mm, 0.049*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
-        0.01*mm, 10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,
-        10.*m, 10.*m, 10.*m, 10.*m, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm,
-        .049*mm, .049*mm, .049*mm, 10.*nm, 10.*nm};
+        1.*km, 1.*km, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm,
+        10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm,  10.*nm, 10.*nm,
+        10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm,  10.*nm, 10.*nm,
+        10.*nm, 10.*nm, 10.*nm, 10.*nm, 10.*nm,};
     
     assert(sizeof(absWLSTPB) == sizeof(acrylicPhotonEnergy));
     
