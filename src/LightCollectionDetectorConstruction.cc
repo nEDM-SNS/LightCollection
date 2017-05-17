@@ -491,7 +491,7 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     
     // Photon Energies for which mirror properties will be given
     const G4int kEnergies = 5;
-    G4double the_photon_energies_[kEnergies] = {2.034*eV, 3.7*eV, 4.136*eV, 5.*eV, 16*eV};
+    G4double the_photon_energies_[kEnergies] = {2.0*eV, 2.63*eV, 4.136*eV, 5.*eV, 16*eV};
     
     // Optical Surface for mirror
     G4OpticalSurface* mirror_surface_ =
