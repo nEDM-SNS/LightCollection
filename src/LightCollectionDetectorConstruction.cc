@@ -490,8 +490,9 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     
     
     // Photon Energies for which mirror properties will be given
-    const G4int kEnergies = 5;
-    G4double the_photon_energies_[kEnergies] = {0.0*eV, 2.55*eV, 4.136*eV, 5.*eV, 16*eV};
+    const G4int kEnergies = 6;
+    G4double the_photon_energies_[kEnergies] = {0.0*eV, 2.64*eV, 2.65*eV, 3.10*eV, 3.11*eV, 16*eV};
+    // Wavelengths {inf, 469nm, 468nm, 400, 399nm, 78nm}
     
     // Optical Surface for mirror
     G4OpticalSurface* mirror_surface_ =
@@ -499,7 +500,7 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
                          dielectric_dielectric);
     
     // Reflectivity of mirror for each photon energy
-    G4double mirror_REFL[kEnergies] = {0., m_mirrorReflectivity, m_mirrorReflectivity, 0., 0.};
+    G4double mirror_REFL[kEnergies] = {0., 0., m_mirrorReflectivity, m_mirrorReflectivity, 0., 0.};
     
     //Table of Surface Properties for Mirror
     G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
