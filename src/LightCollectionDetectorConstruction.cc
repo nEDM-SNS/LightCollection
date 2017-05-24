@@ -52,7 +52,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CheckOverlaps = false;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = false;
+    m_EmbeddedFibers = true;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
     m_FullTentReflector = true;
@@ -73,7 +73,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_outerThickness = 0.099*mm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
-    m_mirrorReflectivity = 1.00;
+    m_mirrorReflectivity = 0.96;
     
 }
 
@@ -491,7 +491,7 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     
     // Photon Energies for which mirror properties will be given
     const G4int kEnergies = 5;
-    G4double the_photon_energies_[kEnergies] = {2.0*eV, 2.63*eV, 4.136*eV, 5.*eV, 16*eV};
+    G4double the_photon_energies_[kEnergies] = {0.0*eV, 2.55*eV, 4.136*eV, 5.*eV, 16*eV};
     
     // Optical Surface for mirror
     G4OpticalSurface* mirror_surface_ =

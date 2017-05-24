@@ -28,7 +28,7 @@
 
 /LightCollection/run/setFileName output/Test.root
 #/run/beamOn 1
-/run/beamOn 10000
+/run/beamOn 1000
 
 #/LightCollection/run/setFileName output/singlePlateTest.root
 #/run/beamOn 1000000
