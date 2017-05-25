@@ -7,6 +7,7 @@ LightCollectionEventInformation::LightCollectionEventInformation()
     detector1 = 0;
     detector2 = 0;
     detector3 = 0;
+    TPBWavelength = 0;
 }
 
 LightCollectionEventInformation::~LightCollectionEventInformation() {}

@@ -42,8 +42,8 @@
 
 /vis/modeling/trajectories/create/drawByAttribute
 /vis/modeling/trajectories/drawByAttribute-0/setAttribute IKE
-/vis/modeling/trajectories/drawByAttribute-0/addInterval interval1 0.0 eV 2.5 eV
-/vis/modeling/trajectories/drawByAttribute-0/addInterval interval2 2.5 eV 10.0 eV
+/vis/modeling/trajectories/drawByAttribute-0/addInterval interval1 0.0 eV 2.65 eV
+/vis/modeling/trajectories/drawByAttribute-0/addInterval interval2 2.65 eV 10.0 eV
 /vis/modeling/trajectories/drawByAttribute-0/interval1/setLineColour green
 /vis/modeling/trajectories/drawByAttribute-0/interval2/setLineColour blue
 

@@ -103,6 +103,10 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
                 analysisManager->FillH1(6, aStep->GetNumberOfSecondariesInCurrentStep());
+                
+                LightCollectionEventInformation* eventInfo = (LightCollectionEventInformation*)G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetUserInformation();
+                
+                eventInfo->TPBWavelength = h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm;
             }
             else{
                 G4cout << "Something Unexpected Happened" << G4endl;

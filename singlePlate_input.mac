@@ -22,13 +22,13 @@
 #/run/beamOn 10000
 
 
-
+#/gps/position 100 0 0 um #
 /gps/position 0 0.650 0 cm #
 #/gps/position 0 5 0 cm #
 
-/LightCollection/run/setFileName output/Test.root
+#/LightCollection/run/setFileName output/Test.root
 #/run/beamOn 1
-/run/beamOn 1000
+#/run/beamOn 1000
 
-#/LightCollection/run/setFileName output/singlePlateTest.root
-#/run/beamOn 1000000
+/LightCollection/run/setFileName output/singlePlateTest.root
+/run/beamOn 10000

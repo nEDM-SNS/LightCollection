@@ -69,11 +69,13 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_FiberOuterSurfaceRoughness = 0.01;
     
     // TPB Params
+    G4double tpbOuterFraction = 0.01;
     m_TPB_Thickness = .1*mm;
-    m_TPB_outerThickness = 0.099*mm;
+    m_TPB_outerThickness = tpbOuterFraction*m_TPB_Thickness;
+//    m_TPB_outerThickness = 0.099*mm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
-    m_mirrorReflectivity = 0.96;
+    m_mirrorReflectivity = 1.0;
     
 }
 

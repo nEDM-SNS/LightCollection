@@ -12,6 +12,8 @@ public:
     
     inline virtual void Print()const{};
     
+    G4double TPBWavelength;
+    
     void Detected(G4int detector, G4double ene);
     
     G4int GetDetector1(){return detector1;}
