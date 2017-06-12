@@ -318,12 +318,24 @@ void nEDMMaterials::CreateMaterials()
     assert(sizeof(refractiveIndexPMMA) == sizeof(acrylicPhotonEnergy));
 
     G4double absPMMA[] =
-    {10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
-        5.*m, 5.*m, 5.*m, 5.*m, 5.*m, 1.*m, 1.*m, 1.*m, 1.*m, 1.*m,
-        50.*cm, 50.*cm, 50.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm,
-        20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 10.*cm, 7.5*cm, 4.*cm, 1.*cm, 6.*mm,
-        3.*mm, 2.*mm, 1.*mm, 1.*mm, 1.*mm, 1.*nm, 1.*nm, 1.*nm, 1.*nm, 1.*nm,
-        1.*nm, 1.*nm, 1.*nm, 1.*nm, 1.*nm};
+     {10.*km, 10.*km, 10.*km, 10.*km, 10.*km, 10.*km, 10.*km, 10.*km, 10.*km, 10.*km,
+      7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km,
+      7.5*km , 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km,7.5*km,
+      14.*cm, 14.*cm, 14.*cm, 14.*cm, 14.*cm, 14*cm, 136*mm, 135.26*mm,
+      54.59*mm, 45.36*mm, 26.73*mm, 12.58*mm, 7.81*mm, 5.58*mm, 3.57*mm,
+      2.89*mm,2.11*mm,0.83*mm,0.74*mm,0.61*mm,0.47*mm,0.35*mm, 1.*nm, 1.*nm, 1.*nm, 1.*nm};
+     // The array is caculated based on the document for G-UVT material
+    
+  //  {10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
+  //      5.*m, 5.*m, 5.*m, 5.*m, 5.*m, 1.*m, 1.*m, 1.*m, 1.*m, 1.*m,
+  //      50.*cm, 50.*cm, 50.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm,
+  //      20.*cm, 20.*cm, 20.*cm, 20.*cm, 20.*cm, 10.*cm, 7.5*cm, 4.*cm, 1.*cm, 6.*mm,
+   //     3.*mm, 2.*mm, 1.*mm, 1.*mm, 1.*mm, 1.*nm, 1.*nm, 1.*nm, 1.*nm, 1.*nm,
+   //     1.*nm, 1.*nm, 1.*nm, 1.*nm, 1.*nm};
+   	
+	
+	
+	
     
     assert(sizeof(absPMMA) == sizeof(acrylicPhotonEnergy));
 
@@ -540,6 +552,15 @@ void nEDMMaterials::CreateMaterials()
         0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
         0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
         0.00, 0.00, 0.00, 0.00, 0.00};
+// {0, 0, 0, 0, 0, 0, 0,  0, 0, 0,
+//        0, 0, 0, 6.5, 7.5, 8.95, 8.00, 5.60, 0, 0,
+//        0, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
+//        0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
+//        0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
+//        0.00, 0.00, 0.00, 0.00, 0.00};
+// Temporary emission array to eliminate the photon loss from spectrum overlap 	
+	
+	
     
     assert(sizeof(emissionTPB) == sizeof(acrylicPhotonEnergy));
 
