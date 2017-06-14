@@ -69,10 +69,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_FiberOuterSurfaceRoughness = 0.01;
     
     // TPB Params
-    G4double tpbOuterFraction = 0.01;
-    m_TPB_Thickness = .1*mm;
-    m_TPB_outerThickness = tpbOuterFraction*m_TPB_Thickness;
-//    m_TPB_outerThickness = 0.099*mm;
+    m_TPB_Thickness = .001*mm;
+    m_TPB_outerThickness = 10.*nm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
     m_mirrorReflectivity = 1.0;
@@ -172,9 +170,9 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
     G4String TPBInterfaceOuter1Name = side1Name + "/TPB_outer";
     
     G4Box* TPBInterface_outer1_solid = new G4Box(TPBInterfaceOuter1Name,
-                                                 m_CellWidth/2,
-                                                 m_TPB_outerThickness/2,
-                                                 m_CellLength/2);
+                                                 m_CellWidth/2.,
+                                                 m_TPB_outerThickness/2.,
+                                                 m_CellLength/2.);
     
     
     G4LogicalVolume* TPBInterface_outer1_log = new G4LogicalVolume(TPBInterface_outer1_solid,m_Materials->GetMaterial("TPB_outer"),TPBInterfaceOuter1Name);

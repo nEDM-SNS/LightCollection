@@ -98,6 +98,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
                 analysisManager->FillH1(5, aStep->GetNumberOfSecondariesInCurrentStep());
+                analysisManager->FillH1(7, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
+
             }
             else if (thePostPVname.contains("CellSide"))
             {
