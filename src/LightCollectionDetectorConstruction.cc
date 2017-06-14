@@ -49,10 +49,10 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
 {
     // G4 Specific Flags
     m_StepLimit = NULL;
-    m_CheckOverlaps = false;
+    m_CheckOverlaps = true;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = true;
+    m_EmbeddedFibers = false;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
     m_FullTentReflector = true;
@@ -66,7 +66,9 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_NumberOfFibers = 98;
     //m_NumberOfFibers = 0;
     m_FiberSpacing = 0.103*cm;
-    m_FiberOuterSurfaceRoughness = 0.01;
+    m_FiberOuterSurfaceSmoothness = 0.01;
+    m_fiberLength = 2*50.*cm;
+
     
     // TPB Params
     m_TPB_Thickness = .001*mm;
@@ -90,7 +92,7 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     // World volume
     G4double world_x = 1.0*m;
     G4double world_y = 1.0*m;
-    G4double world_z = 1.0*m;
+    G4double world_z = 2.0*m;
     
     G4String worldName = "World";
     G4Box* solidHall = new G4Box(worldName, world_x/2., world_y/2., world_z/2.);
@@ -207,20 +209,19 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         G4double fiberRmin = 0.*cm;
         G4double fiberRmax = 0.100*cm/2;
         
-        G4double fiberLength    = 2*20.64*cm;
         G4double fiberSphi = 0.00*deg;
         G4double fiberEphi = 360.*deg;
         
         G4double fClad1_rmin = 0.*cm;
         G4double fClad1_rmax = fiberRmax - 0.003*cm;
         
-        G4double fClad1_z    = fiberLength;
+        G4double fClad1_z    = m_fiberLength;
         G4double fClad1_sphi = fiberSphi;
         G4double fClad1_ephi = fiberEphi;
         
         G4double fFiber_rmin = 0.00*cm;
         G4double fFiber_rmax = fClad1_rmax - 0.003*cm;
-        G4double fFiber_z    = fiberLength;
+        G4double fFiber_z    = m_fiberLength;
         G4double fFiber_sphi = fClad1_sphi;
         G4double fFiber_ephi = fClad1_ephi;
         
@@ -237,7 +238,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         G4String OuterCladdingName = "WLSFiberOuterCladding";
         
         G4Tubs* fiberTube =
-        new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,fiberLength/2,fiberSphi,
+        new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,m_fiberLength/2,fiberSphi,
                    fiberEphi);
         
         G4LogicalVolume* fiberLog =
@@ -395,7 +396,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         
         // Place Physical Fibers and Detectors
         
-        G4double fibDetZPos = fiberLength/2.+fibDetThickness/2.;
+        G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2.;
         
         G4RotationMatrix* det2Rot = new G4RotationMatrix();
         det2Rot->rotateY(180*deg);
@@ -431,7 +432,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
             
         }
         
-        if (m_FiberOuterSurfaceRoughness < 1.){
+        if (m_FiberOuterSurfaceSmoothness < 1.){
             // Boundary Surface Properties
             
             G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -439,7 +440,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
             fiberOpticalSurface->SetModel(glisur);
             fiberOpticalSurface->SetFinish(ground);
             fiberOpticalSurface->SetType(dielectric_dielectric);
-            fiberOpticalSurface->SetPolish(m_FiberOuterSurfaceRoughness);
+            fiberOpticalSurface->SetPolish(m_FiberOuterSurfaceSmoothness);
             
             G4VPhysicalVolume* outerVol;
             if (m_EmbeddedFibers) {outerVol = physCellSide1;}
@@ -477,16 +478,20 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     G4double topReflRad = m_CellWidth;
     G4Tubs* TopSolid = new G4Tubs("InnerReflector",topReflRad,topReflRad+.1*cm,m_CellLength/2*1.5,.215*CLHEP::pi,.57*CLHEP::pi);
     
+    G4Box* HoleSolid = new G4Box("ReflectorFiberHole",m_CellWidth/2.,0.110*cm/2,0.1*cm);
+    
     G4Tubs* EndSolid = new G4Tubs("EndSolid",0,topReflRad+.1*cm,.1*cm,.215*CLHEP::pi,.57*CLHEP::pi);
+
+    G4SubtractionSolid* CutEndSolid = new G4SubtractionSolid("CutEndSolid", EndSolid, HoleSolid, 0, G4ThreeVector(0.,5./8.*topReflRad+m_CellThickness/2.-0.110*cm/2.,0.));
+
+    G4UnionSolid* TempRefl1 = new G4UnionSolid("tempRefl1",BottomSolid,CutEndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,m_CellLength/2*1.5));
     
-    G4UnionSolid* TempRefl1 = new G4UnionSolid("tempRefl1",BottomSolid,EndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,m_CellLength/2*1.5));
+    G4UnionSolid* TempRefl2 = new G4UnionSolid("tempRefl2",TempRefl1,CutEndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,-1*m_CellLength/2*1.5));
+
+//    G4UnionSolid* SolidReflector = new G4UnionSolid("Reflector", TempRefl2, TopSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,0.));
+//
     
-    G4UnionSolid* TempRefl2 = new G4UnionSolid("tempRefl2",TempRefl1,EndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,-1*m_CellLength/2*1.5));
-    
-    G4UnionSolid* SolidReflector = new G4UnionSolid("Reflector", TempRefl2, TopSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,0.));
-    
-    
-    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
+    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(TempRefl2, G4Material::GetMaterial("PMMA"), "Reflector");
     
     
     // Photon Energies for which mirror properties will be given

@@ -52,11 +52,12 @@ private:
     G4double m_FiberSpacing;
     G4double m_TPB_outerThickness;
     G4double m_TPB_Thickness;
-    G4double m_FiberOuterSurfaceRoughness;
+    G4double m_FiberOuterSurfaceSmoothness;
     G4double m_CellWidth;
     G4double m_CellThickness;
     G4double m_CellLength;
     G4double m_mirrorReflectivity;
+    G4double m_fiberLength;
 };
 
 #endif
