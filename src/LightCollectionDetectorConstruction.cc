@@ -488,10 +488,10 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     
     G4UnionSolid* TempRefl2 = new G4UnionSolid("tempRefl2",TempRefl1,CutEndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,-1*m_CellLength/2*1.5));
 
-//    G4UnionSolid* SolidReflector = new G4UnionSolid("Reflector", TempRefl2, TopSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,0.));
-//
+    G4UnionSolid* SolidReflector = new G4UnionSolid("Reflector", TempRefl2, TopSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,0.));
+
     
-    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(TempRefl2, G4Material::GetMaterial("PMMA"), "Reflector");
+    G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
     
     
     // Photon Energies for which mirror properties will be given
