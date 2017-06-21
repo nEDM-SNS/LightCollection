@@ -30,3 +30,36 @@
 /run/beamOn 1
 #/run/beamOn 1000
 #/run/beamOn 1000000
+
+#/gps/position 2.12 7.55 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle225n
+#/run/beamOn 100000
+
+#/gps/position 3 6.635 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle270n
+#/run/beamOn 100000
+
+#/gps/position 2.12 3.515 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle315n
+#/run/beamOn 100000
+
+#/gps/position 0 2.635 0 cm # around
+#/LightCollection/run/setFileName output001/angle360n
+#/run/beamOn 100000
+
+#/gps/position -2.12 3.515 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle45n
+#/run/beamOn 100000
+
+/gps/position -3 5.635 0 cm # on rod
+/LightCollection/run/setFileName angle90/TPB5nm_ref_emb
+/run/beamOn 100000
+
+#/gps/position -2.12 7.55 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle135n
+#/run/beamOn 100000
+
+#/gps/position 0 10.635 0 cm # on rod
+#/LightCollection/run/setFileName output001/angle180n
+#/run/beamOn 100000
+
