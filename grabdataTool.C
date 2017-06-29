@@ -1,3 +1,5 @@
+// This file should be saved to the root directory 
+
 #include "TFile.h"
 #include "TH1.h"
 #include <iostream>
