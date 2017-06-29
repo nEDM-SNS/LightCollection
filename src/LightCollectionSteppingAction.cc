@@ -124,8 +124,12 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if (thePostPVname.contains( "fibDet1_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
                 analysisManager->FillH1(0, 7);
                 analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
+                G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
+                analysisManager->FillH1(8, sinTheta);
+
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
                 if (thePostPVname== "fibDet1_1"){
@@ -428,8 +432,12 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             else if(thePostPVname.contains("fibDet2_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                
                 analysisManager->FillH1(0, 8);
                 analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
+                G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
+                analysisManager->FillH1(9, sinTheta);
+
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
                 if (thePostPVname== "fibDet2_1"){

@@ -72,7 +72,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     
     // TPB Params
     m_TPB_Thickness = .001*mm;
-    m_TPB_outerThickness = 10.*nm;
+    m_TPB_outerThickness = 0.1*nm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
     m_mirrorReflectivity = 1.0;
@@ -145,6 +145,40 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
                                        m_CellLength/2.);
     
     G4LogicalVolume* logicCellSide1 = new G4LogicalVolume(cellSide1_solid,m_Materials->GetMaterial("PMMA"),side1Name);
+    
+    G4String RoughSideName = side1Name + "/RoughSide";
+    
+    G4Box* roughSide_solid = new G4Box(RoughSideName, m_TPB_Thickness/2., (m_CellThickness-m_TPB_Thickness)/2., m_CellLength/2.);
+    
+    G4LogicalVolume* logicRoughSide = new G4LogicalVolume(roughSide_solid, m_Materials->GetMaterial("PMMA"), RoughSideName);
+    
+    G4ThreeVector roughSide1Pos = G4ThreeVector((m_CellWidth-m_TPB_Thickness)/2.,-1.*m_TPB_Thickness/2.,0.);
+    G4ThreeVector roughSide2Pos = G4ThreeVector(-1*(m_CellWidth-m_TPB_Thickness)/2.,-1.*m_TPB_Thickness/2.,0.);
+    
+    G4VPhysicalVolume* roughSidePhys1 = new G4PVPlacement(0, roughSide1Pos, logicRoughSide, RoughSideName+"1", logicCellSide1, false, 0, m_CheckOverlaps);
+    
+    G4VPhysicalVolume* roughSidePhys2 = new G4PVPlacement(0, roughSide2Pos, logicRoughSide, RoughSideName+"2", logicCellSide1, false, 0, m_CheckOverlaps);
+    
+    G4VisAttributes* roughSidevis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+    roughSidevis->SetVisibility(true);
+    logicRoughSide->SetVisAttributes(roughSidevis);
+    
+    G4OpticalSurface* cellRoughOpticalSurface =new G4OpticalSurface("cellRoughOpSurface");
+    
+    cellRoughOpticalSurface->SetModel(glisur);
+    cellRoughOpticalSurface->SetFinish(ground);
+    cellRoughOpticalSurface->SetType(dielectric_dielectric);
+    cellRoughOpticalSurface->SetPolish(0.9);
+
+    new G4LogicalBorderSurface("cellRoughSurface1",
+                               roughSidePhys1,
+                               m_PhysHall,
+                               cellRoughOpticalSurface);
+    
+    new G4LogicalBorderSurface("cellRoughSurface2",
+                               roughSidePhys2,
+                               m_PhysHall,
+                               cellRoughOpticalSurface);
     
     G4String TPBInterface1Name = side1Name + "/TPBInterface";
     

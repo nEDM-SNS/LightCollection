@@ -79,6 +79,13 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
   
     // index 7
     analysisManager->CreateH1("fibConvSpectrum", "Wavelength of incoming photons converted by WLS Process in fibers", 100, 300., 800.);
+    
+    // index 8
+    analysisManager->CreateH1("sinThetaPosz", "Sine of the exit angle for +z end of fiber", 50, -1.001, 1.001);
+    
+    // index 9
+    analysisManager->CreateH1("sinThetaNegz", "Sine of the exit angle for -z end of fiber", 50, -1.001, 1.001);
+
 
     
 }
