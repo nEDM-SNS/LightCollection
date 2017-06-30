@@ -75,7 +75,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_outerThickness = 0.1*nm;
     
     // Outer Reflector reflectivity (in the visible, 0 for UV)
-    m_mirrorReflectivity = 1.0;
+    m_mirrorReflectivity = 0.96;
     
 }
 
