@@ -49,7 +49,7 @@ private:
     G4double m_FiberSpacing;
     G4double m_TPB_outerThickness;
     G4double m_TPB_Thickness;
-    
+    G4double m_fiberLength;
 };
 
 #endif
