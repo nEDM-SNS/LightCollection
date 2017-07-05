@@ -327,6 +327,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             new G4PVPlacement(0,                                 //no rotation
                               G4ThreeVector(0.,0.,fMirrorPosZ),   //position
                               logicMirror,            //its logical volume
+                               "Mirror",               //its name
                               //Clad2_log,            //its mother  volume
                               core_log,               //its mother  volume
                               false,                  //no boolean operation
