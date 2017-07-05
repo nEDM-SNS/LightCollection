@@ -56,14 +56,14 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 #endif
     
     
-    //    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
+        G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
     G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
     
     
     // Ignore steps at world boundary
     if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
         
-        //        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
+                G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
         
         //        G4String thePrePVname  = " ";
@@ -118,6 +118,12 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 analysisManager->FillH1(0, 7);
                 analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+                
+                 G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
+
+                if(sinTheta<0.455) // sin(26.7deg)=0.455
+                {analysisManager->FillH1(8, sinTheta);}
+
                 
                 if (thePostPVname== "fibDet1_1"){
                     analysisManager->FillH1(5, 1);
