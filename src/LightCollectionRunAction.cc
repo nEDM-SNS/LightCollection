@@ -79,6 +79,11 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
 
     //index 7
     analysisManager->CreateH1("numTPBSecondaries", "Number of Secondaries in WLS TPB", 10, 0, 9);
+    
+      //index 8
+    analysisManager->CreateH1("ExitAngle","Sine of exit angle in fiber at one end",50,-1.001,1.001);
+
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
