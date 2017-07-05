@@ -212,21 +212,22 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         // Parameters
         G4double fiberRmin = 0.*cm;
         G4double fiberRmax = 0.100*cm/2;
+         G4double m_fiberLength  = 2*50*cm;
         
-        G4double fiberLength    = 2*20.64*cm;
+        
         G4double fiberSphi = 0.00*deg;
         G4double fiberEphi = 360.*deg;
         
         G4double fClad1_rmin = 0.*cm;
         G4double fClad1_rmax = fiberRmax - 0.003*cm;
         
-        G4double fClad1_z    = fiberLength;
+        G4double fClad1_z    = m_fiberLength;
         G4double fClad1_sphi = fiberSphi;
         G4double fClad1_ephi = fiberEphi;
         
         G4double fFiber_rmin = 0.00*cm;
         G4double fFiber_rmax = fClad1_rmax - 0.003*cm;
-        G4double fFiber_z    = fiberLength;
+        G4double fFiber_z    = m_fiberLength;
         G4double fFiber_sphi = fClad1_sphi;
         G4double fFiber_ephi = fClad1_ephi;
         
@@ -245,7 +246,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         G4String OuterCladdingName = "WLSFiberOuterCladding";
         
         G4Tubs* fiberTube =
-        new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,fiberLength/2,fiberSphi,
+        new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,m_fiberLength/2,fiberSphi,
                    fiberEphi);
         
         G4LogicalVolume* fiberLog =
@@ -326,7 +327,6 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             new G4PVPlacement(0,                                 //no rotation
                               G4ThreeVector(0.,0.,fMirrorPosZ),   //position
                               logicMirror,            //its logical volume
-                              "Mirror",               //its name
                               //Clad2_log,            //its mother  volume
                               core_log,               //its mother  volume
                               false,                  //no boolean operation
@@ -392,7 +392,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         
         // Place Physical Fibers and Detectors
         
-        G4double fibDetZPos = fiberLength/2.+fibDetThickness/2.;
+        G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2.;
         
         G4RotationMatrix* det2Rot = new G4RotationMatrix();
         det2Rot->rotateY(180*deg);
