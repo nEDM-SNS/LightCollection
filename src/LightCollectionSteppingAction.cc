@@ -132,7 +132,9 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
-                if (thePostPVname== "fibDet1_1"){
+                analysisManager->FillH1(4, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
+               
+                /* if (thePostPVname== "fibDet1_1"){
                     analysisManager->FillH1(4, 1);
                 }
                 else if (thePostPVname== "fibDet1_2"){
@@ -428,7 +430,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 }
                 else if (thePostPVname== "fibDet1_99"){
                     analysisManager->FillH1(4, 99);
-                }
+                }*/
             }
             else if(thePostPVname.contains("fibDet2_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -440,7 +442,9 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
-                if (thePostPVname== "fibDet2_1"){
+                analysisManager->FillH1(4, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
+                
+                /*if (thePostPVname== "fibDet2_1"){
                     analysisManager->FillH1(4, 1);
                 }
                 else if (thePostPVname== "fibDet2_2"){
@@ -736,7 +740,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 }
                 else if (thePostPVname== "fibDet2_99"){
                     analysisManager->FillH1(4, 99);
-                }
+                }*/
 
             }
             
