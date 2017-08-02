@@ -52,7 +52,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CheckOverlaps = true;
     
     // nEDM Geometry Flags
-    m_EmbeddedFibers = false;
+    m_EmbeddedFibers = true;
     m_FiberReflector = false;
     m_SqureTubeReflector = false;
     m_FullTentReflector = true;
@@ -61,14 +61,14 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CellWidth= 2*5.08*cm;
     m_CellThickness = 2*0.635*cm;
     m_CellLength= 2*20.64*cm;
-
+    
     // Fiber Params
     m_NumberOfFibers = 98;
     //m_NumberOfFibers = 0;
     m_FiberSpacing = 0.103*cm;
     m_FiberOuterSurfaceSmoothness = 0.01;
     m_fiberLength = 2*50.*cm;
-
+    
     
     // TPB Params
     m_TPB_Thickness = .001*mm;
@@ -102,16 +102,16 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     // Someone should test this.
     
     m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("SuperfluidHelium"), worldName);
-
+    
     //m_LogicHall = new G4LogicalVolume(solidHall, m_Materials->GetMaterial("G4Air"), worldName);
     
     m_PhysHall = new G4PVPlacement(0,                     // rotation
-                                  G4ThreeVector(0,0,0),
-                                  m_LogicHall,             // logical volume
-                                  worldName,                  // name
-                                  0,                     // mother volume
-                                  false,                 // no boolean operations
-                                  0,m_CheckOverlaps);     // not a copy
+                                   G4ThreeVector(0,0,0),
+                                   m_LogicHall,             // logical volume
+                                   worldName,                  // name
+                                   0,                     // mother volume
+                                   false,                 // no boolean operations
+                                   0,m_CheckOverlaps);     // not a copy
     
     //
     G4VisAttributes* HallAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
@@ -121,7 +121,8 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     
     
     // ************** Choose Volume to Construct Here *****************
-    ConstructSinglePlate();
+    if (m_EmbeddedFibers) {ConstructSinglePlateEmbedded();}
+    else {ConstructSinglePlate();}
     if (m_SqureTubeReflector) {ConstructSquareTubeReflector();}
     else if (m_FullTentReflector) {ConstructFullTentReflector();}
     
@@ -169,7 +170,7 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
     cellRoughOpticalSurface->SetFinish(ground);
     cellRoughOpticalSurface->SetType(dielectric_dielectric);
     cellRoughOpticalSurface->SetPolish(0.9);
-
+    
     new G4LogicalBorderSurface("cellRoughSurface1",
                                roughSidePhys1,
                                m_PhysHall,
@@ -227,13 +228,13 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
     
     // Place CellSide1
     G4VPhysicalVolume* physCellSide1 =
-        new G4PVPlacement(0,                     // rotation
-                          G4ThreeVector(0,0,0),  // position
-                          logicCellSide1,        // logical volume
-                          side1Name,                  // name
-                          m_LogicHall,             // mother volume
-                          false,                 // no boolean operations
-                          0,m_CheckOverlaps);     // not a copy
+    new G4PVPlacement(0,                     // rotation
+                      G4ThreeVector(0,0,0),  // position
+                      logicCellSide1,        // logical volume
+                      side1Name,                  // name
+                      m_LogicHall,             // mother volume
+                      false,                 // no boolean operations
+                      0,m_CheckOverlaps);     // not a copy
     
     if (m_NumberOfFibers>0) {
         
@@ -384,11 +385,11 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         G4String fibDetName = "fibDet";
         G4double fibDetWidth = 0.100*cm;
         G4double fibDetThickness = .1*mm;
-
-//        G4Tubs* fibDetSolid = new G4Tubs(fibDetName,
-//                                         0, fibDetWidth/2.,
-//                                         fibDetThickness/2.,
-//                                         0*deg, 360*deg);
+        
+        //        G4Tubs* fibDetSolid = new G4Tubs(fibDetName,
+        //                                         0, fibDetWidth/2.,
+        //                                         fibDetThickness/2.,
+        //                                         0*deg, 360*deg);
         
         G4Box* fibDetSolid = new G4Box(fibDetName,
                                        fibDetWidth/2.,
@@ -407,10 +408,10 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         // Back Face on Fiber Detectors to block stray photons
         G4String fibDetBackFaceName = fibDetName + "/BackFace";
         
-//        G4Tubs* fibDetBackFaceSolid = new G4Tubs(fibDetName,
-//                                         0, fibDetWidth/2.,
-//                                         fibDetThickness/4.,
-//                                         0*deg, 360*deg);
+        //        G4Tubs* fibDetBackFaceSolid = new G4Tubs(fibDetName,
+        //                                         0, fibDetWidth/2.,
+        //                                         fibDetThickness/4.,
+        //                                         0*deg, 360*deg);
         
         G4Box* fibDetBackFaceSolid = new G4Box(fibDetBackFaceName,
                                                fibDetWidth/2.,
@@ -483,9 +484,9 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
             for(G4int i=0;i<m_NumberOfFibers;i++){
                 
                 new G4LogicalBorderSurface("fiberOuterRoughSurface1",
-                                            outerVol,
-                                            physFiber[i],
-                                            fiberOpticalSurface);
+                                           outerVol,
+                                           physFiber[i],
+                                           fiberOpticalSurface);
                 
                 new G4LogicalBorderSurface("fiberOuterRoughSurface2",
                                            physFiber[i],
@@ -499,7 +500,393 @@ void LightCollectionDetectorConstruction::ConstructSinglePlate(){
         
     }
     
+    
+    
+}
 
+void LightCollectionDetectorConstruction::ConstructSinglePlateEmbedded(){
+    
+    G4VPhysicalVolume* physFiber[1000] = {0};
+    G4VPhysicalVolume* physDetector1[1000] = {0};
+    G4VPhysicalVolume* physDetector2[1000] = {0};
+    
+    G4double FibXPos, FibYPos;
+    
+    // Cell Plate must now be created below after subtracting holes for fibers
+    
+    
+    G4String fiberName = "WLSFiber";
+    
+    // Parameters
+    G4double fiberRmin = 0.*cm;
+    G4double fiberRmax = 0.100*cm/2;
+    
+    G4double fiberSphi = 0.00*deg;
+    G4double fiberEphi = 360.*deg;
+    
+    G4double fClad1_rmin = 0.*cm;
+    G4double fClad1_rmax = fiberRmax - 0.003*cm;
+    
+    G4double fClad1_z    = m_fiberLength;
+    G4double fClad1_sphi = fiberSphi;
+    G4double fClad1_ephi = fiberEphi;
+    
+    G4double fFiber_rmin = 0.00*cm;
+    G4double fFiber_rmax = fClad1_rmax - 0.003*cm;
+    G4double fFiber_z    = m_fiberLength;
+    G4double fFiber_sphi = fClad1_sphi;
+    G4double fFiber_ephi = fClad1_ephi;
+    
+    G4double fMirrorRmax  = fFiber_rmax;
+    G4double fMirrorRmin  = 0.*cm;
+    G4double fMirrorThick = 1.*mm;
+    G4double fMirrorSPhi  = fFiber_sphi;
+    G4double fMirrorEPhi  = fFiber_ephi;
+    
+    G4double fMirrorPosZ  = -1*(fFiber_z - fMirrorThick)/2;
+
+    G4double FibThickness = 2.*fiberRmax;
+
+    // Cladding (outer layer)
+    //
+    G4String OuterCladdingName = "WLSFiberOuterCladding";
+    
+    G4Tubs* fiberTube =
+    new G4Tubs(OuterCladdingName,fiberRmin,fiberRmax,m_fiberLength/2,fiberSphi,
+               fiberEphi);
+    
+    G4LogicalVolume* fiberLog =
+    new G4LogicalVolume(fiberTube,m_Materials->GetMaterial("FPethylene"),
+                        OuterCladdingName,0,0,0);
+    
+    //Set Vis attributes and return logical volume
+    //
+    G4VisAttributes* FiberVis=new G4VisAttributes(G4Color(0.0,1.0,0.0));
+    FiberVis->SetVisibility(true);
+    fiberLog->SetVisAttributes(FiberVis);
+    
+    // Cladding (first layer)
+    //
+    
+    G4String InnerCladdingName = "WLSFiberInnerCladding";
+    
+    G4Tubs* clad1_tube =
+    new G4Tubs(InnerCladdingName,fClad1_rmin,fClad1_rmax,fClad1_z/2,fClad1_sphi,
+               fClad1_ephi);
+    
+    G4LogicalVolume* clad1_log =
+    
+    new G4LogicalVolume(clad1_tube,m_Materials->GetMaterial("Pethylene"),
+                        InnerCladdingName,0,0,0);
+    
+    new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),clad1_log,
+                      InnerCladdingName,fiberLog,false,0,m_CheckOverlaps);
+    
+    
+    
+    // Fiber Core
+    //
+    
+    G4String CoreName = "WLSFiberCore";
+    
+    G4Tubs* core_tube =
+    new G4Tubs(CoreName,fFiber_rmin,fFiber_rmax,fFiber_z/2,fFiber_sphi,fFiber_ephi);
+    
+    G4LogicalVolume* core_log =
+    new G4LogicalVolume(core_tube,m_Materials->GetMaterial("WLSPMMA"),
+                        CoreName);
+    
+    new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),core_log,
+                      CoreName, clad1_log,false,0,m_CheckOverlaps);
+    
+    
+    if (m_FiberReflector) {
+        // Fiber Reflector
+        G4Tubs* solidMirror = new G4Tubs("Mirror",
+                                         fMirrorRmin,
+                                         fMirrorRmax,
+                                         fMirrorThick,
+                                         fMirrorSPhi,
+                                         fMirrorEPhi);
+        
+        
+        G4LogicalVolume* logicMirror = new G4LogicalVolume(solidMirror,G4Material::GetMaterial("PMMA"),"Mirror");
+        
+        // Photon Energies for which mirror properties will be given
+        const G4int kEnergies = 4;
+        G4double the_photon_energies_[kEnergies] = {2.034*eV, 4.136*eV, 5*eV, 16*eV};
+        
+        // Optical Surface for mirror
+        G4OpticalSurface* mirror_surface_ =
+        new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+                             dielectric_dielectric);
+        
+        // Reflectivity of mirror for each photon energy
+        G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0., 0.};
+        
+        //Table of Surface Properties for Mirror
+        G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+        mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+        mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+        
+        // Place Mirror
+        new G4PVPlacement(0,                                 //no rotation
+                          G4ThreeVector(0.,0.,fMirrorPosZ),   //position
+                          logicMirror,            //its logical volume
+                          "Mirror",               //its name
+                          //Clad2_log,            //its mother  volume
+                          core_log,               //its mother  volume
+                          false,                  //no boolean operation
+                          0,                    //copy number
+                          m_CheckOverlaps);
+        
+        // Create Skin Surface to link logical surface and optical surface
+        new G4LogicalSkinSurface("MirrorSurface",logicMirror,mirror_surface_);
+        
+        // Set Visualization Properties of the Mirror
+        G4VisAttributes* MirrorVis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+        MirrorVis->SetVisibility(true);
+        logicMirror->SetVisAttributes(MirrorVis);
+        
+    }
+    
+    
+    // Cell Side
+    G4String side1Name = "CellSide1";
+    
+    // Cell Side Solid, Logical, and TPB interface
+    
+    G4Box* cellSide1_solid_start = new G4Box(side1Name,
+                                       m_CellWidth/2.,
+                                       m_CellThickness/2.,
+                                       m_CellLength/2.);
+    
+    G4VSolid* tempSolids[1000] = {0};
+    
+    // Create Cut Outs for "Embedded Fibers"
+    FibXPos=-(m_FiberSpacing)*(m_NumberOfFibers-1)*0.5;
+    FibYPos = -1*(m_CellThickness/2.-FibThickness/2.-0.001*cm);
+    
+    tempSolids[0] = new G4SubtractionSolid("tempSolid", cellSide1_solid_start, fiberTube, 0, G4ThreeVector(FibXPos,FibYPos,0));
+
+    for(G4int i=1;i<m_NumberOfFibers;i++){
+        FibXPos=-(m_FiberSpacing)*(m_NumberOfFibers-1)*0.5 + i*m_FiberSpacing;
+
+        tempSolids[i] = new G4SubtractionSolid("tempSolid", tempSolids[i-1], fiberTube, 0, G4ThreeVector(FibXPos,FibYPos,0));
+    }
+    
+    G4VSolid* cellSide1_solid = tempSolids[m_NumberOfFibers-1];
+    
+    
+    G4LogicalVolume* logicCellSide1 = new G4LogicalVolume(cellSide1_solid,m_Materials->GetMaterial("PMMA"),side1Name);
+    
+    G4String RoughSideName = side1Name + "/RoughSide";
+    
+    G4Box* roughSide_solid = new G4Box(RoughSideName, m_TPB_Thickness/2., (m_CellThickness-m_TPB_Thickness)/2., m_CellLength/2.);
+    
+    G4LogicalVolume* logicRoughSide = new G4LogicalVolume(roughSide_solid, m_Materials->GetMaterial("PMMA"), RoughSideName);
+    
+    G4ThreeVector roughSide1Pos = G4ThreeVector((m_CellWidth-m_TPB_Thickness)/2.,-1.*m_TPB_Thickness/2.,0.);
+    G4ThreeVector roughSide2Pos = G4ThreeVector(-1*(m_CellWidth-m_TPB_Thickness)/2.,-1.*m_TPB_Thickness/2.,0.);
+    
+    G4VPhysicalVolume* roughSidePhys1 = new G4PVPlacement(0, roughSide1Pos, logicRoughSide, RoughSideName+"1", logicCellSide1, false, 0, m_CheckOverlaps);
+    
+    G4VPhysicalVolume* roughSidePhys2 = new G4PVPlacement(0, roughSide2Pos, logicRoughSide, RoughSideName+"2", logicCellSide1, false, 0, m_CheckOverlaps);
+    
+    G4VisAttributes* roughSidevis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+    roughSidevis->SetVisibility(true);
+    logicRoughSide->SetVisAttributes(roughSidevis);
+    
+    G4OpticalSurface* cellRoughOpticalSurface =new G4OpticalSurface("cellRoughOpSurface");
+    
+    cellRoughOpticalSurface->SetModel(glisur);
+    cellRoughOpticalSurface->SetFinish(ground);
+    cellRoughOpticalSurface->SetType(dielectric_dielectric);
+    cellRoughOpticalSurface->SetPolish(0.9);
+    
+    new G4LogicalBorderSurface("cellRoughSurface1",
+                               roughSidePhys1,
+                               m_PhysHall,
+                               cellRoughOpticalSurface);
+    
+    new G4LogicalBorderSurface("cellRoughSurface2",
+                               roughSidePhys2,
+                               m_PhysHall,
+                               cellRoughOpticalSurface);
+    
+    G4String TPBInterface1Name = side1Name + "/TPBInterface";
+    
+    // Create TPB Interface Layer
+    G4Box* TPBInterface1_solid = new G4Box(TPBInterface1Name,
+                                           m_CellWidth/2.,
+                                           m_TPB_Thickness/2.,
+                                           m_CellLength/2.);
+    
+    G4LogicalVolume* TPBInterface1_log = new G4LogicalVolume(TPBInterface1_solid,m_Materials->GetMaterial("TPB_inner"),TPBInterface1Name);
+    
+    G4ThreeVector TPBInterface1_pos = G4ThreeVector(0.,(m_CellThickness-m_TPB_Thickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface1_pos,
+                      TPBInterface1_log,
+                      TPBInterface1Name,
+                      logicCellSide1,false,0,m_CheckOverlaps);
+    
+    G4VisAttributes* tpb1Vis=new G4VisAttributes(G4Color(1.0,0.0,1.0));
+    tpb1Vis->SetVisibility(true);
+    TPBInterface1_log->SetVisAttributes(tpb1Vis);
+    
+    // Create outer TPB layer with low index of refraction
+    
+    G4String TPBInterfaceOuter1Name = side1Name + "/TPB_outer";
+    
+    G4Box* TPBInterface_outer1_solid = new G4Box(TPBInterfaceOuter1Name,
+                                                 m_CellWidth/2.,
+                                                 m_TPB_outerThickness/2.,
+                                                 m_CellLength/2.);
+    
+    
+    G4LogicalVolume* TPBInterface_outer1_log = new G4LogicalVolume(TPBInterface_outer1_solid,m_Materials->GetMaterial("TPB_outer"),TPBInterfaceOuter1Name);
+    
+    G4ThreeVector TPBInterface_outer1_pos = G4ThreeVector(0.,(m_TPB_Thickness-m_TPB_outerThickness)/2.,0.);
+    
+    new G4PVPlacement(0,TPBInterface_outer1_pos,
+                      TPBInterface_outer1_log,
+                      TPBInterfaceOuter1Name,
+                      TPBInterface1_log,false,0,m_CheckOverlaps);
+    
+    G4VisAttributes* tpbOuter1Vis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
+    tpbOuter1Vis->SetVisibility(true);
+    TPBInterface_outer1_log->SetVisAttributes(tpbOuter1Vis);
+    
+    
+    // Place CellSide1
+    new G4PVPlacement(0,                     // rotation
+                      G4ThreeVector(0,0,0),  // position
+                      logicCellSide1,        // logical volume
+                      side1Name,                  // name
+                      m_LogicHall,             // mother volume
+                      false,                 // no boolean operations
+                      0,m_CheckOverlaps);     // not a copy
+    
+    
+    // Fiber Detectors
+    
+    //
+    G4String fibDetName = "fibDet";
+    G4double fibDetWidth = 0.100*cm;
+    G4double fibDetThickness = .1*mm;
+    
+    //        G4Tubs* fibDetSolid = new G4Tubs(fibDetName,
+    //                                         0, fibDetWidth/2.,
+    //                                         fibDetThickness/2.,
+    //                                         0*deg, 360*deg);
+    
+    G4Box* fibDetSolid = new G4Box(fibDetName,
+                                   fibDetWidth/2.,
+                                   fibDetWidth/2.,
+                                   fibDetThickness/2.);
+    
+    G4LogicalVolume* fibDetLog = new G4LogicalVolume(fibDetSolid,m_Materials->GetMaterial("PMMA"),fibDetName);
+    
+    
+    G4VisAttributes* fibDetVis=new G4VisAttributes(G4Color(1.0,0.0,0.0));
+    fibDetVis->SetVisibility(true);
+    fibDetVis->SetForceWireframe(true);
+    fibDetLog->SetVisAttributes(fibDetVis);
+    
+    
+    // Back Face on Fiber Detectors to block stray photons
+    G4String fibDetBackFaceName = fibDetName + "/BackFace";
+    
+    //        G4Tubs* fibDetBackFaceSolid = new G4Tubs(fibDetName,
+    //                                         0, fibDetWidth/2.,
+    //                                         fibDetThickness/4.,
+    //                                         0*deg, 360*deg);
+    
+    G4Box* fibDetBackFaceSolid = new G4Box(fibDetBackFaceName,
+                                           fibDetWidth/2.,
+                                           fibDetWidth/2.,
+                                           fibDetThickness/4);
+    
+    G4LogicalVolume* fibDetBackFaceLog = new G4LogicalVolume(fibDetBackFaceSolid,m_Materials->GetMaterial("PMMA"),fibDetBackFaceName);
+    
+    G4ThreeVector fibDetBackFacePos = G4ThreeVector(0.,0.,fibDetThickness/4);
+    
+    new G4PVPlacement(0,fibDetBackFacePos,fibDetBackFaceLog,fibDetBackFaceName,fibDetLog,false,0,m_CheckOverlaps);
+    
+    G4VisAttributes* fibDetBackFaceVis=new G4VisAttributes(G4Color(1.0,1.0,0.0));
+    fibDetBackFaceVis->SetVisibility(true);
+    fibDetBackFaceLog->SetVisAttributes(fibDetBackFaceVis);
+    
+    
+    // Place Physical Fibers and Detectors
+    
+    G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2.;
+    
+    G4RotationMatrix* det2Rot = new G4RotationMatrix();
+    det2Rot->rotateY(180*deg);
+    
+    // ** For Embedded fibers only
+    G4LogicalVolume* fiberParentLog;
+    fiberParentLog = m_LogicHall;
+    FibYPos = -1*(m_CellThickness/2.-FibThickness/2.-0.001*cm);
+    // ***
+    
+    // Loop over number of Fibers
+    
+    for(G4int i=0;i<m_NumberOfFibers;i++){
+        FibXPos=-(m_FiberSpacing)*(m_NumberOfFibers-1)*0.5 + i*m_FiberSpacing;
+        
+        std::stringstream i_plusOne;
+        i_plusOne << i+1;
+        
+        physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,0.),fiberLog,fiberName+i_plusOne.str(),fiberParentLog,false,0,m_CheckOverlaps);
+        
+        
+        // Place +Z detectors
+        physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,fibDetZPos),fibDetLog,fibDetName+"1_"+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
+        
+        
+        // Place -Z detectors
+        physDetector2[i] = new G4PVPlacement(det2Rot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
+        
+        
+    }
+    
+    if (m_FiberOuterSurfaceSmoothness < 1.){
+        // Boundary Surface Properties
+        
+        G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
+        
+        fiberOpticalSurface->SetModel(glisur);
+        fiberOpticalSurface->SetFinish(ground);
+        fiberOpticalSurface->SetType(dielectric_dielectric);
+        fiberOpticalSurface->SetPolish(m_FiberOuterSurfaceSmoothness);
+        
+        // ** For Embedded fibers only
+        G4VPhysicalVolume* outerVol;
+        outerVol = m_PhysHall;
+        // ***
+        
+        for(G4int i=0;i<m_NumberOfFibers;i++){
+            
+            new G4LogicalBorderSurface("fiberOuterRoughSurface1",
+                                       outerVol,
+                                       physFiber[i],
+                                       fiberOpticalSurface);
+            
+            new G4LogicalBorderSurface("fiberOuterRoughSurface2",
+                                       physFiber[i],
+                                       outerVol,
+                                       fiberOpticalSurface);
+            
+            
+        }
+        
+    }
+    
+    
+    
     
 }
 
@@ -515,15 +902,20 @@ void LightCollectionDetectorConstruction::ConstructFullTentReflector()
     G4Box* HoleSolid = new G4Box("ReflectorFiberHole",m_CellWidth/2.,0.110*cm/2,0.1*cm);
     
     G4Tubs* EndSolid = new G4Tubs("EndSolid",0,topReflRad+.1*cm,.1*cm,.215*CLHEP::pi,.57*CLHEP::pi);
+    
+    G4ThreeVector HolePosition;
+    if (m_EmbeddedFibers) { HolePosition = G4ThreeVector(0.,5./8.*topReflRad+m_CellThickness/2.+0.110*cm/2.,0.);}
+    else{                   HolePosition = G4ThreeVector(0.,5./8.*topReflRad+m_CellThickness/2.-0.110*cm/2.,0.);}
 
-    G4SubtractionSolid* CutEndSolid = new G4SubtractionSolid("CutEndSolid", EndSolid, HoleSolid, 0, G4ThreeVector(0.,5./8.*topReflRad+m_CellThickness/2.-0.110*cm/2.,0.));
-
+    
+    G4SubtractionSolid* CutEndSolid = new G4SubtractionSolid("CutEndSolid", EndSolid, HoleSolid, 0, HolePosition);
+    
     G4UnionSolid* TempRefl1 = new G4UnionSolid("tempRefl1",BottomSolid,CutEndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,m_CellLength/2*1.5));
     
     G4UnionSolid* TempRefl2 = new G4UnionSolid("tempRefl2",TempRefl1,CutEndSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,-1*m_CellLength/2*1.5));
-
+    
     G4UnionSolid* SolidReflector = new G4UnionSolid("Reflector", TempRefl2, TopSolid,0,G4ThreeVector(0.,-5./8.*topReflRad,0.));
-
+    
     
     G4LogicalVolume* Reflector_Log = new G4LogicalVolume(SolidReflector, G4Material::GetMaterial("PMMA"), "Reflector");
     

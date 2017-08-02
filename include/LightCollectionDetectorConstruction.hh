@@ -26,6 +26,7 @@ public:
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
     void ConstructSinglePlate();
+    void ConstructSinglePlateEmbedded();
     void ConstructSquareTubeReflector();
     void ConstructFullTentReflector();
     
