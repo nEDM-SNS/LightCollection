@@ -50,13 +50,13 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_EmbeddedFibers = true;
     m_FiberReflector = false;
     m_SqureTubeReflector = true;
-    m_NumberOfFibers = 98;
+    m_NumberOfFibers = 2;
     m_FiberSpacing = 0.103*cm;
 
     // TPB Params
     m_TPB_Thickness = .1*mm;
     m_TPB_outerThickness = 5*nm;
-    m_fiberLength  = 2*50*cm;
+    m_fiberLength  = 2*200*cm;
 
 }
 
@@ -1037,7 +1037,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
                       G4ThreeVector(0,0,0),  // position
                       logicCellSide1,        // logical volume
                       side1Name,                  // name
-                      m_LogicHall,             // mother volume
+                      fLogicLHE,             // mother volume
                       false,                 // no boolean operations
                       0,m_CheckOverlaps);     // not a copy
     
@@ -1117,11 +1117,11 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         
         
         // Place +Z detectors
-        physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,fibDetZPos),fibDetLog,fibDetName+"1_"+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
+        physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,fibDetZPos),fibDetLog,fibDetName+"1_"+i_plusOne.str(),fLogicLHE,false,0,m_CheckOverlaps);
         
         
         // Place -Z detectors
-        physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
+        physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+i_plusOne.str(),fLogicLHE,false,0,m_CheckOverlaps);
         
         
     }
