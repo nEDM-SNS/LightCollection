@@ -212,7 +212,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         // Parameters
         G4double fiberRmin = 0.*cm;
         G4double fiberRmax = 0.100*cm/2;
-         G4double m_fiberLength  = 2*50*cm;
+        m_fiberLength  = 2*50*cm;
         
         
         G4double fiberSphi = 0.00*deg;
