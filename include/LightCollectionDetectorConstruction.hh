@@ -26,6 +26,7 @@ public:
     // Construct the detector and define the world volume.
     virtual G4VPhysicalVolume* Construct();
     void ConstructTestStand();
+    void ConstructTestStand_embedded();
     
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool );
