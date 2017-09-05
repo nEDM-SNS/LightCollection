@@ -130,6 +130,14 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
                 analysisManager->FillH1(8, sinTheta);
 
+                 if(sinTheta<0.45)           
+                {
+                  analysisManager->FillH1(10, sinTheta);
+
+                 }
+
+                
+                
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
 
                 analysisManager->FillH1(4, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
