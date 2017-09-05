@@ -86,7 +86,8 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     // index 9
     analysisManager->CreateH1("sinThetaNegz", "Sine of the exit angle for -z end of fiber", 50, -1.001, 1.001);
 
-
+      //index 10
+    analysisManager->CreateH1("exiting in 26.7deg +z","Sine of the exit angle in 26.7deg for +z end",50,-1.001,1.001);
     
 }
 
