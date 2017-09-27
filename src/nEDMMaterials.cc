@@ -323,7 +323,7 @@ void nEDMMaterials::CreateMaterials()
       7.5*km , 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km, 7.5*km,7.5*km,
       14.*cm, 14.*cm, 14.*cm, 14.*cm, 14.*cm, 14*cm, 136*mm, 135.26*mm,
       54.59*mm, 45.36*mm, 26.73*mm, 12.58*mm, 7.81*mm, 5.58*mm, 3.57*mm,
-      2.89*mm,2.11*mm,0.83*mm,0.74*mm,0.61*mm,0.47*mm,0.35*mm, 1.*nm, 1.*nm, 1.*nm, 1.*nm};
+      2.89*mm,2.11*mm,0.83*mm,0.74*mm,0.61*mm,0.47*mm,0.35*mm, 1.*nm, 1.*nm, 1.*nm};
      // The array is caculated based on the document for G-UVT material
     
   //  {10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
