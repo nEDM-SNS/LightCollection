@@ -47,8 +47,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_StepLimit = NULL;
     
     m_CheckOverlaps = true;
-    m_EmbeddedFibers = true;
-    m_FiberReflector = false;
+    m_EmbeddedFibers = false;
+    m_FiberReflector = true;
     m_SqureTubeReflector = true;
     m_NumberOfFibers = 2;
     m_FiberSpacing = 0.103*cm;
@@ -226,21 +226,21 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         G4double fClad1_sphi = fiberSphi;
         G4double fClad1_ephi = fiberEphi;
         
-        G4double fFiber_rmin = 0.00*cm;
-        G4double fFiber_rmax = fClad1_rmax - 0.003*cm;
-        G4double fFiber_z    = m_fiberLength;
-        G4double fFiber_sphi = fClad1_sphi;
-        G4double fFiber_ephi = fClad1_ephi;
+        G4double core_rmin = 0.00*cm;
+        G4double core_rmax = fClad1_rmax - 0.003*cm;
+        G4double core_z    = m_fiberLength;
+        G4double core_sphi = fClad1_sphi;
+        G4double core_ephi = fClad1_ephi;
         
-        G4double fOuterSurfaceRoughness = 0.9;
+        G4double fOuterSurfaceSmoothness = 0.9;
         
-        G4double fMirrorRmax  = fFiber_rmax;
+        G4double fMirrorRmax  = core_rmax;
         G4double fMirrorRmin  = 0.*cm;
         G4double fMirrorThick = 1.*mm;
-        G4double fMirrorSPhi  = fFiber_sphi;
-        G4double fMirrorEPhi  = fFiber_ephi;
+        G4double fMirrorSPhi  = core_sphi;
+        G4double fMirrorEPhi  = core_ephi;
         
-        G4double fMirrorPosZ  = -1*(fFiber_z - fMirrorThick)/2;
+        G4double fMirrorPosZ  = -1*(core_z - fMirrorThick)/2;
         
         // Cladding (outer layer)
         //
@@ -285,7 +285,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         G4String CoreName = "WLSFiberCore";
         
         G4Tubs* core_tube =
-        new G4Tubs(CoreName,fFiber_rmin,fFiber_rmax,fFiber_z/2,fFiber_sphi,fFiber_ephi);
+        new G4Tubs(CoreName,core_rmin,core_rmax,core_z/2,core_sphi,core_ephi);
         
         G4LogicalVolume* core_log =
         new G4LogicalVolume(core_tube,m_Materials->GetMaterial("WLSPMMA"),
@@ -300,12 +300,12 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             G4Tubs* solidMirror = new G4Tubs("Mirror",
                                              fMirrorRmin,
                                              fMirrorRmax,
-                                             fMirrorThick,
+                                             fMirrorThick/2,
                                              fMirrorSPhi,
                                              fMirrorEPhi);
             
             
-            G4LogicalVolume* logicMirror = new G4LogicalVolume(solidMirror,G4Material::GetMaterial("PMMA"),"Mirror");
+            G4LogicalVolume* logicMirror = new G4LogicalVolume(solidMirror,G4Material::GetMaterial("PMMA"),"FibMirror");
             
             // Photon Energies for which mirror properties will be given
             const G4int kEnergies = 3;
@@ -313,7 +313,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             
             // Optical Surface for mirror
             G4OpticalSurface* mirror_surface_ =
-            new G4OpticalSurface("MirrorSurface", glisur, groundfrontpainted,
+            new G4OpticalSurface("FibMirrorSurface", glisur, groundfrontpainted,
                                  dielectric_dielectric);
             
             // Reflectivity of mirror for each photon energy
@@ -393,8 +393,8 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         
         
         // Place Physical Fibers and Detectors
-        
-        G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2.;
+        G4double FibZPos = (m_fiberLength-cellLength)/2;
+        G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2. + FibZPos;
         
         G4RotationMatrix* fibDetRot = new G4RotationMatrix();
         fibDetRot->rotateY(180*deg);
@@ -414,20 +414,20 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         for(G4int i=0;i<m_NumberOfFibers;i++){
             FibXPos=-(m_FiberSpacing)*(m_NumberOfFibers-1)*0.5 + i*m_FiberSpacing;
             
-            physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,0.),fiberLog,fiberName+std::to_string(i+1),fiberParentLog,false,0,m_CheckOverlaps);
+            physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,FibZPos),fiberLog,fiberName+std::to_string(i+1),fiberParentLog,false,0,m_CheckOverlaps);
             
             
             // Place +Z detectors
             physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,fibDetZPos),fibDetLog,fibDetName+"1_"+std::to_string(i+1),fLogicLHE,false,0,m_CheckOverlaps);
             
-            
-            // Place -Z detectors
-            physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+std::to_string(i+1),fLogicLHE,false,0,m_CheckOverlaps);
+// Replaced with mirror
+//            // Place -Z detectors
+//            physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+std::to_string(i+1),fLogicLHE,false,0,m_CheckOverlaps);
             
 
         }
         
-        if (fOuterSurfaceRoughness < 1.){
+        if (fOuterSurfaceSmoothness < 1.){
             // Boundary Surface Properties
             
             G4OpticalSurface* fiberOuterRoughOpSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -449,7 +449,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
                 fiberOuterRoughOpSurface->SetModel(glisur);
                 fiberOuterRoughOpSurface->SetFinish(ground);
                 fiberOuterRoughOpSurface->SetType(dielectric_dielectric);
-                fiberOuterRoughOpSurface->SetPolish(fOuterSurfaceRoughness);
+                fiberOuterRoughOpSurface->SetPolish(fOuterSurfaceSmoothness);
                 
             }
             
@@ -497,6 +497,37 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     stdDetBackFaceVis->SetVisibility(true);
     stdDetBackFaceLog->SetVisAttributes(stdDetBackFaceVis);
     
+    // Mirror
+    
+    G4String stdMirrorName = "StdMirror";
+    
+    G4LogicalVolume* stdMirrorLog = new G4LogicalVolume(stdDet_Solid,m_Materials->GetMaterial("PMMA"),stdMirrorName);
+    
+    // Photon Energies for which mirror properties will be given
+    const G4int kEnergies_stdMirror = 3;
+    G4double the_photon_energies[kEnergies_stdMirror] = {2.034*eV, 4.136*eV, 16*eV};
+    
+    // Optical Surface for mirror
+    G4OpticalSurface* mirror_surface =
+    new G4OpticalSurface("FibMirrorSurface", glisur, groundfrontpainted,
+                         dielectric_dielectric);
+    
+    // Reflectivity of mirror for each photon energy
+    G4double mirror_std[kEnergies_stdMirror] = {0.998, 0.998, 0.998};
+    
+    //Table of Surface Properties for Mirror
+    G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+    mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies, mirror_std, kEnergies_stdMirror);
+    mirror_surface->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+    
+    // Create Skin Surface to link logical surface and optical surface
+    new G4LogicalSkinSurface("MirrorSurface",stdMirrorLog,mirror_surface);
+    
+    // Set Visualization Properties of the Mirror
+    G4VisAttributes* MirrorVis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+    MirrorVis->SetVisibility(true);
+    stdMirrorLog->SetVisAttributes(MirrorVis);
+
     
     //////////////////////////
     // Cell Side 2
@@ -584,14 +615,22 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     G4RotationMatrix* det2Rot = new G4RotationMatrix();
     det2Rot->rotateY(180*deg);
     
-    new G4PVPlacement(det2Rot,                     // rotation
+//    new G4PVPlacement(det2Rot,                     // rotation
+//                      cell2pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
+//                      stdDetLog,        // logical volume
+//                      side2Name+"/"+stdDetName+"2",   // name
+//                      fLogicLHE,             // mother volume
+//                      false,                 // no boolean operations
+//                      0,m_CheckOverlaps);                    // not a copy
+//    
+    
+    new G4PVPlacement(0,                     // rotation
                       cell2pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
-                      stdDetLog,        // logical volume
-                      side2Name+"/"+stdDetName+"2",   // name
+                      stdMirrorLog,        // logical volume
+                      side2Name+"/"+stdMirrorName,   // name
                       fLogicLHE,             // mother volume
                       false,                 // no boolean operations
                       0,m_CheckOverlaps);                    // not a copy
-    
     
     
     //////////////////////////
@@ -679,13 +718,22 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     
     
     
-   new G4PVPlacement(det2Rot,                     // rotation
-                     cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
-                     stdDetLog,        // logical volume
-                     side3Name+"/"+stdDetName+"2",   // name
-                     fLogicLHE,             // mother volume
-                     false,                 // no boolean operations
-                     0,m_CheckOverlaps);                    // not a copy
+//   new G4PVPlacement(det2Rot,                     // rotation
+//                     cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
+//                     stdDetLog,        // logical volume
+//                     side3Name+"/"+stdDetName+"2",   // name
+//                     fLogicLHE,             // mother volume
+//                     false,                 // no boolean operations
+//                     0,m_CheckOverlaps);                    // not a copy
+
+    new G4PVPlacement(0,                     // rotation
+                      cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
+                      stdMirrorLog,        // logical volume
+                      side3Name+"/"+stdMirrorName,   // name
+                      fLogicLHE,             // mother volume
+                      false,                 // no boolean operations
+                      0,m_CheckOverlaps);                    // not a copy
+    
 
     //////////////////////////
     // Square Tube Reflector
@@ -758,14 +806,14 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     
     G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),m_Materials->GetMaterial("SuperfluidHelium"),LHeName);
     
-    G4VPhysicalVolume* fPhysLHe = new G4PVPlacement(0,                          // rotation
-                                                    G4ThreeVector(0,0,0),  // position
-                                                    fLogicLHE,        // logical volume
-                                                    LHeName,         // name
-                                                    m_LogicHall,            // mother volume
-                                                    false,                 // no boolean operations
-                                                    0,                     // not a copy
-                                                    m_CheckOverlaps);
+    new G4PVPlacement(0,                          // rotation
+                      G4ThreeVector(0,0,0),  // position
+                      fLogicLHE,        // logical volume
+                      LHeName,         // name
+                      m_LogicHall,            // mother volume
+                      false,                 // no boolean operations
+                      0,                     // not a copy
+                      m_CheckOverlaps);
     
     
     G4VisAttributes* LHeAtt = new G4VisAttributes(G4Colour(0.0, 1.0, 1.0));
@@ -779,7 +827,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     //////////////////////////
     G4VPhysicalVolume* physFiber[1000] = {0};
     G4VPhysicalVolume* physDetector1[1000] = {0};
-    G4VPhysicalVolume* physDetector2[1000] = {0};
+//    G4VPhysicalVolume* physDetector2[1000] = {0};
     
     G4double FibXPos, FibYPos;
     
@@ -802,21 +850,21 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     G4double fClad1_sphi = fiberSphi;
     G4double fClad1_ephi = fiberEphi;
     
-    G4double fFiber_rmin = 0.00*cm;
-    G4double fFiber_rmax = fClad1_rmax - 0.003*cm;
-    G4double fFiber_z    = m_fiberLength;
-    G4double fFiber_sphi = fClad1_sphi;
-    G4double fFiber_ephi = fClad1_ephi;
+    G4double core_rmin = 0.00*cm;
+    G4double core_rmax = fClad1_rmax - 0.003*cm;
+    G4double core_z    = m_fiberLength;
+    G4double core_sphi = fClad1_sphi;
+    G4double core_ephi = fClad1_ephi;
     
-    G4double fOuterSurfaceRoughness = 0.9;
+    G4double fOuterSurfaceSmoothness = 0.9;
 
-    G4double fMirrorRmax  = fFiber_rmax;
+    G4double fMirrorRmax  = core_rmax;
     G4double fMirrorRmin  = 0.*cm;
     G4double fMirrorThick = 1.*mm;
-    G4double fMirrorSPhi  = fFiber_sphi;
-    G4double fMirrorEPhi  = fFiber_ephi;
+    G4double fMirrorSPhi  = core_sphi;
+    G4double fMirrorEPhi  = core_ephi;
     
-    G4double fMirrorPosZ  = -1*(fFiber_z - fMirrorThick)/2;
+    G4double fMirrorPosZ  = -1*(core_z - fMirrorThick)/2;
     
     G4double FibThickness = 2.*fiberRmax;
     
@@ -863,7 +911,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     G4String CoreName = "WLSFiberCore";
     
     G4Tubs* core_tube =
-    new G4Tubs(CoreName,fFiber_rmin,fFiber_rmax,fFiber_z/2,fFiber_sphi,fFiber_ephi);
+    new G4Tubs(CoreName,core_rmin,core_rmax,core_z/2,core_sphi,core_ephi);
     
     G4LogicalVolume* core_log =
     new G4LogicalVolume(core_tube,m_Materials->GetMaterial("WLSPMMA"),
@@ -878,7 +926,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         G4Tubs* solidMirror = new G4Tubs("Mirror",
                                          fMirrorRmin,
                                          fMirrorRmax,
-                                         fMirrorThick,
+                                         fMirrorThick/2,
                                          fMirrorSPhi,
                                          fMirrorEPhi);
         
@@ -1094,7 +1142,8 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     
     // Place Physical Fibers and Detectors
     
-    G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2.;
+    G4double FibZPos = (m_fiberLength-cellLength)/2;
+    G4double fibDetZPos = m_fiberLength/2.+fibDetThickness/2. + FibZPos;
     
     G4RotationMatrix* fibDetRot = new G4RotationMatrix();
     fibDetRot->rotateY(180*deg);
@@ -1113,20 +1162,21 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         std::stringstream i_plusOne;
         i_plusOne << i+1;
         
-        physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,0.),fiberLog,fiberName+i_plusOne.str(),fiberParentLog,false,0,m_CheckOverlaps);
+        physFiber[i] = new G4PVPlacement(0,G4ThreeVector(FibXPos,FibYPos,FibZPos),fiberLog,fiberName+i_plusOne.str(),fiberParentLog,false,0,m_CheckOverlaps);
         
         
         // Place +Z detectors
         physDetector1[i] = new G4PVPlacement(0, G4ThreeVector(FibXPos,FibYPos,fibDetZPos),fibDetLog,fibDetName+"1_"+i_plusOne.str(),fLogicLHE,false,0,m_CheckOverlaps);
+     
+        // Replaced with Mirror
         
-        
-        // Place -Z detectors
-        physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+i_plusOne.str(),fLogicLHE,false,0,m_CheckOverlaps);
+//        // Place -Z detectors
+//        physDetector2[i] = new G4PVPlacement(fibDetRot,G4ThreeVector(FibXPos,FibYPos,-fibDetZPos),fibDetLog,fibDetName+"2_"+i_plusOne.str(),fLogicLHE,false,0,m_CheckOverlaps);
         
         
     }
     
-    if (fOuterSurfaceRoughness < 1.){
+    if (fOuterSurfaceSmoothness < 1.){
         // Boundary Surface Properties
         
         G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -1134,7 +1184,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         fiberOpticalSurface->SetModel(glisur);
         fiberOpticalSurface->SetFinish(ground);
         fiberOpticalSurface->SetType(dielectric_dielectric);
-        fiberOpticalSurface->SetPolish(fOuterSurfaceRoughness);
+        fiberOpticalSurface->SetPolish(fOuterSurfaceSmoothness);
         
         // ** For Embedded fibers only
         G4VPhysicalVolume* outerVol;
@@ -1159,7 +1209,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     }
     
     //////////////////////////
-    // Std Light Guide Detector Logicals
+    // Std Light Guide Detector and Mirror Logicals
     //////////////////////////
     
     G4String stdDetName = "StdDet";
@@ -1197,6 +1247,37 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     stdDetBackFaceVis->SetVisibility(true);
     stdDetBackFaceLog->SetVisAttributes(stdDetBackFaceVis);
     
+    // Mirror
+    
+    G4String stdMirrorName = "StdMirror";
+    
+    G4LogicalVolume* stdMirrorLog = new G4LogicalVolume(stdDet_Solid,m_Materials->GetMaterial("PMMA"),stdMirrorName);
+    
+    // Photon Energies for which mirror properties will be given
+    const G4int kEnergies_stdMirror = 3;
+    G4double the_photon_energies[kEnergies_stdMirror] = {2.034*eV, 4.136*eV, 16*eV};
+    
+    // Optical Surface for mirror
+    G4OpticalSurface* mirror_surface =
+    new G4OpticalSurface("FibMirrorSurface", glisur, groundfrontpainted,
+                         dielectric_dielectric);
+    
+    // Reflectivity of mirror for each photon energy
+    G4double mirror_std[kEnergies_stdMirror] = {0.998, 0.998, 0.998};
+    
+    //Table of Surface Properties for Mirror
+    G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
+    mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies, mirror_std, kEnergies_stdMirror);
+    mirror_surface->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+    
+    // Create Skin Surface to link logical surface and optical surface
+    new G4LogicalSkinSurface("MirrorSurface",stdMirrorLog,mirror_surface);
+    
+    // Set Visualization Properties of the Mirror
+    G4VisAttributes* MirrorVis=new G4VisAttributes(G4Color(0.0,0.0,1.0));
+    MirrorVis->SetVisibility(true);
+    stdMirrorLog->SetVisAttributes(MirrorVis);
+
     
     //////////////////////////
     // Cell Side 2
@@ -1283,16 +1364,24 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     
     G4RotationMatrix* det2Rot = new G4RotationMatrix();
     det2Rot->rotateY(180*deg);
+
+    // Replaced with Mirror
+//    new G4PVPlacement(det2Rot,                     // rotation
+//                      cell2pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
+//                      stdDetLog,        // logical volume
+//                      side2Name+"/"+stdDetName+"2",   // name
+//                      fLogicLHE,             // mother volume
+//                      false,                 // no boolean operations
+//                      0,m_CheckOverlaps);                    // not a copy
     
-    new G4PVPlacement(det2Rot,                     // rotation
+    new G4PVPlacement(0,                     // rotation
                       cell2pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
-                      stdDetLog,        // logical volume
-                      side2Name+"/"+stdDetName+"2",   // name
+                      stdMirrorLog,        // logical volume
+                      side2Name+"/"+stdMirrorName,   // name
                       fLogicLHE,             // mother volume
                       false,                 // no boolean operations
                       0,m_CheckOverlaps);                    // not a copy
-    
-    
+
     
     //////////////////////////
     // Cell Side 3
@@ -1379,13 +1468,22 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     
     
     
-    new G4PVPlacement(det2Rot,                     // rotation
+//    new G4PVPlacement(det2Rot,                     // rotation
+//                      cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
+//                      stdDetLog,        // logical volume
+//                      side3Name+"/"+stdDetName+"2",   // name
+//                      fLogicLHE,             // mother volume
+//                      false,                 // no boolean operations
+//                      0,m_CheckOverlaps);                    // not a copy
+
+    new G4PVPlacement(0,                     // rotation
                       cell3pos+G4ThreeVector(0.,0.,-1*(stdDetZPos+lightGuideLength/2.)),  // position
-                      stdDetLog,        // logical volume
-                      side3Name+"/"+stdDetName+"2",   // name
+                      stdMirrorLog,        // logical volume
+                      side3Name+"/"+stdMirrorName,   // name
                       fLogicLHE,             // mother volume
                       false,                 // no boolean operations
                       0,m_CheckOverlaps);                    // not a copy
+
     
     //////////////////////////
     // Square Tube Reflector
@@ -1415,9 +1513,9 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         G4double mirror_REFL[kEnergies] = {0.998, 0.998, 0., 0.};
         
         //Table of Surface Properties for Mirror
-        G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
-        mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
-        mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+        G4MaterialPropertiesTable* reflSurfaceProperty = new G4MaterialPropertiesTable();
+        reflSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
+        mirror_surface_->SetMaterialPropertiesTable(reflSurfaceProperty);
         
         new G4LogicalSkinSurface("Reflector_surface", Reflector_Log, mirror_surface_);
         

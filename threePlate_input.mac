@@ -51,9 +51,9 @@
 #/LightCollection/run/setFileName output001/angle45n
 #/run/beamOn 100000
 
-/gps/position -3 5.635 0 cm # on rod
-/LightCollection/run/setFileName angle90/TPB5nm_ref_emb
-/run/beamOn 100000
+#/gps/position -3 5.635 0 cm # on rod
+#/LightCollection/run/setFileName angle90/TPB5nm_ref_emb
+#/run/beamOn 100000
 
 #/gps/position -2.12 7.55 0 cm # on rod
 #/LightCollection/run/setFileName output001/angle135n
