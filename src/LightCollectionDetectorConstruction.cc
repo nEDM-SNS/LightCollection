@@ -56,8 +56,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     // TPB Params
     m_TPB_Thickness = .1*mm;
     m_TPB_outerThickness = 5*nm;
-    m_fiberLength  = 2*200*cm;
-
+    //m_fiberLength  = 2*200*cm;
+    m_fiberLength = 2*900cm;
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
@@ -73,7 +73,8 @@ G4VPhysicalVolume* LightCollectionDetectorConstruction::Construct()
     // World volume
     G4double world_x = 15.0*m;
     G4double world_y = 15.0*m;
-    G4double world_z = 15.0*m;
+    //G4double world_z = 15.0*m;
+    G4double world_z = 50.0*m;
     
     G4String worldName = "World";
     G4Box* solidHall = new G4Box(worldName, world_x/2., world_y/2., world_z/2.);
@@ -118,8 +119,8 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
     // Liquid Helium Volume
     
     G4String LHeName = "LHE";
-//    G4double fLHELength = 1.9*m;
-    G4double fLHELength = 10.*m;
+    G4double fLHELength = 50.0*m;
+//    G4double fLHELength = 10.*m;
     G4double fLHERadius = 1.*m;
     
     G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),m_Materials->GetMaterial("SuperfluidHelium"),LHeName);
