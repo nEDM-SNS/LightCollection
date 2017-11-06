@@ -47,7 +47,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_StepLimit = NULL;
     
     m_CheckOverlaps = true;
-    m_EmbeddedFibers = false;
+    m_EmbeddedFibers = true;
     m_FiberReflector = true;
     m_SqureTubeReflector = true;
     m_NumberOfFibers = 2;
@@ -57,7 +57,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_Thickness = .1*mm;
     m_TPB_outerThickness = 5*nm;
     //m_fiberLength  = 2*200*cm;
-    m_fiberLength = 2*900*cm;
+    m_fiberLength = 2*261*cm;
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
