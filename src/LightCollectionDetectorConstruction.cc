@@ -805,7 +805,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     
     G4String LHeName = "LHE";
     //    G4double fLHELength = 1.9*m;
-    G4double fLHELength = 10.*m;
+    G4double fLHELength = 50.*m;
     G4double fLHERadius = 1.*m;
     
     G4LogicalVolume* fLogicLHE = new G4LogicalVolume(new G4Tubs(LHeName,0.,fLHERadius,fLHELength/2.,0.,360*deg),m_Materials->GetMaterial("SuperfluidHelium"),LHeName);
