@@ -8,6 +8,7 @@ class LightCollectionDetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithADouble;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -29,13 +30,14 @@ class LightCollectionDetectorMessenger: public G4UImessenger
   private:
     LightCollectionDetectorConstruction*  fDetectorConstruction;
 
-    G4UIdirectory*           m_DetDirectory;
+    G4UIdirectory*              m_DetDirectory;
 
 //    G4UIcmdWithAString*      m_TargMatCmd;
 //    G4UIcmdWithAString*      m_ChamMatCmd;
 
-    G4UIcmdWithADoubleAndUnit* m_StepMaxCmd;
-    G4UIcmdWithADoubleAndUnit* m_FiberHLCmd;
+    G4UIcmdWithADoubleAndUnit*  m_StepMaxCmd;
+    G4UIcmdWithADoubleAndUnit*  m_FiberHLCmd;
+    G4UIcmdWithADouble*         m_FiberSmoothCmd;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

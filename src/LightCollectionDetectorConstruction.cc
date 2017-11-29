@@ -58,7 +58,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_FiberReflector = false;
 
     // Fiber Params
-    m_FiberOuterSurfaceRoughness = 0.99;
+    m_FiberOuterSurfaceSmoothness = 0.99;
     m_FiberHalfLength = 20.64*cm;
 //    m_FiberHalfLength = 5.*cm;
     m_FibDetThickness = .1*mm;
@@ -313,7 +313,7 @@ void LightCollectionDetectorConstruction::ConstructSingleFiber()
     
     
     // Create Rough Surface on Outside of Fiber
-    if (m_FiberOuterSurfaceRoughness < 1.){
+    if (m_FiberOuterSurfaceSmoothness < 1.){
         // Boundary Surface Properties
         
         m_FiberOpSurface = new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -336,7 +336,7 @@ void LightCollectionDetectorConstruction::ConstructSingleFiber()
         m_FiberOpSurface->SetModel(glisur);
         m_FiberOpSurface->SetFinish(ground);
         m_FiberOpSurface->SetType(dielectric_dielectric);
-        m_FiberOpSurface->SetPolish(m_FiberOuterSurfaceRoughness);
+        m_FiberOpSurface->SetPolish(m_FiberOuterSurfaceSmoothness);
         
         fiberOuterRoughSurface1->GetSurfaceProperty()->DumpTableInfo();
     }
@@ -368,11 +368,9 @@ void LightCollectionDetectorConstruction::SetFiberHalfLength(G4double halfLength
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }
 
-void LightCollectionDetectorConstruction::SetFiberSurfaceRoughness(G4double roughness)
+void LightCollectionDetectorConstruction::SetFiberSurfaceSmoothness(G4double smoothness)
 {
-    m_FiberOpSurface->SetPolish(roughness);
-    
-    
+    m_FiberOpSurface->SetPolish(smoothness);
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
     
 }

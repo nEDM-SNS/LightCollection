@@ -21,29 +21,36 @@
 #/gps/direction 0 -1 0
 #/gps/direction 1 0 0
 
-/LightCollection/run/setFileName output/singleFiberTest
-/LightCollection/det/fiberHalfLength 100 cm
-/run/beamOn 100000
 
-#/LightCollection/det/fiberHalfLength 1 cm
-#/LightCollection/run/setFileName output/fiberAtten_1cm
-#/run/beamOn 10000
-
-#/LightCollection/det/fiberHalfLength 5 cm
-#/LightCollection/run/setFileName output/fiberAtten_5cm
-#/run/beamOn 10000
-
-#/LightCollection/det/fiberHalfLength 10 cm
-#/LightCollection/run/setFileName output/fiberAtten_10cm
-#/run/beamOn 10000
-
-#/LightCollection/det/fiberHalfLength 50 cm
-#/LightCollection/run/setFileName output/fiberAtten_50cm
-#/run/beamOn 10000
-
+#/LightCollection/run/setFileName output/singleFiberTest
 #/LightCollection/det/fiberHalfLength 100 cm
-#/LightCollection/run/setFileName output/fiberAtten_100cm
-#/run/beamOn 10000
+#/run/beamOn 100000
+
+
+
+
+
+/LightCollection/det/fiberSmoothness 0.05
+
+/LightCollection/det/fiberHalfLength 1 cm
+/LightCollection/run/setFileName output/fiberSmooth_005_1cm
+/run/beamOn 10000
+
+/LightCollection/det/fiberHalfLength 5 cm
+/LightCollection/run/setFileName output/fiberSmooth_005_5cm
+/run/beamOn 10000
+
+/LightCollection/det/fiberHalfLength 10 cm
+/LightCollection/run/setFileName output/fiberSmooth_005_10cm
+/run/beamOn 10000
+
+/LightCollection/det/fiberHalfLength 50 cm
+/LightCollection/run/setFileName output/fiberSmooth_005_50cm
+/run/beamOn 10000
+
+/LightCollection/det/fiberHalfLength 100 cm
+/LightCollection/run/setFileName output/fiberSmooth_005_100cm
+/run/beamOn 10000
 
 #/LightCollection/det/fiberHalfLength 200 cm
 #/LightCollection/run/setFileName output/fiberAtten_200cm

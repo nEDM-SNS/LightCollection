@@ -33,7 +33,7 @@ public:
     void SetMaxStep (G4double );
     void SetCheckOverlaps(G4bool checkOverlaps);
     void SetFiberHalfLength(G4double halfLength);
-    void SetFiberSurfaceRoughness(G4double roughness);
+    void SetFiberSurfaceSmoothness(G4double smoothness);
     
 protected:
     
@@ -56,7 +56,7 @@ private:
     G4bool  m_CheckOverlaps;
     
     G4bool m_FiberReflector;
-    G4double m_FiberOuterSurfaceRoughness;
+    G4double m_FiberOuterSurfaceSmoothness;
     G4double m_FiberHalfLength;
     G4double m_FibDetThickness;
     

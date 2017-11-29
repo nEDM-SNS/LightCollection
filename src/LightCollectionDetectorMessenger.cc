@@ -4,6 +4,7 @@
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithADouble.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -30,6 +31,11 @@ fDetectorConstruction(Det)
     m_FiberHLCmd->SetGuidance("Set half length of Fiber");
     m_FiberHLCmd->SetParameterName("halfLength", false);
     m_FiberHLCmd->SetUnitCategory("Length");
+    m_FiberHLCmd->AvailableForStates(G4State_Idle);
+    
+    m_FiberSmoothCmd = new G4UIcmdWithADouble("/LightCollection/det/fiberSmoothness",this);
+    m_FiberSmoothCmd->SetGuidance("Set Smoothness of Outer Fiber Surface");
+    m_FiberSmoothCmd->SetParameterName("smoothness", false);
     m_FiberHLCmd->AvailableForStates(G4State_Idle);
     
     m_StepMaxCmd = new G4UIcmdWithADoubleAndUnit("/LightCollection/det/stepMax",this);
@@ -61,6 +67,10 @@ void LightCollectionDetectorMessenger::SetNewValue(G4UIcommand* command,G4String
     
     if (command==m_FiberHLCmd) {
         fDetectorConstruction->SetFiberHalfLength(m_FiberHLCmd->GetNewDoubleValue(newValue));
+    }
+    
+    if (command==m_FiberSmoothCmd) {
+        fDetectorConstruction->SetFiberSurfaceSmoothness(m_FiberSmoothCmd->GetNewDoubleValue(newValue));
     }
     
     if( command == m_StepMaxCmd ) {
