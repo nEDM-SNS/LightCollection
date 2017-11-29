@@ -47,17 +47,18 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_StepLimit = NULL;
     
     m_CheckOverlaps = true;
-    m_EmbeddedFibers = true;
+    m_EmbeddedFibers = false;
     m_FiberReflector = true;
     m_SqureTubeReflector = true;
     m_NumberOfFibers = 2;
     m_FiberSpacing = 0.103*cm;
+    m_OuterSurfaceSmoothness = 0.05;
 
     // TPB Params
     m_TPB_Thickness = .1*mm;
     m_TPB_outerThickness = 5*nm;
-    //m_fiberLength  = 2*200*cm;
-    m_fiberLength = 2*261*cm;
+    m_fiberLength  = 2*21*cm;
+//    m_fiberLength = 2*261*cm;
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
@@ -232,8 +233,6 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
         G4double core_z    = m_fiberLength;
         G4double core_sphi = fClad1_sphi;
         G4double core_ephi = fClad1_ephi;
-        
-        G4double fOuterSurfaceSmoothness = 0.9;
         
         G4double fMirrorRmax  = core_rmax;
         G4double fMirrorRmin  = 0.*cm;
@@ -428,7 +427,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
 
         }
         
-        if (fOuterSurfaceSmoothness < 1.){
+        if (m_OuterSurfaceSmoothness < 1.){
             // Boundary Surface Properties
             
             G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -436,7 +435,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             fiberOpticalSurface->SetModel(glisur);
             fiberOpticalSurface->SetFinish(ground);
             fiberOpticalSurface->SetType(dielectric_dielectric);
-            fiberOpticalSurface->SetPolish(fOuterSurfaceSmoothness);
+            fiberOpticalSurface->SetPolish(m_OuterSurfaceSmoothness);
                         
             G4VPhysicalVolume* outerVol;
             if (m_EmbeddedFibers) {outerVol = physCellSide1;}
@@ -860,8 +859,6 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
     G4double core_sphi = fClad1_sphi;
     G4double core_ephi = fClad1_ephi;
     
-    G4double fOuterSurfaceSmoothness = 0.9;
-
     G4double fMirrorRmax  = core_rmax;
     G4double fMirrorRmin  = 0.*cm;
     G4double fMirrorThick = 1.*mm;
@@ -1180,7 +1177,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         
     }
     
-    if (fOuterSurfaceSmoothness < 1.){
+    if (m_OuterSurfaceSmoothness < 1.){
         // Boundary Surface Properties
         
         G4OpticalSurface* fiberOpticalSurface =new G4OpticalSurface("fiberOuterRoughOpSurface");
@@ -1188,7 +1185,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand_embedded()
         fiberOpticalSurface->SetModel(glisur);
         fiberOpticalSurface->SetFinish(ground);
         fiberOpticalSurface->SetType(dielectric_dielectric);
-        fiberOpticalSurface->SetPolish(fOuterSurfaceSmoothness);
+        fiberOpticalSurface->SetPolish(m_OuterSurfaceSmoothness);
         
         // ** For Embedded fibers only
         G4VPhysicalVolume* outerVol;
