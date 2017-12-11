@@ -330,7 +330,7 @@ void nEDMMaterials::CreateMaterials()
     // Add entries into properties table
     G4MaterialPropertiesTable* mptPMMA = new G4MaterialPropertiesTable();
     mptPMMA->
-    AddProperty("RINDEX",acrylicPhotonEnergy,refractiveIndex,nEntriesAcr);
+    AddProperty("RINDEX",acrylicPhotonEnergy,refractiveIndexPMMA,nEntriesAcr);
     mptPMMA->AddProperty("ABSLENGTH",acrylicPhotonEnergy,absPMMA,nEntriesAcr);
 
     m_PMMA->SetMaterialPropertiesTable(mptPMMA);

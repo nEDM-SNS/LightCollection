@@ -50,15 +50,16 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_EmbeddedFibers = false;
     m_FiberReflector = true;
     m_SqureTubeReflector = true;
-    m_NumberOfFibers = 2;
+    m_NumberOfFibers = 1;
     m_FiberSpacing = 0.103*cm;
-    m_OuterSurfaceSmoothness = 0.05;
+    m_OuterSurfaceSmoothness = 0.95;
 
     // TPB Params
     m_TPB_Thickness = .1*mm;
     m_TPB_outerThickness = 5*nm;
     m_fiberLength  = 2*21*cm;
 //    m_fiberLength = 2*261*cm;
+    m_fiberLength = 150*cm;
 }
 
 LightCollectionDetectorConstruction::~LightCollectionDetectorConstruction()
@@ -295,6 +296,21 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
                           CoreName, clad1_log,false,0,m_CheckOverlaps);
         
         
+        G4cout << "************************************" << G4endl;
+        G4cout << "************************************" << G4endl;
+        G4cout << "Dumping Material Properties for Core" << G4endl;
+        core_log->GetMaterial()->GetMaterialPropertiesTable()->DumpTable();
+
+        G4cout << "Dumping Material Properties for Cladding 1" << G4endl;
+        clad1_log->GetMaterial()->GetMaterialPropertiesTable()->DumpTable();
+
+        G4cout << "Dumping Material Properties for Cladding 2" << G4endl;
+        fiberLog->GetMaterial()->GetMaterialPropertiesTable()->DumpTable();
+        
+        G4cout << "************************************" << G4endl;
+        G4cout << "************************************" << G4endl;
+
+        
         if (m_FiberReflector) {
             // Fiber Reflector
             G4Tubs* solidMirror = new G4Tubs("Mirror",
@@ -323,6 +339,7 @@ void LightCollectionDetectorConstruction::ConstructTestStand()
             G4MaterialPropertiesTable* mirrorSurfaceProperty = new G4MaterialPropertiesTable();
             mirrorSurfaceProperty->AddProperty("REFLECTIVITY", the_photon_energies_, mirror_REFL, kEnergies);
             mirror_surface_->SetMaterialPropertiesTable(mirrorSurfaceProperty);
+            
             
             // Place Mirror
             new G4PVPlacement(0,                                 //no rotation
