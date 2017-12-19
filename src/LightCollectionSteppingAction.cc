@@ -123,7 +123,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 //Analysis code for 3 cell plates
-#if 1
+#if 0
         if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());

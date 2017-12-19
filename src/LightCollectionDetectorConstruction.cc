@@ -61,7 +61,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CircleOuter_rad = m_CircleInner_rad + 0.3175*cm;
     
     m_FiberThickness = 0.100*cm;
-    m_NumberOfFibers = 16;
+    m_NumberOfFibers = 4;
     m_FiberOuterSurfaceRoughness = 0.9;
     m_FiberHalfLength = 76.2*cm;
 
@@ -228,7 +228,7 @@ void LightCollectionDetectorConstruction::ConstructSquarePMMA()
                                                    moveTPB2);
         
         
-        G4LogicalVolume* TPBInterface_log = new G4LogicalVolume(TPB_solid, G4Material::GetMaterial("TPB_evap"), "TPBInterface");
+        G4LogicalVolume* TPBInterface_log = new G4LogicalVolume(TPB_solid, G4Material::GetMaterial("TPB_inner"), "TPBInterface");
         
         G4ThreeVector TPBInterface_pos = G4ThreeVector(0.,0.79375*mm - m_TPB_Thickness ,0.);
         

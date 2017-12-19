@@ -34,35 +34,35 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
             G4String originVolumeName = aTrack->GetOriginTouchable()->GetVolume()->GetName();
             
             if (originVolumeName.contains("TPBInterface")) {
-                if (originVolumeName.contains("CellSide1")) {
-                    analysisManager->FillH1(0, 0);
-                }
-                else if (originVolumeName.contains("CellSide2")) {
-                    analysisManager->FillH1(0, 2);
-                }
-                else if (originVolumeName.contains("CellSide3")) {
-                    analysisManager->FillH1(0, 4);
-                }
-                else {
-                    G4cout << "Something Unexpected Happend" << G4endl;
-                }
+//                if (originVolumeName.contains("CellSide1")) {
+//                    analysisManager->FillH1(0, 0);
+//                }
+//                else if (originVolumeName.contains("CellSide2")) {
+//                    analysisManager->FillH1(0, 2);
+//                }
+//                else if (originVolumeName.contains("CellSide3")) {
+//                    analysisManager->FillH1(0, 4);
+//                }
+//                else {
+//                    G4cout << "Something Unexpected Happend" << G4endl;
+//                }
                 analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else if (originVolumeName.contains("TPB_outer"))
             {
-                if (originVolumeName.contains("CellSide1")) {
-                    analysisManager->FillH1(0, 1);
-                }
-                else if (originVolumeName.contains("CellSide2")) {
-                    analysisManager->FillH1(0, 3);
-                }
-                else if (originVolumeName.contains("CellSide3")) {
-                    analysisManager->FillH1(0, 5);
-                }
-                else {
-                    G4cout << "Something Unexpected Happend" << G4endl;
-                }
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+//                if (originVolumeName.contains("CellSide1")) {
+//                    analysisManager->FillH1(0, 1);
+//                }
+//                else if (originVolumeName.contains("CellSide2")) {
+//                    analysisManager->FillH1(0, 3);
+//                }
+//                else if (originVolumeName.contains("CellSide3")) {
+//                    analysisManager->FillH1(0, 5);
+//                }
+//                else {
+//                    G4cout << "Something Unexpected Happend" << G4endl;
+//                }
+//                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
             }
             else
             {
