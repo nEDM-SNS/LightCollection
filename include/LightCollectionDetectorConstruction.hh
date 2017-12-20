@@ -68,6 +68,9 @@ private:
     G4double m_TPB_Thickness;
     G4double m_FiberOuterSurfaceRoughness;
     
+    G4double m_PlugHalfLength;
+    G4double m_RelfectorOverhang;
+    
     
 };
 

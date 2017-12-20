@@ -54,7 +54,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_OuterReflector = true;
     m_FiberReflector = false;
     
-    m_CellHalfZ = 4.445*cm;
+    m_CellHalfZ = 9.525/2*cm;
     m_CellHalfThickness =  0.15875*cm;
     
     m_CircleInner_rad = 3.175*cm;
@@ -68,6 +68,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_On = true;
     m_TPB_Thickness = .1*mm;
 
+    m_PlugHalfLength = 1.25*cm;
+    m_RelfectorOverhang = 5*cm;
     
 }
 
@@ -254,24 +256,22 @@ void LightCollectionDetectorConstruction::ConstructSquarePMMA()
 void LightCollectionDetectorConstruction::ConstructCirclePMMA()
 {
     // Circle PMMA //
-
-    G4double half_z = m_CellHalfZ + 3.175*cm;
     
-    G4Tubs* cellSide_solid = new G4Tubs("CircleCell",
+    G4Tubs* acrylicTube_solid = new G4Tubs("CircleCell",
                                         m_CircleInner_rad,
                                         m_CircleOuter_rad,
-                                        half_z,
+                                        m_CellHalfZ,
                                         0*deg,
                                         360*deg);
     
-    G4LogicalVolume* cellSide_log =
-    new G4LogicalVolume(cellSide_solid, G4Material::GetMaterial("PMMA"), "CircleCell");
+    G4LogicalVolume* acrylicTube_log =
+    new G4LogicalVolume(acrylicTube_solid, G4Material::GetMaterial("PMMA"), "CircleCell");
     
-    G4ThreeVector circle_pos = G4ThreeVector(0, 0, -3.175*cm);
+    //G4ThreeVector circle_pos = G4ThreeVector(0, 0, -2.*m_PlugHalfLength);
     
     new G4PVPlacement(0,
-                      circle_pos,
-                      cellSide_log,
+                      G4ThreeVector(),
+                      acrylicTube_log,
                       "CircularCell",
                       m_LogicHall,
                       false,
@@ -280,9 +280,44 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     
     G4VisAttributes* cellVis = new G4VisAttributes(G4Color(0.8,0.8,0.8));
     cellVis->SetVisibility(true);
-    cellSide_log->SetVisAttributes(cellVis);
+    acrylicTube_log->SetVisAttributes(cellVis);
     
+    // Top and Bottom Plugs
     
+    G4Tubs* plug_solid = new G4Tubs("CirclePlug",
+                                    0,
+                                    m_CircleOuter_rad,
+                                    m_PlugHalfLength,
+                                    0*deg,
+                                    360*deg);
+    
+    G4LogicalVolume* plug_log =
+    new G4LogicalVolume(plug_solid, G4Material::GetMaterial("PMMA"), "CirclePlug");
+    
+    G4ThreeVector PlugPos = G4ThreeVector(0, 0, m_CellHalfZ+m_PlugHalfLength);
+
+    
+    new G4PVPlacement(0,
+                      PlugPos,
+                      plug_log,
+                      "TopPlug",
+                      m_LogicHall,
+                      false,
+                      0,
+                      m_CheckOverlaps);
+    
+    new G4PVPlacement(0,
+                      -1.*PlugPos,
+                      plug_log,
+                      "TopPlug",
+                      m_LogicHall,
+                      false,
+                      0,
+                      m_CheckOverlaps);
+    
+    G4VisAttributes* plugVis = new G4VisAttributes(G4Color(0.5,0.5,0.5));
+    plugVis->SetVisibility(true);
+    plug_log->SetVisAttributes(plugVis);
 }
 
 void LightCollectionDetectorConstruction::ConstructFibers()
@@ -407,7 +442,6 @@ void LightCollectionDetectorConstruction::ConstructFibers()
     G4String wrapAroundOuterName = "wrapAroundOuter";
     G4String wrapAroundInnerName = "wrapAroundInner";
     G4String wrapAroundCoreName = "wrapAroundCore";
-    G4double displacement = -2.111375*cm;
     
     for(G4int i=0;i<m_NumberOfFibers/2;i++){
         
@@ -474,8 +508,6 @@ void LightCollectionDetectorConstruction::ConstructFibersNew()
     xRot->rotateX(90.*deg);
     
     G4double R_pos = m_CircleOuter_rad + m_FiberThickness/2;
-    
-    G4double ZOffset;
     
     // Parts of the Fiber solid that are the same for all fibers
     
@@ -607,7 +639,7 @@ void LightCollectionDetectorConstruction::ConstructFibersNew()
         fibRot->rotateX(-90*deg);
         fibRot->rotateY(Phi);
         
-        physFiber[i] = new G4PVPlacement(fibRot,G4ThreeVector(0.,0.,m_CellHalfZ+displacement),outerCladLog,fiberName+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
+        physFiber[i] = new G4PVPlacement(fibRot,G4ThreeVector(0.,0.,m_CellHalfZ+displacement+2.*m_PlugHalfLength),outerCladLog,fiberName+i_plusOne.str(),m_LogicHall,false,0,m_CheckOverlaps);
     
     }
 }
@@ -615,7 +647,7 @@ void LightCollectionDetectorConstruction::ConstructFibersNew()
 void LightCollectionDetectorConstruction::ConstructCylindricalReflector()
 {
     G4double refl_rad = 3.5925*cm + 0.35*mm;
-    G4double refl_length = m_CellHalfZ + 6.985*cm;
+    G4double refl_length = m_CellHalfZ + 2.*m_PlugHalfLength+m_RelfectorOverhang/2.;
     
     // Reflector Geometry
     G4Tubs* CylindricalReflector = new G4Tubs("CylindricalReflector", refl_rad,refl_rad + 0.1*mm, refl_length, 0.*deg, 360.*deg );
@@ -648,7 +680,7 @@ void LightCollectionDetectorConstruction::ConstructCylindricalReflector()
     //ReflectVis->SetForceWireframe(true);
     Reflector_Log->SetVisAttributes(ReflectVis);
     
-    G4ThreeVector refl_pos = G4ThreeVector(0., 0.,-6.985*cm);
+    G4ThreeVector refl_pos = G4ThreeVector(0., 0.,-1.*m_RelfectorOverhang/2.);
     
     new G4PVPlacement(0,                            //no rotation
                       refl_pos,              //at (0,0,0)

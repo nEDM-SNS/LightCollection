@@ -30,7 +30,7 @@ void LightCollectionEventAction::BeginOfEventAction(const G4Event* anEvent)
 
 }
 
-void LightCollectionEventAction::EndOfEventAction(const G4Event * anEvent)
+void LightCollectionEventAction::EndOfEventAction(const G4Event* )
 {
 /*
     LightCollectionEventInformation* eventInformation = (LightCollectionEventInformation*)anEvent->GetUserInformation();
