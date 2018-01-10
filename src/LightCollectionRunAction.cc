@@ -72,7 +72,7 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("detSpectrum", "Wavelength of photons detected", 100, 300., 800.);
     
     // index 5
-    analysisManager->CreateH1("detEnergy", "Energy of photons detected", 100, 1., 4.);
+    analysisManager->CreateH1("fibDetIndex", "Fiber Detector Index", 100, 0, 100);
     
     //index 6
     analysisManager->CreateH1("numSecondaries", "Number of Secondaries in WLS", 10, 0, 9);
