@@ -61,7 +61,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_CircleOuter_rad = m_CircleInner_rad + 0.3175*cm;
     
     m_FiberThickness = 0.100*cm;
-    m_NumberOfFibers = 4;
+//    m_NumberOfFibers = 4;
+    m_NumberOfFibers = 32;
     //m_FiberOuterSurfaceRoughness = 0.9;
     m_FiberHalfLength = 76.2*cm;
 
