@@ -70,6 +70,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_Thickness = .1*mm;
 
     m_PlugHalfLength = 1.25*cm;
+    m_PlugSmoothness = 0.9;
+    
     m_RelfectorOverhang = 5*cm;
     
 }
@@ -298,7 +300,7 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     G4ThreeVector PlugPos = G4ThreeVector(0, 0, m_CellHalfZ+m_PlugHalfLength);
 
     
-    new G4PVPlacement(0,
+    G4VPhysicalVolume*  topPlugPhys = new G4PVPlacement(0,
                       PlugPos,
                       plug_log,
                       "TopPlug",
@@ -307,10 +309,10 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
                       0,
                       m_CheckOverlaps);
     
-    new G4PVPlacement(0,
+    G4VPhysicalVolume*  bottomPlugPhys = new G4PVPlacement(0,
                       -1.*PlugPos,
                       plug_log,
-                      "TopPlug",
+                      "BottomPlug",
                       m_LogicHall,
                       false,
                       0,
@@ -319,6 +321,34 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     G4VisAttributes* plugVis = new G4VisAttributes(G4Color(0.5,0.5,0.5));
     plugVis->SetVisibility(true);
     plug_log->SetVisAttributes(plugVis);
+    
+    G4OpticalSurface* plugRoughOpticalSurface =new G4OpticalSurface("plugRoughOpSurface");
+    
+    plugRoughOpticalSurface->SetModel(glisur);
+    plugRoughOpticalSurface->SetFinish(ground);
+    plugRoughOpticalSurface->SetType(dielectric_dielectric);
+    plugRoughOpticalSurface->SetPolish(m_PlugSmoothness);
+    
+    new G4LogicalBorderSurface("TopPlugRoughSurface1",
+                               topPlugPhys,
+                               m_PhysHall,
+                               plugRoughOpticalSurface);
+    
+    new G4LogicalBorderSurface("TopPlugRoughSurface2",
+                               m_PhysHall,
+                               topPlugPhys,
+                               plugRoughOpticalSurface);
+    
+    new G4LogicalBorderSurface("BottomPlugRoughSurface1",
+                               bottomPlugPhys,
+                               m_PhysHall,
+                               plugRoughOpticalSurface);
+    
+    new G4LogicalBorderSurface("BottomPlugRoughSurface2",
+                               m_PhysHall,
+                               bottomPlugPhys,
+                               plugRoughOpticalSurface);
+
 }
 
 

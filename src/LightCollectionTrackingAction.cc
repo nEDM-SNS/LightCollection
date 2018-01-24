@@ -33,42 +33,21 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
             
             G4String originVolumeName = aTrack->GetOriginTouchable()->GetVolume()->GetName();
             
-            if (originVolumeName.contains("TPBInterface")) {
-//                if (originVolumeName.contains("CellSide1")) {
-//                    analysisManager->FillH1(0, 0);
-//                }
-//                else if (originVolumeName.contains("CellSide2")) {
-//                    analysisManager->FillH1(0, 2);
-//                }
-//                else if (originVolumeName.contains("CellSide3")) {
-//                    analysisManager->FillH1(0, 4);
-//                }
-//                else {
-//                    G4cout << "Something Unexpected Happend" << G4endl;
-//                }
-                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-            }
-            else if (originVolumeName.contains("TPB_outer"))
+            if (originVolumeName.contains("TPBInterface"))
             {
-//                if (originVolumeName.contains("CellSide1")) {
-//                    analysisManager->FillH1(0, 1);
-//                }
-//                else if (originVolumeName.contains("CellSide2")) {
-//                    analysisManager->FillH1(0, 3);
-//                }
-//                else if (originVolumeName.contains("CellSide3")) {
-//                    analysisManager->FillH1(0, 5);
-//                }
-//                else {
-//                    G4cout << "Something Unexpected Happend" << G4endl;
-//                }
-//                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                analysisManager->FillH1(0, 1);
+                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+            }
+
+            else if (originVolumeName.contains("Core"))
+            {
+                analysisManager->FillH1(0, 2);
+                analysisManager->FillH1(2, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
+                
             }
             else
             {
-                analysisManager->FillH1(0, 6);
-                analysisManager->FillH1(1, h_Planck*c_light/aTrack->GetDynamicParticle()->GetKineticEnergy()/nm);
-                
+                G4cout << "Secondary produced by OpWLS in volume: " << originVolumeName << G4endl;
             }
             
         }
@@ -87,21 +66,21 @@ void LightCollectionTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 }
 
 
-void LightCollectionTrackingAction::PostUserTrackingAction(const G4Track * aTrack)
+void LightCollectionTrackingAction::PostUserTrackingAction(const G4Track*)
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    
-    LightCollectionTrackInformation* trackInfo = (LightCollectionTrackInformation*)aTrack->GetUserInformation();
-    
-    G4int status = trackInfo->GetStatus();
-    
-    analysisManager->FillH1(5, status);
-    
-    if (status == 3 || status ==4 || status == 5) {
-        analysisManager->FillH1(5, 9);
-    }
-    else if (status == 1 || status ==2)
-    {
-        analysisManager->FillH1(5, 8);
-    }
+//    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+//    
+//    LightCollectionTrackInformation* trackInfo = (LightCollectionTrackInformation*)aTrack->GetUserInformation();
+//    
+//    G4int status = trackInfo->GetStatus();
+//    
+//    analysisManager->FillH1(5, status);
+//    
+//    if (status == 3 || status ==4 || status == 5) {
+//        analysisManager->FillH1(5, 9);
+//    }
+//    else if (status == 1 || status ==2)
+//    {
+//        analysisManager->FillH1(5, 8);
+//    }
 }

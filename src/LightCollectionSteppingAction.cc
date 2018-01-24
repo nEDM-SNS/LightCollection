@@ -57,7 +57,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     
     
     // Ignore steps at world boundary
-    if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
+    if (thePostPoint->GetStepStatus()!= fWorldBoundary)
+    {
     
 //        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
@@ -84,25 +85,41 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 #endif
         
 
-        if (thePostPVname.contains("fibDet")){
-            
-            
-            if (thePostPVname.contains("BackFace")){
+        if (thePostPVname.contains("fibDet"))
+        {
+            if (thePostPVname.contains("BackFace"))
+            {
                 G4cout << "Killed in BackFace" << G4endl;
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
             }
-            else{
+            
+            else
+            {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+                analysisManager->FillH1(0, 3);
+                analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
                 analysisManager->FillH1(4, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
-
-                
+                analysisManager->FillH1(5, -1.*aStep->GetPreStepPoint()->GetMomentumDirection().cosTheta());
             }
             
         }
-  
-        
+    
+        if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS")
+        {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            if (thePostPVname.contains("TPBInterface"))
+            {
+                analysisManager->FillH1(6, aStep->GetNumberOfSecondariesInCurrentStep());
+            }
+            else if(thePostPVname.contains("Core"))
+            {
+                analysisManager->FillH1(7, aStep->GetNumberOfSecondariesInCurrentStep());
+            }
+            
+
+        }
     }
 
 }
