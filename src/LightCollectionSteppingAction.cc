@@ -120,6 +120,21 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             
 
         }
+        
+        // Kill Green Photons that exit fiber (not trapped)
+        G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
+        
+        if (originVolName.contains("WLSFiber")) {
+            
+            if (thePrePVname.contains("WLSFiber") &&
+                (!thePostPVname.contains("WLSFiber") && !thePostPVname.contains("fibDet")))
+            {
+                aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+                
+            }
+
+        }
+        
     }
 
 }
