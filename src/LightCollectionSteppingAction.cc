@@ -66,11 +66,11 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
         
-        //        G4String thePrePVname  = " ";
+               G4String thePrePVname  = " ";
         G4String thePostPVname = " ";
         
         if (thePostPV) {
-            //            thePrePVname  = thePrePV->GetName();
+                       thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
         
@@ -85,12 +85,29 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4cout << "Surface: " << surface->GetName() << G4endl;
         }
 #endif
-        
+        /*  if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
+           {
+              G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
+           }*/ // When I inserted the codes here, the result is supposed to be total count of photons passing the fiber?
         
         
         //Analysis code for single cell plate
         if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
+             
+             if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
+           {
+                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
+           }   // but this make no result in the graph, not sure how to record the number of green photons hitting the fiber before conversion
+            
+            if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
+           {
+              G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
+           }
 
+            
             if(thePostPVname.contains("Fiber"))
             {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
