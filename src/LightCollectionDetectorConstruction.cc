@@ -62,7 +62,8 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     
     m_FiberThickness = 0.100*cm;
 //    m_NumberOfFibers = 4;
-    m_NumberOfFibers = 32;
+//    m_NumberOfFibers = 32;
+    m_NumberOfFibers = 80;
     //m_FiberOuterSurfaceRoughness = 0.9;
     m_FiberHalfLength = 76.2*cm;
 
@@ -70,7 +71,7 @@ LightCollectionDetectorConstruction::LightCollectionDetectorConstruction()
     m_TPB_Thickness = .1*mm;
 
     m_PlugHalfLength = 1.25*cm;
-    m_PlugSmoothness = 0.9;
+    m_AcrylicSmoothness = 0.5;
     
     m_RelfectorOverhang = 5*cm;
     
@@ -193,24 +194,24 @@ void LightCollectionDetectorConstruction::ConstructSquarePMMA()
         
         m_TPB_Thickness = 0.75*um;
         
-        G4double TPB_outer = 2*m_TPB_Thickness + cellSquareInner_half_;
+        G4double TPB_outer_width = 2*m_TPB_Thickness + cellSquareInner_half_;
         
         G4Box* TPBHorz_solid = new G4Box("HorizontalTPB",
-                                         TPB_outer,
-                                         (TPB_outer - cellSquareInner_half_)/2,
+                                         TPB_outer_width,
+                                         (TPB_outer_width - cellSquareInner_half_)/2,
                                          m_CellHalfZ);
         
         G4Box* TPBVert_solid = new G4Box("VerticalTPB",
-                                         (TPB_outer - cellSquareInner_half_)/2,
-                                         TPB_outer,
+                                         (TPB_outer_width - cellSquareInner_half_)/2,
+                                         TPB_outer_width,
                                          m_CellHalfZ);
         
-        G4ThreeVector moveTPB1 = G4ThreeVector((TPB_outer + cellSquareInner_half_)/2,
-                                               (TPB_outer + cellSquareInner_half_)/2,
+        G4ThreeVector moveTPB1 = G4ThreeVector((TPB_outer_width + cellSquareInner_half_)/2,
+                                               (TPB_outer_width + cellSquareInner_half_)/2,
                                                0);
         
         G4ThreeVector moveTPB2 = G4ThreeVector(0,
-                                               TPB_outer + cellSquareInner_half_,
+                                               TPB_outer_width + cellSquareInner_half_,
                                                0);
         
         
@@ -233,7 +234,7 @@ void LightCollectionDetectorConstruction::ConstructSquarePMMA()
                                                    moveTPB2);
         
         
-        G4LogicalVolume* TPBInterface_log = new G4LogicalVolume(TPB_solid, G4Material::GetMaterial("TPB_inner"), "TPBInterface");
+        G4LogicalVolume* TPBInterface_log = new G4LogicalVolume(TPB_solid, G4Material::GetMaterial("TPB_outer"), "TPBInterface");
         
         G4ThreeVector TPBInterface_pos = G4ThreeVector(0.,0.79375*mm - m_TPB_Thickness ,0.);
         
@@ -272,7 +273,7 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     
     //G4ThreeVector circle_pos = G4ThreeVector(0, 0, -2.*m_PlugHalfLength);
     
-    new G4PVPlacement(0,
+    G4VPhysicalVolume*  tubePhys = new G4PVPlacement(0,
                       G4ThreeVector(),
                       acrylicTube_log,
                       "CircularCell",
@@ -284,6 +285,24 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     G4VisAttributes* cellVis = new G4VisAttributes(G4Color(0.8,0.8,0.8));
     cellVis->SetVisibility(true);
     acrylicTube_log->SetVisAttributes(cellVis);
+    
+//    G4OpticalSurface* tubeRoughOpticalSurface =new G4OpticalSurface("plugRoughOpSurface");
+//    
+//    tubeRoughOpticalSurface->SetModel(glisur);
+//    tubeRoughOpticalSurface->SetFinish(ground);
+//    tubeRoughOpticalSurface->SetType(dielectric_dielectric);
+//    tubeRoughOpticalSurface->SetPolish(m_AcrylicSmoothness);
+//    
+//    new G4LogicalBorderSurface("TubeRoughSurface1",
+//                               tubePhys,
+//                               m_PhysHall,
+//                               tubeRoughOpticalSurface);
+//    
+//    new G4LogicalBorderSurface("TubeRoughSurface2",
+//                               m_PhysHall,
+//                               tubePhys,
+//                               tubeRoughOpticalSurface);
+
     
     // Top and Bottom Plugs
     
@@ -327,7 +346,7 @@ void LightCollectionDetectorConstruction::ConstructCirclePMMA()
     plugRoughOpticalSurface->SetModel(glisur);
     plugRoughOpticalSurface->SetFinish(ground);
     plugRoughOpticalSurface->SetType(dielectric_dielectric);
-    plugRoughOpticalSurface->SetPolish(m_PlugSmoothness);
+    plugRoughOpticalSurface->SetPolish(m_AcrylicSmoothness);
     
     new G4LogicalBorderSurface("TopPlugRoughSurface1",
                                topPlugPhys,
@@ -432,13 +451,21 @@ void LightCollectionDetectorConstruction::ConstructFibersNew()
     fibDetBackFaceVis->SetVisibility(true);
     fibDetBackFaceLog->SetVisAttributes(fibDetBackFaceVis);
     
+    // Big Circle Detector
+    G4Tubs* circleDetSolid = new G4Tubs("circleDet",0.*cm,m_CircleInner_rad*2,fibDetThickness,0.*deg,360.*deg);
+    
+    G4LogicalVolume* circleDetLog = new G4LogicalVolume(circleDetSolid, m_Materials->GetMaterial("PMMA"), "circleDet");
+    
+    G4double circleDetZPos = m_CellHalfZ+2.*m_PlugHalfLength-2*m_FiberHalfLength-fibDetThickness*4.;
+    
+    new G4PVPlacement(0, G4ThreeVector(0,0,circleDetZPos),circleDetLog,"circleDet",m_LogicHall,false,0,m_CheckOverlaps);
     
     
+    
+    // Placements
     
     G4RotationMatrix* fibDetRot = new G4RotationMatrix();
     fibDetRot->rotateY(180*deg);
-
-    
     
     G4VPhysicalVolume* physFiber[1000] = {0};
     G4VPhysicalVolume* physDetector1[1000] = {0};

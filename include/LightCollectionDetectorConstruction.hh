@@ -69,7 +69,7 @@ private:
     G4double m_FiberOuterSurfaceRoughness;
     
     G4double m_PlugHalfLength;
-    G4double m_PlugSmoothness;
+    G4double m_AcrylicSmoothness;
     G4double m_RelfectorOverhang;
     
     

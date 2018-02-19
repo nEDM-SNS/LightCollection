@@ -57,7 +57,7 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->OpenFile(fileName);
     
     // index 0
-    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 1=TPB, 2=Fiber, 3=Det", 9, 1., 10.);
+    analysisManager->CreateH1("Photons", "Bins: Under=Prim, 1=TPB, 2=Fiber, 3=Det, 4=Escape", 9, 1., 10.);
 
     // index 1
     analysisManager->CreateH1("tpbSpectrum", "Wavelength of photons produced in TPB", 100, 300., 800.);

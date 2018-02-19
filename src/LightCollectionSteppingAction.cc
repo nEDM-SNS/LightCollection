@@ -83,7 +83,10 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4cout << "Surface: " << surface->GetName() << G4endl;
         }
 #endif
-        
+        if (thePostPVname.contains("circleDet")) {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            analysisManager->FillH1(0, 4);
+        }
 
         if (thePostPVname.contains("fibDet"))
         {
