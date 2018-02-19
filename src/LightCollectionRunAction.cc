@@ -83,7 +83,9 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
       //index 8
     analysisManager->CreateH1("ExitAngle","Sine of exit angle in fiber at one end",50,-1.001,1.001);
 
-    
+     //index 9
+    analysisManager->CreateH1("#photonToFibersBeforeConverstion", "before fiber converstion", 10, 0, 9);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
