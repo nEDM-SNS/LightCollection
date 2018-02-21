@@ -87,7 +87,8 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("wlsFibSpectrumIn", "Wavelength of incoming photons that undergo WLS in Fiber", 100, 300., 800.);
 
     //index 10
-    analysisManager->CreateH1("wlsFibStrike", "Wavelength of photons that strike a Fiber", 100, 300., 800.);}
+    analysisManager->CreateH1("wlsFibStrike", "Wavelength of photons that strike a Fiber", 100, 300., 800.);
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

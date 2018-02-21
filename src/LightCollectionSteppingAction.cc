@@ -56,12 +56,13 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 #endif
     
     
-        G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
+    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
     G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
     
     
     // Ignore steps at world boundary
-    if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
+    if (thePostPoint->GetStepStatus()!= fWorldBoundary)
+    {
         
         G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
@@ -69,7 +70,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         G4String thePrePVname  = " ";
         G4String thePostPVname = " ";
         
-        if (thePostPV) {
+        if (thePostPV)
+        {
             thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
@@ -81,7 +83,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         G4LogicalSurface* surface = NULL;
         surface = G4LogicalBorderSurface::GetSurface(thePrePoint->GetPhysicalVolume(),
                                                      thePostPoint->GetPhysicalVolume());
-        if (surface) {
+        if (surface)
+        {
             G4cout << "Surface: " << surface->GetName() << G4endl;
         }
 #endif
@@ -149,7 +152,6 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
             
         }
-        
         else if(thePostPVname.contains("CellSide2/StdDet1")) {
             G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
             analysisManager->FillH1(0, 9);
@@ -176,7 +178,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         }
 
         
-#if 1
+#if 0
         // Kill Green Photons that exit fiber (not trapped)
         G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
         
