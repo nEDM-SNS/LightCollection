@@ -177,7 +177,6 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
         
 #if 1
-
         // Kill Green Photons that exit fiber (not trapped)
         G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
         
