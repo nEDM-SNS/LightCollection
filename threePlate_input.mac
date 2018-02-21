@@ -24,14 +24,14 @@
 
 /gps/position 0 -.7 0 cm # In the center of the fiber
 /LightCollection/run/setFileName output/SmoothnessTest
-/run/beamOn 1
+#/run/beamOn 1
 
 
 #/gps/position 0 0.650 0 cm #
 #/gps/position 0 5 0 cm #
 #/LightCollection/run/setFileName output/Test
 #/run/beamOn 1
-#/run/beamOn 1000
+/run/beamOn 10000
 #/run/beamOn 1000000
 
 #/gps/position 2.12 7.55 0 cm # on rod

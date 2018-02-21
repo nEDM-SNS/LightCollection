@@ -95,17 +95,12 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         //Analysis code for single cell plate
         if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
              
-             if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
-           {
-                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
-           }   // but this make no result in the graph, not sure how to record the number of green photons hitting the fiber before conversion
+//             if(thePrePVname.contains("CellSide")&&thePostPVname.contains("Fiber"))
+//           {
+//                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+//                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
+//           }   // but this make no result in the graph, not sure how to record the number of green photons hitting the fiber before conversion
             
-            if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
-           {
-              G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
-           }
 
             
             if(thePostPVname.contains("Fiber"))
@@ -183,7 +178,8 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
         }
 
         
-            // Kill Green Photons that exit fiber (not trapped)
+#if 1
+        // Kill Green Photons that exit fiber (not trapped)
         G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
         
         if (originVolName.contains("WLSFiber")) {
@@ -196,6 +192,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             }
 
         }
+#endif
     
     }
     
