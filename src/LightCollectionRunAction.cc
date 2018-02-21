@@ -60,7 +60,7 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("Photons", "Bins: Under=Prim, 0=C1_Inner(fib), 1=C1_Outer(fib), 2=C2_Inner, 3=C2_Outer, 4=C3_Inner, 5=C3_Outer, 6=fibWLSPhot, 7=fibdet +z, 8=fibdet -z, 9=C2det +z, 10=C2det -z,  11=C3 +z, 12=C3 -z", 13, 0., 13.);
     
     // index 1
-    analysisManager->CreateH1("wlsFibSpectrum", "Wavelength of photons produced in Fiber by WLS Process", 100, 300., 800.);
+    analysisManager->CreateH1("wlsFibSpectrumOut", "Wavelength of photons produced in Fiber by WLS Process", 100, 300., 800.);
     
     // index 2
     analysisManager->CreateH1("wlsTPBSpectrum", "Wavelength of photons produced in TPB by WLS Process", 100, 300., 800.);
@@ -84,9 +84,10 @@ void LightCollectionRunAction::BeginOfRunAction(const G4Run* aRun)
     analysisManager->CreateH1("ExitAngle","Sine of exit angle in fiber at one end",50,-1.001,1.001);
 
      //index 9
-    analysisManager->CreateH1("#photonToFibersBeforeConverstion", "before fiber converstion", 10, 0, 9);
+    analysisManager->CreateH1("wlsFibSpectrumIn", "Wavelength of incoming photons that undergo WLS in Fiber", 100, 300., 800.);
 
-}
+    //index 10
+    analysisManager->CreateH1("wlsFibStrike", "Wavelength of photons that strike a Fiber", 100, 300., 800.);}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

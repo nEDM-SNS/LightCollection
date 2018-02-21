@@ -63,14 +63,14 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     // Ignore steps at world boundary
     if (thePostPoint->GetStepStatus()!= fWorldBoundary) {
         
-                G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
+        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
         
-               G4String thePrePVname  = " ";
+        G4String thePrePVname  = " ";
         G4String thePostPVname = " ";
         
         if (thePostPV) {
-                       thePrePVname  = thePrePV->GetName();
+            thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
         
@@ -85,28 +85,25 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
             G4cout << "Surface: " << surface->GetName() << G4endl;
         }
 #endif
-        /*  if(thePrePVname.contains("CellSide"))&&thePostPVname.contains("Fiber"))
-           {
-              G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
-           }*/ // When I inserted the codes here, the result is supposed to be total count of photons passing the fiber?
         
+        // Record all photons that strike the fiber
+        if(thePostPVname.contains("Fiber") && !thePrePVname.contains("Fiber"))
+        {
+            G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+            G4double wavelength = h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm;
+            analysisManager->FillH1(10, wavelength);
+        }
         
-        //Analysis code for single cell plate
-        if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS"){
-             
-//             if(thePrePVname.contains("CellSide")&&thePostPVname.contains("Fiber"))
-//           {
-//                G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-//                analysisManager->FillH1(9, aStep->GetNumberOfSecondariesInCurrentStep());
-//           }   // but this make no result in the graph, not sure how to record the number of green photons hitting the fiber before conversion
-            
-
+        // Record Info on WLS Process
+        if (thePostPoint->GetProcessDefinedStep()->GetProcessName()=="OpWLS")
+        {
             
             if(thePostPVname.contains("Fiber"))
             {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
                 analysisManager->FillH1(6, aStep->GetNumberOfSecondariesInCurrentStep());
+                G4double wavelength = h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm;
+                analysisManager->FillH1(9, wavelength);
             }
             else if (thePostPVname.contains("CellSide"))
             {
@@ -119,16 +116,21 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
         }
         
-        if (thePostPVname.contains("fibDet")){
+        // Record Detected Photons
+        if (thePostPVname.contains("fibDet"))
+        {
             
-            if (thePostPVname.contains("BackFace")){
+            if (thePostPVname.contains("BackFace"))
+            {
                 //G4cout << "Killed in BackFace" << G4endl;
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
             }
-            else if (thePostPVname.contains( "fibDet1_")) {
+            else if (thePostPVname.contains( "fibDet1_"))
+            {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
                 analysisManager->FillH1(0, 7);
-                analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
+                G4double wavelength = h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm;
+                analysisManager->FillH1(3, wavelength);
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
                 
                  G4double sinTheta = sin(thePrePoint->GetMomentumDirection().theta());
@@ -136,8 +138,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 if(sinTheta<0.49) // sin(26.7deg)=0.49
                 {analysisManager->FillH1(8, sinTheta);}
                 analysisManager->FillH1(5, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
-                
-               
+              
             }
             else if(thePostPVname.contains("fibDet2_")) {
                 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -145,9 +146,6 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
                 analysisManager->FillH1(3, h_Planck*c_light/aStep->GetTrack()->GetDynamicParticle()->GetKineticEnergy()/nm);
                 aStep->GetTrack()->SetTrackStatus(fStopAndKill);
                 analysisManager->FillH1(5, std::stoi(thePostPVname.substr(thePostPVname.rfind("_")+1,-1))); // replace the giant block of else and if
-
-              
-                
             }
             
         }
@@ -179,6 +177,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 
         
 #if 1
+
         // Kill Green Photons that exit fiber (not trapped)
         G4String originVolName = aStep->GetTrack()->GetOriginTouchableHandle()->GetVolume()->GetName();
         
