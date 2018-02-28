@@ -244,7 +244,7 @@ void nEDMMaterials::CreateMaterials()
 
   
     const G4int nEntries = sizeof(photonEnergy)/sizeof(G4double);
-const G4int nEntriesAcr = sizeof(acrylicPhotonEnergy)/sizeof(G4double);
+const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
     /* Wavelength conversion (nm)
 {619.9, 610.8, 601.9, 593.2, 584.8,
 576.7, 568.7, 561.0, 553.5, 546.2, 
@@ -395,7 +395,7 @@ const G4int nEntriesAcr = sizeof(acrylicPhotonEnergy)/sizeof(G4double);
 	 41.7367*mm,41.7367*mm,41.7367*mm,105.096*mm,105.096*mm,
 	 20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
 	 20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
-	 20.0*m,20.0*m,20.0*m,1.0*km,,1.0*km,
+	 20.0*m,20.0*m,20.0*m,1.0*km,1.0*km,
 	 1.0*km,1.0*km,1.0*km,1.0*km
 	};
 	
