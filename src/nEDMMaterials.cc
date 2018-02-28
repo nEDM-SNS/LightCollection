@@ -244,7 +244,7 @@ void nEDMMaterials::CreateMaterials()
 
   
     const G4int nEntries = sizeof(photonEnergy)/sizeof(G4double);
-
+const G4int nEntriesAcr = sizeof(acrylicPhotonEnergy)/sizeof(G4double);
     /* Wavelength conversion (nm)
 {619.9, 610.8, 601.9, 593.2, 584.8,
 576.7, 568.7, 561.0, 553.5, 546.2, 
@@ -319,7 +319,7 @@ void nEDMMaterials::CreateMaterials()
      1.60, 1.60, 1.60, 1.60, 1.60, 1.60,
      1.60, 1.60, 1.60, 1.60, 1.60, 1.60,
      1.60, 1.60, 1.60, 1.60, 1.60, 1.60,
-     1.60, 1.60, 1.60, 1.60, 1.60, 1.60,};
+     1.60, 1.60, 1.60, 1.60, 1.60, 1.60};
     
     assert(sizeof(refractiveIndexPMMA) == sizeof(photonEnergy));
 
@@ -396,8 +396,8 @@ void nEDMMaterials::CreateMaterials()
 	 20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
 	 20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
 	 20.0*m,20.0*m,20.0*m,1.0*km,,1.0*km,
-	 1.0*km,,1.0*km,,1.0*km,,1.0*km,
-	}
+	 1.0*km,1.0*km,1.0*km,1.0*km
+	};
 	
 	
 
@@ -581,15 +581,7 @@ void nEDMMaterials::CreateMaterials()
 
     
     G4double absTPB[] =
-    {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
-        0.25*mm, 10.*m, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm,
-        0.004*mm, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,
-        10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 0.018*mm, 0.018*mm, 0.018*mm, 10.*m, 10.*m,
-        10.*m, 10.*m, 10.*m, 10.*m, 10.*m};
-	
-	
-	{1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
+      {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
         1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
         0.25*mm, 10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m, 
 	 0.004*mm,  0.004*mm, 0.004*mm,0.004*mm,  0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 
