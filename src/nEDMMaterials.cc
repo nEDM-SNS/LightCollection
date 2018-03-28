@@ -370,8 +370,8 @@ void nEDMMaterials::CreateMaterials()
     // Add entries into properties table
     G4MaterialPropertiesTable* mptPMMA = new G4MaterialPropertiesTable();
     mptPMMA->
-    AddProperty("RINDEX",acrylicPhotonEnergy,refractiveIndexPMMA,nEntriesAcr);
-    mptPMMA->AddProperty("ABSLENGTH",acrylicPhotonEnergy,absPMMA,nEntriesAcr);
+    AddProperty("RINDEX",photonEnergy,refractiveIndexPMMA,nEntriesAcr);
+    mptPMMA->AddProperty("ABSLENGTH",photonEnergy,absPMMA,nEntriesAcr);
 
     m_PMMA->SetMaterialPropertiesTable(mptPMMA);
 
@@ -698,9 +698,9 @@ void nEDMMaterials::CreateMaterials()
 
     G4MaterialPropertiesTable* mptTPB_inner = new G4MaterialPropertiesTable();
     mptTPB_inner->AddProperty("RINDEX", photonEnergy, refractiveIndexPMMA, nEntries);
-    mptTPB_inner->AddProperty("ABSLENGTH", acrylicPhotonEnergy, absTPB, nEntriesAcr);
-    mptTPB_inner->AddProperty("WLSABSLENGTH", acrylicPhotonEnergy, absWLSTPB, nEntriesAcr);
-    mptTPB_inner->AddProperty("WLSCOMPONENT", acrylicPhotonEnergy, emissionTPB, nEntriesAcr);
+    mptTPB_inner->AddProperty("ABSLENGTH", photonEnergy, absTPB, nEntriesAcr);
+    mptTPB_inner->AddProperty("WLSABSLENGTH", photonEnergy, absWLSTPB, nEntriesAcr);
+    mptTPB_inner->AddProperty("WLSCOMPONENT", photonEnergy, emissionTPB, nEntriesAcr);
     mptTPB_inner->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
 
     mptTPB_inner->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
@@ -710,9 +710,9 @@ void nEDMMaterials::CreateMaterials()
     
     G4MaterialPropertiesTable* mptTPB_outer = new G4MaterialPropertiesTable();
     mptTPB_outer->AddProperty("RINDEX", photonEnergy, refractiveIndex, nEntries);
-    mptTPB_outer->AddProperty("ABSLENGTH", acrylicPhotonEnergy, absTPB, nEntriesAcr);
-    mptTPB_outer->AddProperty("WLSABSLENGTH", acrylicPhotonEnergy, absWLSTPB, nEntriesAcr);
-    mptTPB_outer->AddProperty("WLSCOMPONENT", acrylicPhotonEnergy, emissionTPB, nEntriesAcr);
+    mptTPB_outer->AddProperty("ABSLENGTH", photonEnergy, absTPB, nEntriesAcr);
+    mptTPB_outer->AddProperty("WLSABSLENGTH", photonEnergy, absWLSTPB, nEntriesAcr);
+    mptTPB_outer->AddProperty("WLSCOMPONENT", photonEnergy, emissionTPB, nEntriesAcr);
     mptTPB_outer->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
     mptTPB_outer->AddConstProperty("WLSTIMECONSTANT", 0.01*ns);
     m_TPB_outer->SetMaterialPropertiesTable(mptTPB_outer);
