@@ -52,7 +52,7 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
 #endif
 
     
-//    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
+    G4StepPoint* thePrePoint  = aStep->GetPreStepPoint();
     G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
     
     
@@ -60,14 +60,14 @@ void LightCollectionSteppingAction::UserSteppingAction(const G4Step* aStep)
     if (thePostPoint->GetStepStatus()!= fWorldBoundary)
     {
     
-//        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
+        G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
         G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
         
-//        G4String thePrePVname  = " ";
+        G4String thePrePVname  = " ";
         G4String thePostPVname = " ";
         
         if (thePostPV) {
-//            thePrePVname  = thePrePV->GetName();
+            thePrePVname  = thePrePV->GetName();
             thePostPVname = thePostPV->GetName();
         }
         
