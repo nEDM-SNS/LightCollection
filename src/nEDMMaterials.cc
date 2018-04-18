@@ -639,16 +639,7 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
     //--------------------------------------------------
 
     
-    G4double absTPB[] =
-      {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,
-        1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 0.3*mm, 0.12*mm,
-        0.25*mm, 10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m,10.*m, 
-	 0.004*mm,  0.004*mm, 0.004*mm,0.004*mm,  0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 
-	  0.004*mm,  0.004*mm, 0.004*mm,0.004*mm,  0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 
-	  0.004*mm,  0.004*mm, 0.004*mm,0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm,0.004*mm, 0.004*mm, 0.004*mm, 0.004*mm, 
-	 10.*m, 10.*m, 10.*m,10.*m, 10.*m, 10.*m, 10.*m, 10.*m, 10.*m,10.*m, 
-	 10.*m, 10.*m, 10.*m, 10.*m, 0.018*mm, 0.018*mm, 0.018*mm, 10.*m, 10.*m, 10.*m, 
-	 10.*m, 10.*m,10.*m, 10.*m};
+   
 	
 	/* Wavelength (nm)
 {620.0, 611.0, 602.0, 593.0, 585.0,
@@ -669,7 +660,7 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
  263.0, 259.0, 256.0, 253.0,250.0, 
  247.0, 244.0, 241.0, 238.0};*/
     
-    assert(sizeof(absTPB) == sizeof(photonEnergy));
+   
     
     G4double absWLSTPB[] =
         {1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km, 1.*km,1.*km, 1.*km,
@@ -679,8 +670,8 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
          1.*km,1.*km,1.*km, 0.045*mm, 0.039*mm, 0.025*mm,0.019*mm, 0.013*mm, 0.01*mm,0.01*mm,
          0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,
          10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,10.*m,
-         10.*m, 10.*m, 10.*m, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm, .049*mm,.049*mm, 
-         .049*mm, .049*mm, 10.*nm, 10.*nm};
+         10.*m, 10.*m, 10.*m, .049*mm, .049*mm, 10.*nm, 10.*nm, .10.*nm, 10.*nm,10.*nm, 
+         10.*nm, 10.*nm, 10.*nm, 10.*nm};
    
 	/* Wavelength (nm)
 {620.0, 611.0, 602.0, 593.0, 585.0,
@@ -746,7 +737,6 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
 
     G4MaterialPropertiesTable* mptTPB_inner = new G4MaterialPropertiesTable();
     mptTPB_inner->AddProperty("RINDEX", photonEnergy, refractiveIndexPMMA, nEntries);
-    mptTPB_inner->AddProperty("ABSLENGTH", photonEnergy, absTPB, nEntriesAcr);
     mptTPB_inner->AddProperty("WLSABSLENGTH", photonEnergy, absWLSTPB, nEntriesAcr);
     mptTPB_inner->AddProperty("WLSCOMPONENT", photonEnergy, emissionTPB, nEntriesAcr);
     mptTPB_inner->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
@@ -758,7 +748,6 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
     
     G4MaterialPropertiesTable* mptTPB_outer = new G4MaterialPropertiesTable();
     mptTPB_outer->AddProperty("RINDEX", photonEnergy, refractiveIndex, nEntries);
-    mptTPB_outer->AddProperty("ABSLENGTH", photonEnergy, absTPB, nEntriesAcr);
     mptTPB_outer->AddProperty("WLSABSLENGTH", photonEnergy, absWLSTPB, nEntriesAcr);
     mptTPB_outer->AddProperty("WLSCOMPONENT", photonEnergy, emissionTPB, nEntriesAcr);
     mptTPB_outer->AddConstProperty("WLSMEANNUMBERPHOTONS", 0.35);
