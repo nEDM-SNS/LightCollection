@@ -670,7 +670,7 @@ const G4int nEntriesAcr = sizeof(photonEnergy)/sizeof(G4double);
          1.*km,1.*km,1.*km, 0.045*mm, 0.039*mm, 0.025*mm,0.019*mm, 0.013*mm, 0.01*mm,0.01*mm,
          0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,0.01*mm,
          10.*m, 10.*m, 10.*m, 10.*m, 0.027*mm, 0.027*mm, 0.027*mm, 10.*m, 10.*m,10.*m,
-         10.*m, 10.*m, 10.*m, .049*mm, .049*mm, 10.*nm, 10.*nm, .10.*nm, 10.*nm,10.*nm, 
+         10.*m, 10.*m, 10.*m, .049*mm, .049*mm, 10.*nm, 10.*nm, 10.*nm, 10.*nm,10.*nm, 
          10.*nm, 10.*nm, 10.*nm, 10.*nm};
    
 	/* Wavelength (nm)
